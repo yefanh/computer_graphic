@@ -1,23 +1,22 @@
-OBJS = Scenegraphs.o View.o Controller.o Model.o sgraph/ScenegraphPrinter.o
+OBJS = Scenegraphs.o View.o Controller.o Model.o sgraph/ScenegraphPrinter.o sgraph/KeyframeAnimationNode.o
 
-# Resolve shared resource paths relative to this assignment directory so the
-# project builds on other machines with the same course folder layout.
-HW_ROOT              := $(abspath ../..)
-COURSE_ROOT          := $(abspath ../../..)
-A1_DEPS_INCLUDE_DIR  := $(HW_ROOT)/a1/deps/include
-HW_INCLUDE_DIR       := $(HW_ROOT)/include
-DEMOS_GLFW_INCLUDE   := $(COURSE_ROOT)/Introduction to OpenGL/demos-glfw/include
-HW_LIB_DIR           := $(HW_ROOT)/lib
+# Resolve shared resource paths using relatives so graders can build without edits.
+HW_ROOT_REL            := ..
+COURSE_ROOT_REL        := ../..
+A1_DEPS_INCLUDE_DIR    := $(HW_ROOT_REL)/a1/deps/include
+HW_INCLUDE_DIR         := $(HW_ROOT_REL)/include
+DEMOS_GLFW_INCLUDE_DIR := $(COURSE_ROOT_REL)/Introduction\ to\ OpenGL/demos-glfw/include
+HW_LIB_DIR             := $(HW_ROOT_REL)/lib
 
 # Course headers (glad, KHR) + professor demos-glfw include + Homebrew include
 # Prefer assignment/local copies; fall back to system Homebrew path if available
-INCLUDES = -I"$(A1_DEPS_INCLUDE_DIR)" \
-	-I"$(HW_INCLUDE_DIR)" \
-	-I"$(DEMOS_GLFW_INCLUDE)" \
+INCLUDES = -I$(A1_DEPS_INCLUDE_DIR) \
+	-I$(HW_INCLUDE_DIR) \
+	-I$(DEMOS_GLFW_INCLUDE_DIR) \
 	-I/opt/homebrew/include
 
 # Course lib (libglad.a) + Homebrew lib (libglfw)
-LIBS = -L"$(HW_LIB_DIR)" -L/opt/homebrew/lib
+LIBS = -L$(HW_LIB_DIR) -L/opt/homebrew/lib
 LDFLAGS = -lglad -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
 CFLAGS = -g -std=c++11
 PROGRAM = Scenegraphs
@@ -54,6 +53,9 @@ Model.o: Model.cpp Model.h
 # Build object for ScenegraphPrinter visitor
 sgraph/ScenegraphPrinter.o: sgraph/ScenegraphPrinter.cpp sgraph/ScenegraphPrinter.h
 	$(COMPILER) $(INCLUDES) $(CFLAGS) -c sgraph/ScenegraphPrinter.cpp -o sgraph/ScenegraphPrinter.o
+
+sgraph/KeyframeAnimationNode.o: sgraph/KeyframeAnimationNode.cpp sgraph/KeyframeAnimationNode.h sgraph/AnimationNode.h
+	$(COMPILER) $(INCLUDES) $(CFLAGS) -c sgraph/KeyframeAnimationNode.cpp -o sgraph/KeyframeAnimationNode.o
 	
 RM = rm	-f
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...

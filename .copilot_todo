@@ -1,4 +1,0 @@
-# Task Plan
-- [x] Update GLScenegraphRenderer usage to accept a tick parameter when drawing
-- [x] Maintain a tick counter in Controller/View render loop
-- [x] Ensure Scenegraph rendering path propagates tick to renderer before traversal
