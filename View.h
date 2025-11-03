@@ -37,7 +37,7 @@ public:
 
     void init(Callbacks *callbacks,
               std::map<std::string, util::PolygonMesh<VertexAttrib>>& meshes);
-    void display(sgraph::IScenegraph *scenegraph);
+    void display(sgraph::IScenegraph *scenegraph, int tick);
     bool shouldWindowClose();
     void closeWindow();
     void onResize(int width, int height);

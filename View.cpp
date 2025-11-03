@@ -88,7 +88,7 @@ void View::init(Callbacks *callbacks,
     normalizeCameraBasis();
 }
 
-void View::display(sgraph::IScenegraph *scenegraph) {
+void View::display(sgraph::IScenegraph *scenegraph, int tick) {
     program->enable();
     glClearColor(0,0,0,1);
     glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
@@ -104,6 +104,8 @@ void View::display(sgraph::IScenegraph *scenegraph) {
 
     glUniformMatrix4fv(shaderLocations->getLocation("projection"),
                        1, GL_FALSE, glm::value_ptr(projection));
+
+    renderer->setTick(tick);
 
     scenegraph->getRoot()->accept(renderer);
 

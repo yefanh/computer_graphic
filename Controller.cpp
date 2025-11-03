@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <limits>
 
 #include <glm/glm.hpp>           // for glm::radians
 #include <GLFW/glfw3.h>
@@ -56,7 +57,8 @@ void Controller::run() {
     view.init(this, meshes);
 
     while (!view.shouldWindowClose()) {
-        view.display(scenegraph);
+        view.display(scenegraph, tickCount);
+        tickCount = (tickCount == std::numeric_limits<int>::max()) ? 0 : tickCount + 1;
     }
     view.closeWindow();
     exit(EXIT_SUCCESS);

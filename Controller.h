@@ -28,6 +28,7 @@ private:
 
     // Track Shift state so repeats never lose the modifier
     bool shiftDown = false;
+    int tickCount = 0;
 };
 
 #endif // CONTROLLER_H

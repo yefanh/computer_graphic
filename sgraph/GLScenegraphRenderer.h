@@ -32,11 +32,16 @@ namespace sgraph {
          */
         GLScenegraphRenderer(stack<glm::mat4>& mv,map<string,util::ObjectInstance *>& os,util::ShaderLocationsVault& shaderLocations) 
             : modelview(mv)
-            , objects(os) {
+            , objects(os)
+            , currentTick(0) {
             this->shaderLocations = shaderLocations;
             for (map<string,util::ObjectInstance *>::iterator it=objects.begin();it!=objects.end();it++) {
                 cout << "Mesh with name: "<< it->first << endl;
             }
+        }
+
+        void setTick(int tick) {
+            currentTick = tick;
         }
 
         /**
@@ -104,6 +109,7 @@ namespace sgraph {
         }
 
         void visitAnimationNode(AnimationNode *animationNode) {
+            animationNode->setTransform(currentTick);
             visitTransformNode(animationNode);
         }
 
@@ -111,6 +117,7 @@ namespace sgraph {
         stack<glm::mat4>& modelview;    
         util::ShaderLocationsVault shaderLocations;
         map<string,util::ObjectInstance *> objects;
+        int currentTick;
 
    };
 }
