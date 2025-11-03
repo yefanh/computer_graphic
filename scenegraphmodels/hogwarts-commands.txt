@@ -1,0 +1,401 @@
+# === Instances ===
+instance box models/box.obj
+instance cylinder models/cylinder.obj
+instance cone models/cone.obj
+
+# stone/shaft (neutral gray)
+material tower-shaft-mat
+ambient 0.62 0.62 0.62
+end-material
+
+# tower body (brick red)
+material tower-body-mat
+ambient 0.80 0.22 0.20
+end-material
+
+# ring/loop (dark red)
+material tower-loop-mat
+ambient 0.70 0.18 0.18
+end-material
+
+# roofs (purple-magenta, different from classmate)
+material tower-top-mat
+ambient 0.70 0.20 0.85
+end-material
+
+# minaret shaft (light warm stone)
+material minaret-shaft-mat
+ambient 0.78 0.76 0.60
+end-material
+
+# minaret roof (same family as tower roof)
+material minaret-top-mat
+ambient 0.68 0.25 0.85
+end-material
+
+# building blocks 
+material building-mat
+ambient 0.15 0.70 0.78
+end-material
+
+material building-mat1
+ambient 0.12 0.60 0.70
+end-material
+
+material building-mat2
+ambient 0.60 0.85 0.60
+end-material
+
+# === Root ===
+group root root
+assign-root root
+
+# -------- object 1 --------
+translate translate-tower-1 translate-tower-1 5 25 -5
+add-child translate-tower-1 root
+
+group tower-1 tower-1
+add-child tower-1 translate-tower-1
+
+scale scale-shaft-1 scale-shaft-1 10 50 10
+add-child scale-shaft-1 tower-1
+
+leaf shaft-1 shaft-1 instanceof box
+assign-material shaft-1 tower-shaft-mat
+add-child shaft-1 scale-shaft-1
+
+translate translate-body-1 translate-body-1 0 25 0
+add-child translate-body-1 tower-1
+
+scale scale-body-1 scale-body-1 5 5 5
+add-child scale-body-1 translate-body-1
+
+leaf body-1 body-1 instanceof cylinder
+assign-material body-1 tower-body-mat
+add-child body-1 scale-body-1
+
+translate translate-top-1 translate-top-1 0 30 0
+add-child translate-top-1 tower-1
+
+scale scale-top-1 scale-top-1 5 10 5
+add-child scale-top-1 translate-top-1
+
+leaf top-1 top-1 instanceof cone
+assign-material top-1 tower-top-mat
+add-child top-1 scale-top-1
+
+# -------- object 2 --------
+translate translate-tower-2 translate-tower-2 20 25 -5
+add-child translate-tower-2 root
+
+copy tower-2 tower-1
+add-child tower-2 translate-tower-2
+
+# -------- object 3 --------
+translate translate-building-3 translate-building-3 12.5 10 -27.5
+add-child translate-building-3 root
+
+scale scale-building-3 scale-building-3 15 20 35
+add-child scale-building-3 translate-building-3
+
+leaf building-3 building-3 instanceof box
+assign-material building-3 building-mat
+add-child building-3 scale-building-3
+
+# -------- object 4 --------
+translate translate-building-4 translate-building-4 30 10 -27.5
+add-child translate-building-4 root
+
+scale scale-building-4 scale-building-4 20 20 35
+add-child scale-building-4 translate-building-4
+
+leaf building-4 building-4 instanceof box
+assign-material building-4 building-mat1
+add-child building-4 scale-building-4
+
+# -------- object 5 --------
+translate translate-tower-5 translate-tower-5 12.5 10 -57.5
+add-child translate-tower-5 root
+
+group tower-5 tower-5
+add-child tower-5 translate-tower-5
+
+scale scale-shaft-5 scale-shaft-5 25 20 25
+add-child scale-shaft-5 tower-5
+
+leaf shaft-5 shaft-5 instanceof box
+assign-material shaft-5 tower-shaft-mat
+add-child shaft-5 scale-shaft-5
+
+translate translate-body-5 translate-body-5 0 10 0
+add-child translate-body-5 tower-5
+
+scale scale-body-5 scale-body-5 11 25 11
+add-child scale-body-5 translate-body-5
+
+leaf body-5 body-5 instanceof cylinder
+assign-material body-5 tower-body-mat
+add-child body-5 scale-body-5
+
+translate translate-loop-5 translate-loop-5 0 35 0
+add-child translate-loop-5 tower-5
+
+scale scale-loop-5 scale-loop-5 10 40 10
+add-child scale-loop-5 translate-loop-5
+
+leaf loop-5 loop-5 instanceof cylinder
+assign-material loop-5 tower-loop-mat
+add-child loop-5 scale-loop-5
+
+translate translate-top-5 translate-top-5 0 75 0
+add-child translate-top-5 tower-5
+
+scale scale-top-5 scale-top-5 10 20 10
+add-child scale-top-5 translate-top-5
+
+leaf top-5 top-5 instanceof cone
+assign-material top-5 tower-top-mat
+add-child top-5 scale-top-5
+
+translate translate-minaret-1 translate-minaret-1 -10 30 0
+add-child translate-minaret-1 tower-5
+
+group minaret-1 minaret-1
+add-child minaret-1 translate-minaret-1
+
+scale scale-minaret-shaft-1 scale-minaret-shaft-1 4 30 4
+add-child scale-minaret-shaft-1 minaret-1
+
+leaf minaret-shaft-1 minaret-shaft-1 instanceof cylinder
+assign-material minaret-shaft-1 minaret-shaft-mat
+add-child minaret-shaft-1 scale-minaret-shaft-1
+
+translate translate-minaret-top-1 translate-minaret-top-1 0 30 0
+add-child translate-minaret-top-1 minaret-1
+
+scale scale-minaret-top-1 scale-minaret-top-1 4 10 4
+add-child scale-minaret-top-1 translate-minaret-top-1
+
+leaf minaret-top-1 minaret-top-1 instanceof cone
+assign-material minaret-top-1 minaret-top-mat
+add-child minaret-top-1 scale-minaret-top-1
+
+translate translate-minaret-2 translate-minaret-2 0 30 10
+add-child translate-minaret-2 tower-5
+
+copy minaret-2 minaret-1
+add-child minaret-2 translate-minaret-2
+
+translate translate-minaret-3 translate-minaret-3 10 30 0
+add-child translate-minaret-3 tower-5
+
+copy minaret-3 minaret-1
+add-child minaret-3 translate-minaret-3
+
+translate translate-minaret-4 translate-minaret-4 0 30 -10
+add-child translate-minaret-4 tower-5
+
+copy minaret-4 minaret-1
+add-child minaret-4 translate-minaret-4
+
+# -------- object 6 --------
+translate translate-building-6 translate-building-6 50 10 -50
+add-child translate-building-6 root
+
+scale scale-building-6 scale-building-6 50 20 10
+add-child scale-building-6 translate-building-6
+
+leaf building-6 building-6 instanceof box
+assign-material building-6 building-mat2
+add-child building-6 scale-building-6
+
+# -------- object 7 --------
+translate translate-building-7 translate-building-7 47.5 10 -35
+add-child translate-building-7 root
+
+scale scale-building-7 scale-building-7 15 20 20
+add-child scale-building-7 translate-building-7
+
+copy building-7 building-3
+add-child building-7 scale-building-7
+
+# -------- object 8 --------
+translate translate-tower-8 translate-tower-8 47.5 25 -17.5
+add-child translate-tower-8 root
+
+group tower-8 tower-8
+add-child tower-8 translate-tower-8
+
+scale scale-shaft-8 scale-shaft-8 15 50 15
+add-child scale-shaft-8 tower-8
+
+leaf shaft-8 shaft-8 instanceof box
+assign-material shaft-8 tower-shaft-mat
+add-child shaft-8 scale-shaft-8
+
+translate translate-body-8 translate-body-8 0 25 0
+add-child translate-body-8 tower-8
+
+scale scale-body-8 scale-body-8 7.5 10 7.5
+add-child scale-body-8 translate-body-8
+
+leaf body-8 body-8 instanceof cylinder
+assign-material body-8 tower-body-mat
+add-child body-8 scale-body-8
+
+translate translate-top-8 translate-top-8 0 35 0
+add-child translate-top-8 tower-8
+
+scale scale-top-8 scale-top-8 7.5 10 7.5
+add-child scale-top-8 translate-top-8
+
+leaf top-8 top-8 instanceof cone
+assign-material top-8 tower-top-mat
+add-child top-8 scale-top-8
+
+# -------- object 9 --------
+translate translate-building-9 translate-building-9 22.5 10 -5
+add-child translate-building-9 root
+
+scale scale-building-9 scale-building-9 15 20 10
+add-child scale-building-9 translate-building-9
+
+copy building-9 building-6
+add-child building-9 scale-building-9
+
+# -------- object 10 --------
+translate translate-building-10 translate-building-10 60 10 -27.5
+add-child translate-building-10 root
+
+scale scale-building-10 scale-building-10 10 20 35
+add-child scale-building-10 translate-building-10
+
+copy building-10 building-4
+add-child building-10 scale-building-10
+
+# -------- object 11 --------
+translate translate-building-11 translate-building-11 70 10 -27.5
+add-child translate-building-11 root
+
+scale scale-building-11 scale-building-11 10 20 15
+add-child scale-building-11 translate-building-11
+
+copy building-11 building-3
+add-child building-11 scale-building-11
+
+# -------- object 12 --------
+translate translate-tower-12 translate-tower-12 70 25 -40
+add-child translate-tower-12 root
+
+copy tower-12 tower-1
+add-child tower-12 translate-tower-12
+
+# -------- object 13 --------
+translate translate-tower-13 translate-tower-13 70 25 -15
+add-child translate-tower-13 root
+
+copy tower-13 tower-1
+add-child tower-13 translate-tower-13
+
+# -------- object 14 --------
+translate translate-building-14 translate-building-14 20 0 0
+add-child translate-building-14 root
+
+copy building-14 translate-building-10
+add-child building-14 translate-building-14
+
+# -------- object 15 --------
+translate translate-tower-15 translate-tower-15 80 25 -50
+add-child translate-tower-15 root
+
+copy tower-15 tower-1
+add-child tower-15 translate-tower-15
+
+# -------- object 16 --------
+translate translate-tower-16 translate-tower-16 80 25 -5
+add-child translate-tower-16 root
+
+copy tower-16 tower-1
+add-child tower-16 translate-tower-16
+
+# -------- object 17 --------
+translate translate-building-17 translate-building-17 103 10 -27
+add-child translate-building-17 root
+
+scale scale-building-17 scale-building-17 36 20 10
+add-child scale-building-17 translate-building-17
+
+copy building-17 building-3
+add-child building-17 scale-building-17
+
+# -------- object 18 --------
+translate translate-building-18 translate-building-18 95 10 -50
+add-child translate-building-18 root
+
+scale scale-building-18 scale-building-18 20 20 10
+add-child scale-building-18 translate-building-18
+
+copy building-18 building-3
+add-child building-18 scale-building-18
+
+# -------- object 19 --------
+translate translate-tower-19 translate-tower-19 113 0 -50
+add-child translate-tower-19 root
+
+group tower-19 tower-19
+add-child tower-19 translate-tower-19
+
+scale scale-body-19 scale-body-19 12.5 40 12.5
+add-child scale-body-19 tower-19
+
+leaf body-19 body-19 instanceof cylinder
+assign-material body-19 tower-body-mat
+add-child body-19 scale-body-19
+
+translate translate-top-19 translate-top-19 0 40 0
+add-child translate-top-19 tower-19
+
+scale scale-top-19 scale-top-19 12.5 50 12.5
+add-child scale-top-19 translate-top-19
+
+leaf top-19 top-19 instanceof cone
+assign-material top-19 tower-top-mat
+add-child top-19 scale-top-19
+
+# -------- object 20 --------
+translate translate-building-20 translate-building-20 36 0 0
+add-child translate-building-20 root
+
+copy building-20 translate-building-18
+add-child building-20 translate-building-20
+
+# -------- object 21 --------
+translate translate-tower-21 translate-tower-21 56 0 8
+add-child translate-tower-21 root
+
+copy tower-21 translate-tower-15
+add-child tower-21 translate-tower-21
+
+# -------- object 22 --------
+translate translate-tower-22 translate-tower-22 -10 0 15
+add-child translate-tower-22 root
+
+copy tower-22 translate-tower-21
+add-child tower-22 translate-tower-22
+
+# -------- object 23 --------
+translate translate-building-23 translate-building-23 66 0 -2.5
+add-child translate-building-23 root
+
+copy building-23 translate-building-11
+add-child building-23 translate-building-23
+
+# -------- object 24 --------
+translate translate-building-24 translate-building-24 12.5 10 -5
+add-child translate-building-24 root
+
+scale scale-building-24 scale-building-24 5 20 10
+add-child scale-building-24 translate-building-24
+
+copy building-24 building-6
+add-child building-24 scale-building-24
