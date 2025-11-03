@@ -28,4 +28,8 @@ void ScenegraphPrinter::visitRotateTransform(RotateTransform* node) {
     visitTransformNode(node);
 }
 
+void ScenegraphPrinter::visitAnimationNode(AnimationNode* node) {
+    visitTransformNode(node);
+}
+
 } // namespace sgraph

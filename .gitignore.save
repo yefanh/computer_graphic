@@ -1,0 +1,18 @@
+# 编nano .gitignorenano .gitignor译产物
+*.o
+*.out
+*.exeScenegraphs
+/Scenegraphs
+
+# 编辑器临时文件
+*.swp
+*.swo
+*~
+.DS_Store
+
+# IDE 配置
+.vscode/
+.idea/
+
+# 大的模型文件（暂时先排除，后面用 LFS 处理）
+# models/*.obj

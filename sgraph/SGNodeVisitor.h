@@ -20,6 +20,7 @@ namespace sgraph {
     class ScaleTransform;
     class RotateTransform;
     class TranslateTransform;
+    class AnimationNode;
 
 /**
  * This class represents the interface for a visitor on scene graph nodes.
@@ -36,6 +37,7 @@ namespace sgraph {
         virtual void visitScaleTransform(ScaleTransform *node)=0;
         virtual void visitTranslateTransform(TranslateTransform *node)=0;
         virtual void visitRotateTransform(RotateTransform *node)=0;
+        virtual void visitAnimationNode(AnimationNode *node)=0;
     };
 }
 

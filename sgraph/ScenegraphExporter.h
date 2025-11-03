@@ -8,6 +8,7 @@
 #include "RotateTransform.h"
 #include "ScaleTransform.h"
 #include "TranslateTransform.h"
+#include "AnimationNode.h"
 #include <sstream>
 using namespace std;
 
@@ -176,6 +177,10 @@ namespace sgraph {
                 if (level==1) {
                     append("assign-root "+varname);
                 }
+            }
+
+            void visitAnimationNode(AnimationNode *animationNode) {
+                visitTransformNode(animationNode);
             }
 
         private:

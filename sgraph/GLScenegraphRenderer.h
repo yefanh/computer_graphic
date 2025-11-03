@@ -5,6 +5,7 @@
 #include "GroupNode.h"
 #include "LeafNode.h"
 #include "TransformNode.h"
+#include "AnimationNode.h"
 #include "RotateTransform.h"
 #include "ScaleTransform.h"
 #include "TranslateTransform.h"
@@ -100,6 +101,10 @@ namespace sgraph {
 
         void visitRotateTransform(RotateTransform *rotateNode) {
             visitTransformNode(rotateNode);
+        }
+
+        void visitAnimationNode(AnimationNode *animationNode) {
+            visitTransformNode(animationNode);
         }
 
         private:

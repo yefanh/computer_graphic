@@ -24,6 +24,7 @@
 #include "ScaleTransform.h"
 #include "TranslateTransform.h"
 #include "RotateTransform.h"
+#include "AnimationNode.h"
 
 namespace sgraph {
 
@@ -37,6 +38,7 @@ public:
     void visitScaleTransform(ScaleTransform* node) override;
     void visitTranslateTransform(TranslateTransform* node) override;
     void visitRotateTransform(RotateTransform* node) override;
+    void visitAnimationNode(AnimationNode* node) override;
 
 private:
     std::ostream& out;
