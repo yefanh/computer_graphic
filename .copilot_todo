@@ -1,0 +1,4 @@
+# Task Plan
+- [x] Extend ScenegraphImporter to parse keyframe-transform entries with file path
+- [x] Instantiate KeyframeAnimationNode, load keyframes, add to nodes map
+- [ ] Update command syntax documentation (optional) and ensure visitors handle node name output

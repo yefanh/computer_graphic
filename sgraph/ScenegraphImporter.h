@@ -9,6 +9,7 @@
 #include "RotateTransform.h"
 #include "ScaleTransform.h"
 #include "TranslateTransform.h"
+#include "KeyframeAnimationNode.h"
 #include "PolygonMesh.h"
 #include "ObjImporter.h"
 #include "Material.h"
@@ -62,6 +63,9 @@ namespace sgraph {
                     }
                     else if (command == "translate") {
                         parseTranslate(inputWithOutComments);
+                    }
+                    else if (command == "keyframe-transform") {
+                        parseKeyframeTransform(inputWithOutComments);
                     }
                     else if (command == "copy") {
                         parseCopy(inputWithOutComments);
@@ -131,6 +135,17 @@ namespace sgraph {
                     input >> tx >> ty >> tz;
                     SGNode *translateNode = new TranslateTransform(tx,ty,tz,name,NULL);
                     nodes[varname] = translateNode;         
+                }
+
+                virtual void parseKeyframeTransform(istream& input) {
+                    string varname, name, filepath;
+                    input >> varname >> name >> filepath;
+                    auto *node = new KeyframeAnimationNode(name, NULL);
+                    if (!node->loadKeyframesFromFile(filepath)) {
+                        std::cerr << "Warning: Failed to load keyframes for " << name
+                                  << " from " << filepath << std::endl;
+                    }
+                    nodes[varname] = node;
                 }
 
                 virtual void parseRotate(istream& input) {
