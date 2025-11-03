@@ -28,7 +28,7 @@ Controller::Controller(Model& m, View& v, const std::string& commandsFilePath)
 void Controller::initScenegraph() {
     // Prefer CLI-provided file; else default
     std::string path = commandsPath.empty()
-        ? std::string("scenegraphmodels/hogwarts-commands.txt")
+        ? std::string("code/hogwarts.txt")
         : commandsPath;
 
     std::ifstream inFile(path);

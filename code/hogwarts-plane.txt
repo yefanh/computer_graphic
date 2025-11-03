@@ -1,0 +1,1046 @@
+# shapes used in this model
+instance sphere models/sphere.obj
+instance box models/box.obj
+instance cylinder models/cylinder.obj
+instance cone models/cone.obj
+instance plane code/aeroplane-scaled.obj
+
+
+
+# main model
+group hogwarts hogwarts
+assign-root hogwarts
+
+
+# object 1
+
+
+group 1-object 1-object
+add-child 1-object hogwarts
+
+#box
+
+
+material 1-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-1-box t-1-box 5 25 -5
+add-child t-1-box 1-object
+
+scale s-1-box s-1-box 10 50 10
+add-child s-1-box t-1-box
+
+leaf 1-box 1-box instanceof box
+add-child 1-box s-1-box
+assign-material 1-box 1-box-material
+
+#cylinder
+
+material 1-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-1-cylinder t-1-cylinder 5 50 -5
+add-child t-1-cylinder 1-object
+
+scale s-1-cylinder s-1-cylinder 5 5 5
+add-child s-1-cylinder t-1-cylinder
+
+leaf 1-cylinder 1-cylinder instanceof cylinder
+add-child 1-cylinder s-1-cylinder
+assign-material 1-cylinder 1-cylinder-material
+
+#cone
+
+material 1-cone-material
+ambient 1 0 1
+end-material
+
+translate t-1-cone t-1-cone 5 55 -5
+add-child t-1-cone 1-object
+
+scale s-1-cone s-1-cone 5 10 5
+add-child s-1-cone t-1-cone
+
+leaf 1-cone 1-cone instanceof cone
+add-child 1-cone s-1-cone
+assign-material 1-cone 1-cone-material
+
+
+
+# object 2
+
+group 2-object 2-object
+add-child 2-object hogwarts
+
+#box
+
+material 2-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-2-box t-2-box 20 25 -5
+add-child t-2-box 2-object
+
+scale s-2-box s-2-box 10 50 10
+add-child s-2-box t-2-box
+
+leaf 2-box 2-box instanceof box
+add-child 2-box s-2-box
+assign-material 2-box 2-box-material
+
+#cylinder
+
+material 2-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-2-cylinder t-2-cylinder 20 50 -5
+add-child t-2-cylinder 2-object
+
+scale s-2-cylinder s-2-cylinder 5 5 5
+add-child s-2-cylinder t-2-cylinder
+
+leaf 2-cylinder 2-cylinder instanceof cylinder
+add-child 2-cylinder s-2-cylinder
+assign-material 2-cylinder 2-cylinder-material
+
+#cone
+
+material 2-cone-material
+ambient 1 0 1
+end-material
+
+translate t-2-cone t-2-cone 20 55 -5
+add-child t-2-cone 2-object
+
+scale s-2-cone s-2-cone 5 10 5
+add-child s-2-cone t-2-cone
+
+leaf 2-cone 2-cone instanceof cone
+add-child 2-cone s-2-cone
+assign-material 2-cone 2-cone-material
+
+# object 3
+
+group 3-object 3-object
+add-child 3-object hogwarts
+
+#box
+
+material 3-box-material
+ambient 0.5 0.3 0.5
+end-material
+
+translate t-3-box t-3-box 12.5 10 -27.5
+add-child t-3-box 3-object
+
+scale s-3-box s-3-box 15 20 35
+add-child s-3-box t-3-box
+
+leaf 3-box 3-box instanceof box
+add-child 3-box s-3-box
+assign-material 3-box 3-box-material
+
+# object 4
+
+group 4-object 4-object
+add-child 4-object hogwarts
+
+#box
+
+material 4-box-material
+ambient 0.5 0.1 0.5
+end-material
+
+translate t-4-box t-4-box 30 10 -27.5
+add-child t-4-box 4-object
+
+scale s-4-box s-4-box 20 20 35
+add-child s-4-box t-4-box
+
+leaf 4-box 4-box instanceof box
+add-child 4-box s-4-box
+assign-material 4-box 4-box-material
+
+#object 5
+
+group 5-object 5-object
+add-child 5-object hogwarts
+
+#box
+
+material 5-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-5-box t-5-box 12.5 10 -57.5
+add-child t-5-box 5-object
+
+scale s-5-box s-5-box 25 20 25
+add-child s-5-box t-5-box
+
+leaf 5-box 5-box instanceof box
+add-child 5-box s-5-box
+assign-material 5-box 5-box-material
+
+#cylinder 1
+
+material 5-1-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-5-1-cylinder t-5-1-cylinder 12.5 20 -57.5
+add-child t-5-1-cylinder 5-object
+
+scale s-5-1-cylinder s-5-1-cylinder 11 25 11
+add-child s-5-1-cylinder t-5-1-cylinder
+
+leaf 5-1-cylinder 5-1-cylinder instanceof cylinder
+add-child 5-1-cylinder s-5-1-cylinder
+assign-material 5-1-cylinder 5-1-cylinder-material
+
+#cylinder 2
+
+material 5-2-cylinder-material
+ambient 1 1 0
+end-material
+
+translate t-5-2-cylinder t-5-2-cylinder 12.5 45 -57.5
+add-child t-5-2-cylinder 5-object
+
+scale s-5-2-cylinder s-5-2-cylinder 10 40 10
+add-child s-5-2-cylinder t-5-2-cylinder
+
+leaf 5-2-cylinder 5-2-cylinder instanceof cylinder
+add-child 5-2-cylinder s-5-2-cylinder
+assign-material 5-2-cylinder 5-2-cylinder-material
+
+#cone
+
+material 5-cone-material
+ambient 1 0 1
+end-material
+
+translate t-5-cone t-5-cone 12.5 85 -57.5
+add-child t-5-cone 5-object
+
+scale s-5-cone s-5-cone 10 20 10
+add-child s-5-cone t-5-cone
+
+leaf 5-cone 5-cone instanceof cone
+add-child 5-cone s-5-cone
+assign-material 5-cone 5-cone-material
+
+# minarets
+
+group minarets-object minarets-object
+add-child minarets-object hogwarts
+
+## minaret-1
+
+group minaret-1-object minaret-1-object
+add-child minaret-1-object minarets-object
+#cylinder
+
+material minaret-1-cylinder-material
+ambient 0 0 1
+end-material
+
+translate t-minaret-1-cylinder t-minaret-1-cylinder 12.5 30 -67.5
+add-child t-minaret-1-cylinder minaret-1-object
+
+scale s-minaret-1-cylinder s-minaret-1-cylinder 4 30 4
+add-child s-minaret-1-cylinder t-minaret-1-cylinder
+
+leaf minaret-1-cylinder minaret-1-cylinder instanceof cylinder
+add-child minaret-1-cylinder s-minaret-1-cylinder
+assign-material minaret-1-cylinder minaret-1-cylinder-material
+
+#cone
+
+material minaret-1-cone-material
+ambient 1 0 1
+end-material
+
+translate t-minaret-1-cone t-minaret-1-cone 12.5 60 -67.5
+add-child t-minaret-1-cone minaret-1-object
+
+scale s-minaret-1-cone s-minaret-1-cone 4 10 4
+add-child s-minaret-1-cone t-minaret-1-cone
+
+leaf minaret-1-cone minaret-1-cone instanceof cone
+add-child minaret-1-cone s-minaret-1-cone
+assign-material minaret-1-cone minaret-1-cone-material
+
+## minaret-2
+
+group minaret-2-object minaret-2-object
+add-child minaret-2-object minarets-object
+
+#cylinder
+
+material minaret-2-cylinder-material
+ambient 0 0 1
+end-material
+
+translate t-minaret-2-cylinder t-minaret-2-cylinder 12.5 30 -47.5
+add-child t-minaret-2-cylinder minaret-2-object
+
+scale s-minaret-2-cylinder s-minaret-2-cylinder 4 30 4
+add-child s-minaret-2-cylinder t-minaret-2-cylinder
+
+leaf minaret-2-cylinder minaret-2-cylinder instanceof cylinder
+add-child minaret-2-cylinder s-minaret-2-cylinder
+assign-material minaret-2-cylinder minaret-2-cylinder-material
+
+#cone
+
+material minaret-2-cone-material
+ambient 1 0 1
+end-material
+
+translate t-minaret-2-cone t-minaret-2-cone 12.5 60 -47.5
+add-child t-minaret-2-cone minaret-2-object
+
+scale s-minaret-2-cone s-minaret-2-cone 4 10 4
+add-child s-minaret-2-cone t-minaret-2-cone
+
+leaf minaret-2-cone minaret-2-cone instanceof cone
+add-child minaret-2-cone s-minaret-2-cone
+assign-material minaret-2-cone minaret-2-cone-material
+
+## minaret-3
+
+group minaret-3-object minaret-3-object
+add-child minaret-3-object minarets-object
+
+#cylinder
+
+material minaret-3-cylinder-material
+ambient 0 0 1
+end-material
+
+translate t-minaret-3-cylinder t-minaret-3-cylinder 22.5 30 -57.5
+add-child t-minaret-3-cylinder minaret-3-object
+
+scale s-minaret-3-cylinder s-minaret-3-cylinder 4 30 4
+add-child s-minaret-3-cylinder t-minaret-3-cylinder
+
+leaf minaret-3-cylinder minaret-3-cylinder instanceof cylinder
+add-child minaret-3-cylinder s-minaret-3-cylinder
+assign-material minaret-3-cylinder minaret-3-cylinder-material
+
+#cone
+
+material minaret-3-cone-material
+ambient 1 0 1
+end-material
+
+translate t-minaret-3-cone t-minaret-3-cone 22.5 60 -57.5
+add-child t-minaret-3-cone minaret-3-object
+
+scale s-minaret-3-cone s-minaret-3-cone 4 10 4
+add-child s-minaret-3-cone t-minaret-3-cone
+
+leaf minaret-3-cone minaret-3-cone instanceof cone
+add-child minaret-3-cone s-minaret-3-cone
+assign-material minaret-3-cone minaret-3-cone-material
+
+## minaret-4
+
+group minaret-4-object minaret-4-object
+add-child minaret-4-object minarets-object
+
+#cylinder
+
+material minaret-4-cylinder-material
+ambient 0 0 1
+end-material
+
+translate t-minaret-4-cylinder t-minaret-4-cylinder 2.5 30 -57.5
+add-child t-minaret-4-cylinder minaret-4-object
+
+scale s-minaret-4-cylinder s-minaret-4-cylinder 4 30 4
+add-child s-minaret-4-cylinder t-minaret-4-cylinder
+
+leaf minaret-4-cylinder minaret-4-cylinder instanceof cylinder
+add-child minaret-4-cylinder s-minaret-4-cylinder
+assign-material minaret-4-cylinder minaret-4-cylinder-material
+
+#cone
+
+material minaret-4-cone-material
+ambient 1 0 1
+end-material
+
+translate t-minaret-4-cone t-minaret-4-cone 2.5 60 -57.5
+add-child t-minaret-4-cone minaret-4-object
+
+scale s-minaret-4-cone s-minaret-4-cone 4 10 4
+add-child s-minaret-4-cone t-minaret-4-cone
+
+leaf minaret-4-cone minaret-4-cone instanceof cone
+add-child minaret-4-cone s-minaret-4-cone
+assign-material minaret-4-cone minaret-4-cone-material
+
+# object 6
+
+group 6-object 6-object
+add-child 6-object hogwarts
+
+#box
+
+material 6-box-material
+ambient 0.5 0.3 0.5
+end-material
+
+translate t-6-box t-6-box 50 10 -50
+add-child t-6-box 6-object
+
+scale s-6-box s-6-box 50 20 10
+add-child s-6-box t-6-box
+
+leaf 6-box 6-box instanceof box
+add-child 6-box s-6-box
+assign-material 6-box 6-box-material
+
+# object 7
+
+group 7-object 7-object
+add-child 7-object hogwarts
+
+#box
+
+material 7-box-material
+ambient 0.5 0.9 0.5
+end-material
+
+translate t-7-box t-7-box 47.5 10 -35
+add-child t-7-box 7-object
+
+scale s-7-box s-7-box 15 20 20
+add-child s-7-box t-7-box
+
+leaf 7-box 7-box instanceof box
+add-child 7-box s-7-box
+assign-material 7-box 7-box-material
+
+# object 8
+
+group 8-object 8-object
+add-child 8-object hogwarts
+
+#box
+
+material 8-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-8-box t-8-box 47.5 25 -17.5
+add-child t-8-box 8-object
+
+scale s-8-box s-8-box 15 50 15
+add-child s-8-box t-8-box
+
+leaf 8-box 8-box instanceof box
+add-child 8-box s-8-box
+assign-material 8-box 8-box-material
+
+#cylinder
+
+material 8-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-8-cylinder t-8-cylinder 47.5 50 -17.5
+add-child t-8-cylinder 8-object
+
+scale s-8-cylinder s-8-cylinder 7.5 10 7.5
+add-child s-8-cylinder t-8-cylinder
+
+leaf 8-cylinder 8-cylinder instanceof cylinder
+add-child 8-cylinder s-8-cylinder
+assign-material 8-cylinder 8-cylinder-material
+
+#cone
+
+material 8-cone-material
+ambient 1 0 1
+end-material
+
+translate t-8-cone t-8-cone 47.5 60 -17.5
+add-child t-8-cone 8-object
+
+scale s-8-cone s-8-cone 7.5 10 7.5
+add-child s-8-cone t-8-cone
+
+leaf 8-cone 8-cone instanceof cone
+add-child 8-cone s-8-cone
+assign-material 8-cone 8-cone-material
+
+# object 9
+
+group 9-object 9-object
+add-child 9-object hogwarts
+
+#box
+
+material 9-box-material
+ambient 0.5 0.9 0.5
+end-material
+
+translate t-9-box t-9-box 32.5 10 -5
+add-child t-9-box 9-object
+
+scale s-9-box s-9-box 15 20 10
+add-child s-9-box t-9-box
+
+leaf 9-box 9-box instanceof box
+add-child 9-box s-9-box
+assign-material 9-box 9-box-material
+
+# object 10
+
+group 10-object 10-object
+add-child 10-object hogwarts
+
+#box
+
+material 10-box-material
+ambient 0.5 0.1 0.5
+end-material
+
+translate t-10-box t-10-box 60 10 -27.5
+add-child t-10-box 10-object
+
+scale s-10-box s-10-box 10 20 35
+add-child s-10-box t-10-box
+
+leaf 10-box 10-box instanceof box
+add-child 10-box s-10-box
+assign-material 10-box 10-box-material
+
+# object 11
+
+group 11-object 11-object
+add-child 11-object hogwarts
+
+#box
+
+material 11-box-material
+ambient 0.5 0.5 0.9
+end-material
+
+translate t-11-box t-11-box 70 10 -27.5
+add-child t-11-box 11-object
+
+scale s-11-box s-11-box 10 20 15
+add-child s-11-box t-11-box
+
+leaf 11-box 11-box instanceof box
+add-child 11-box s-11-box
+assign-material 11-box 11-box-material
+
+# object 12
+
+group 12-object 12-object
+add-child 12-object hogwarts
+
+#box
+
+material 12-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-12-box t-12-box 70 25 -40
+add-child t-12-box 12-object
+
+scale s-12-box s-12-box 10 50 10
+add-child s-12-box t-12-box
+
+leaf 12-box 12-box instanceof box
+add-child 12-box s-12-box
+assign-material 12-box 12-box-material
+
+#cylinder
+
+material 12-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-12-cylinder t-12-cylinder 70 50 -40
+add-child t-12-cylinder 12-object
+
+scale s-12-cylinder s-12-cylinder 5 5 5
+add-child s-12-cylinder t-12-cylinder
+
+leaf 12-cylinder 12-cylinder instanceof cylinder
+add-child 12-cylinder s-12-cylinder
+assign-material 12-cylinder 12-cylinder-material
+
+#cone
+
+material 12-cone-material
+ambient 1 0 1
+end-material
+
+translate t-12-cone t-12-cone 70 55 -40
+add-child t-12-cone 12-object
+
+scale s-12-cone s-12-cone 5 10 5
+add-child s-12-cone t-12-cone
+
+leaf 12-cone 12-cone instanceof cone
+add-child 12-cone s-12-cone
+assign-material 12-cone 12-cone-material
+
+# object 13
+
+group 13-object 13-object
+add-child 13-object hogwarts
+
+#box
+
+material 13-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-13-box t-13-box 70 25 -15
+add-child t-13-box 13-object
+
+scale s-13-box s-13-box 10 50 10
+add-child s-13-box t-13-box
+
+leaf 13-box 13-box instanceof box
+add-child 13-box s-13-box
+assign-material 13-box 13-box-material
+
+#cylinder
+
+material 13-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-13-cylinder t-13-cylinder 70 50 -15
+add-child t-13-cylinder 13-object
+
+scale s-13-cylinder s-13-cylinder 5 5 5
+add-child s-13-cylinder t-13-cylinder
+
+leaf 13-cylinder 13-cylinder instanceof cylinder
+add-child 13-cylinder s-13-cylinder
+assign-material 13-cylinder 13-cylinder-material
+
+#cone
+
+material 13-cone-material
+ambient 1 0 1
+end-material
+
+translate t-13-cone t-13-cone 70 55 -15
+add-child t-13-cone 13-object
+
+scale s-13-cone s-13-cone 5 10 5
+add-child s-13-cone t-13-cone
+
+leaf 13-cone 13-cone instanceof cone
+add-child 13-cone s-13-cone
+assign-material 13-cone 13-cone-material
+
+# object 14
+
+group 14-object 14-object
+add-child 14-object hogwarts
+
+#box
+
+material 14-box-material
+ambient 0.5 0.1 0.5
+end-material
+
+translate t-14-box t-14-box 80 10 -27.5
+add-child t-14-box 14-object
+
+scale s-14-box s-14-box 10 20 35
+add-child s-14-box t-14-box
+
+leaf 14-box 14-box instanceof box
+add-child 14-box s-14-box
+assign-material 14-box 14-box-material
+
+# object 15
+
+group 15-object 15-object
+add-child 15-object hogwarts
+
+#box
+
+material 15-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-15-box t-15-box 80 25 -50
+add-child t-15-box 15-object
+
+scale s-15-box s-15-box 10 50 10
+add-child s-15-box t-15-box
+
+leaf 15-box 15-box instanceof box
+add-child 15-box s-15-box
+assign-material 15-box 15-box-material
+
+#cylinder
+
+material 15-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-15-cylinder t-15-cylinder 80 50 -50
+add-child t-15-cylinder 15-object
+
+scale s-15-cylinder s-15-cylinder 5 5 5
+add-child s-15-cylinder t-15-cylinder
+
+leaf 15-cylinder 15-cylinder instanceof cylinder
+add-child 15-cylinder s-15-cylinder
+assign-material 15-cylinder 15-cylinder-material
+
+#cone
+
+material 15-cone-material
+ambient 1 0 1
+end-material
+
+translate t-15-cone t-15-cone 80 55 -50
+add-child t-15-cone 15-object
+
+scale s-15-cone s-15-cone 5 10 5
+add-child s-15-cone t-15-cone
+
+leaf 15-cone 15-cone instanceof cone
+add-child 15-cone s-15-cone
+assign-material 15-cone 15-cone-material
+
+# object 16
+
+group 16-object 16-object
+add-child 16-object hogwarts
+
+#box
+
+material 16-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-16-box t-16-box 80 25 -5
+add-child t-16-box 16-object
+
+scale s-16-box s-16-box 10 50 10
+add-child s-16-box t-16-box
+
+leaf 16-box 16-box instanceof box
+add-child 16-box s-16-box
+assign-material 16-box 16-box-material
+
+#cylinder
+
+material 16-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-16-cylinder t-16-cylinder 80 50 -5
+add-child t-16-cylinder 16-object
+
+scale s-16-cylinder s-16-cylinder 5 5 5
+add-child s-16-cylinder t-16-cylinder
+
+leaf 16-cylinder 16-cylinder instanceof cylinder
+add-child 16-cylinder s-16-cylinder
+assign-material 16-cylinder 16-cylinder-material
+
+#cone
+
+material 16-cone-material
+ambient 1 0 1
+end-material
+
+translate t-16-cone t-16-cone 80 55 -5
+add-child t-16-cone 16-object
+
+scale s-16-cone s-16-cone 5 10 5
+add-child s-16-cone t-16-cone
+
+leaf 16-cone 16-cone instanceof cone
+add-child 16-cone s-16-cone
+assign-material 16-cone 16-cone-material
+
+# object 17
+
+group 17-object 17-object
+add-child 17-object hogwarts
+
+#box
+
+material 17-box-material
+ambient 0.9 0.1 0.5
+end-material
+
+translate t-17-box t-17-box 103 10 -27
+add-child t-17-box 17-object
+
+scale s-17-box s-17-box 36 20 10
+add-child s-17-box t-17-box
+
+leaf 17-box 17-box instanceof box
+add-child 17-box s-17-box
+assign-material 17-box 17-box-material
+
+# object 18
+
+group 18-object 18-object
+add-child 18-object hogwarts
+
+#box
+
+material 18-box-material
+ambient 0.1 0.1 0.5
+end-material
+
+translate t-18-box t-18-box 95 10 -50
+add-child t-18-box 18-object
+
+scale s-18-box s-18-box 20 20 10
+add-child s-18-box t-18-box
+
+leaf 18-box 18-box instanceof box
+add-child 18-box s-18-box
+assign-material 18-box 18-box-material
+
+# object 19
+
+group 19-object 19-object
+add-child 19-object hogwarts
+
+#cylinder
+
+material 19-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-19-cylinder t-19-cylinder 113 0 -50
+add-child t-19-cylinder 19-object
+
+scale s-19-cylinder s-19-cylinder 12.5 40 12.5
+add-child s-19-cylinder t-19-cylinder
+
+leaf 19-cylinder 19-cylinder instanceof cylinder
+add-child 19-cylinder s-19-cylinder
+assign-material 19-cylinder 19-cylinder-material
+
+#cone
+
+material 19-cone-material
+ambient 1 0 1
+end-material
+
+translate t-19-cone t-19-cone 113 40 -50
+add-child t-19-cone 19-object
+
+scale s-19-cone s-19-cone 12.5 50 12.5
+add-child s-19-cone t-19-cone
+
+leaf 19-cone 19-cone instanceof cone
+add-child 19-cone s-19-cone
+assign-material 19-cone 19-cone-material
+
+# object 20
+
+group 20-object 20-object
+add-child 20-object hogwarts
+
+#box
+
+material 20-box-material
+ambient 0.1 0.1 0.5
+end-material
+
+translate t-20-box t-20-box 131 10 -50
+add-child t-20-box 20-object
+
+scale s-20-box s-20-box 20 20 10
+add-child s-20-box t-20-box
+
+leaf 20-box 20-box instanceof box
+add-child 20-box s-20-box
+assign-material 20-box 20-box-material
+
+# object 21
+
+group 21-object 21-object
+add-child 21-object hogwarts
+
+#box
+
+material 21-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-21-box t-21-box 136 25 -42
+add-child t-21-box 21-object
+
+scale s-21-box s-21-box 10 50 10
+add-child s-21-box t-21-box
+
+leaf 21-box 21-box instanceof box
+add-child 21-box s-21-box
+assign-material 21-box 21-box-material
+
+#cylinder
+
+material 21-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-21-cylinder t-21-cylinder 136 50 -42
+add-child t-21-cylinder 21-object
+
+scale s-21-cylinder s-21-cylinder 5 5 5
+add-child s-21-cylinder t-21-cylinder
+
+leaf 21-cylinder 21-cylinder instanceof cylinder
+add-child 21-cylinder s-21-cylinder
+assign-material 21-cylinder 21-cylinder-material
+
+#cone
+
+material 21-cone-material
+ambient 1 0 1
+end-material
+
+translate t-21-cone t-21-cone 136 55 -42
+add-child t-21-cone 21-object
+
+scale s-21-cone s-21-cone 5 10 5
+add-child s-21-cone t-21-cone
+
+leaf 21-cone 21-cone instanceof cone
+add-child 21-cone s-21-cone
+assign-material 21-cone 21-cone-material
+
+# object 22
+
+group 22-object 22-object
+add-child 22-object hogwarts
+
+#box
+
+material 22-box-material
+ambient 0.5 0.5 0.5
+end-material
+
+translate t-22-box t-22-box 126 25 -27
+add-child t-22-box 22-object
+
+scale s-22-box s-22-box 10 50 10
+add-child s-22-box t-22-box
+
+leaf 22-box 22-box instanceof box
+add-child 22-box s-22-box
+assign-material 22-box 22-box-material
+
+#cylinder
+
+material 22-cylinder-material
+ambient 1 0 0
+end-material
+
+translate t-22-cylinder t-22-cylinder 126 50 -27
+add-child t-22-cylinder 22-object
+
+scale s-22-cylinder s-22-cylinder 5 5 5
+add-child s-22-cylinder t-22-cylinder
+
+leaf 22-cylinder 22-cylinder instanceof cylinder
+add-child 22-cylinder s-22-cylinder
+assign-material 22-cylinder 22-cylinder-material
+
+#cone
+
+material 22-cone-material
+ambient 1 0 1
+end-material
+
+translate t-22-cone t-22-cone 126 55 -27
+add-child t-22-cone 22-object
+
+scale s-22-cone s-22-cone 5 10 5
+add-child s-22-cone t-22-cone
+
+leaf 22-cone 22-cone instanceof cone
+add-child 22-cone s-22-cone
+assign-material 22-cone 22-cone-material
+
+# object 23
+
+group 23-object 23-object
+add-child 23-object hogwarts
+
+#box
+
+material 23-box-material
+ambient 0.5 0.9 0.5
+end-material
+
+translate t-23-box t-23-box 136 10 -29.5
+add-child t-23-box 23-object
+
+scale s-23-box s-23-box 10 20 15
+add-child s-23-box t-23-box
+
+leaf 23-box 23-box instanceof box
+add-child 23-box s-23-box
+assign-material 23-box 23-box-material
+
+# object 24
+
+group 24-object 24-object
+add-child 24-object hogwarts
+
+#box
+
+material 24-box-material
+ambient 0.5 0.9 0.5
+end-material
+
+translate t-24-box t-24-box 12.5 10 -5
+add-child t-24-box 24-object
+
+scale s-24-box s-24-box 5 20 10
+add-child s-24-box t-24-box
+
+leaf 24-box 24-box instanceof box
+add-child 24-box s-24-box
+assign-material 24-box 24-box-material
+
+
+# plane animation
+
+material plane-material
+ambient 0.4 0.4 0.4
+diffuse 0.7 0.7 0.9
+specular 0.9 0.9 0.9
+shininess 80
+end-material
+
+keyframe-transform plane-anim plane-anim code/aeroplane-path.txt
+add-child plane-anim hogwarts
+
+scale plane-scale plane-scale 40 40 40
+add-child plane-scale plane-anim
+
+leaf plane plane instanceof plane
+add-child plane plane-scale
+assign-material plane plane-material
+
