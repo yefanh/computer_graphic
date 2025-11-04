@@ -90,6 +90,11 @@ void Controller::onkey(int key, int scancode, int action, int mods)
             break;
 
         case GLFW_KEY_3:
+            view.setCameraChopper();
+            std::cout << "[Camera] Chopper view: circling the castle.\n";
+            break;
+
+        case GLFW_KEY_4:
             view.setCameraPlane();
             std::cout << "[Camera] Plane view: flying with the plane!\n";
             break;

@@ -45,6 +45,7 @@ public:
     // ------------ camera control ------------
     void setCameraStationary();
     void setCameraFreeFly();
+    void setCameraChopper();
     void setCameraPlane();
     void moveLocal(float rightDelta, float upDelta, float forwardDelta);
     void yawPitch(float yawRad, float pitchRad);
@@ -68,7 +69,7 @@ private:
     double time = 0.0;
 
     // ------------ camera control ------------
-    enum CamMode { Stationary, Free, Plane };
+    enum CamMode { Stationary, Free, Chopper, Plane };
     CamMode camMode = Stationary;
 
     // Fixed camera (Assignment 4.1)

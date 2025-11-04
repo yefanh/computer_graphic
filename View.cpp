@@ -103,6 +103,42 @@ void View::display(sgraph::IScenegraph *scenegraph, int tick) {
         viewMat = glm::lookAt(initEye, initCenter, initUp);
     } else if (camMode == Free) {
         viewMat = glm::lookAt(camPos, camPos+camForward, camUp);
+    } else if (camMode == Chopper) {
+        const glm::vec3 targetCenter = initCenter;
+        const glm::vec3 orbitCenter = targetCenter + glm::vec3(60.0f, 0.0f, -40.0f);
+        const float orbitRadius = 90.0f;
+        const float hoverHeight = 120.0f;
+        const float angularSpeed = 0.01f;
+
+        float angle = static_cast<float>(tick) * angularSpeed;
+        glm::vec3 offset(std::cos(angle) * orbitRadius, 0.0f, std::sin(angle) * orbitRadius);
+        glm::vec3 eye = orbitCenter + offset;
+        eye.y = targetCenter.y + hoverHeight + std::sin(angle * 2.5f) * 5.0f;
+
+        glm::vec3 forward = targetCenter - eye;
+        if (glm::dot(forward, forward) < 1e-5f) {
+            forward = glm::vec3(0.0f, 0.0f, -1.0f);
+        } else {
+            forward = glm::normalize(forward);
+        }
+
+        glm::vec3 up(0.0f, 1.0f, 0.0f);
+        if (std::abs(glm::dot(forward, up)) > 0.95f) {
+            up = glm::vec3(0.0f, 0.0f, 1.0f);
+            if (std::abs(glm::dot(forward, up)) > 0.95f) {
+                up = glm::vec3(1.0f, 0.0f, 0.0f);
+            }
+        }
+
+        glm::vec3 right = glm::cross(forward, up);
+        if (glm::dot(right, right) < 1e-5f) {
+            right = glm::vec3(1.0f, 0.0f, 0.0f);
+        } else {
+            right = glm::normalize(right);
+        }
+        glm::vec3 correctedUp = glm::normalize(glm::cross(right, forward));
+
+        viewMat = glm::lookAt(eye, targetCenter, correctedUp);
     } else if (camMode == Plane) {
         // Get plane animation node from scenegraph
         sgraph::SGNode* planeAnimNode = scenegraph->getRoot()->getNode("plane-anim");
@@ -225,6 +261,10 @@ void View::setCameraFreeFly() {
     camUp        = initUp;
     pitchAccumRad = 0.0f;
     normalizeCameraBasis();
+}
+
+void View::setCameraChopper() {
+    camMode = Chopper;
 }
 
 void View::setCameraPlane() {
