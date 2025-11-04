@@ -4,6 +4,9 @@
 #include <glm/glm.hpp>
 #include "IVertexData.h"
 #include <sstream>
+#include <algorithm>
+#include <cctype>
+#include <iostream>
 
 
 
@@ -30,8 +33,9 @@ public:
 
 
 
-    bool hasData(string attribName)
+    bool hasData(string attribName) const
     {
+        sanitize(attribName);
 
         if ((attribName == "position")
                 || (attribName == "normal")
@@ -45,10 +49,13 @@ public:
         }
     }
 
-    vector<float> getData(string attribName)
+    vector<float> getData(string attribName) const
     {
         vector<float> result;
         stringstream message;
+
+        string originalName = attribName;
+        sanitize(attribName);
 
 
         if (attribName == "position")
@@ -81,11 +88,20 @@ public:
         return result;
     }
 
+    // Non-const overloads to satisfy util::IVertexData interface from external include
+    bool hasData(string attribName) { return static_cast<const VertexAttrib*>(this)->hasData(attribName); }
+    vector<float> getData(string attribName) { return static_cast<const VertexAttrib*>(this)->getData(attribName); }
+
     void setData(string attribName, const vector<float>& data)
     {
         stringstream message;
 
-        if (attribName == "position")
+        string sanitizedName = attribName;
+        sanitize(sanitizedName);
+
+        std::cerr << "VertexAttrib::setData attr='" << sanitizedName << "' raw='" << attribName << "'\n";
+
+        if (sanitizedName == "position")
         {
             position = glm::vec4(0,0,0,1);
             switch (data.size()) {
@@ -99,7 +115,7 @@ public:
                 throw runtime_error(message.str());
             }
         }
-        else if (attribName == "normal")
+        else if (sanitizedName == "normal")
         {
             normal = glm::vec4(0,0,0,0);
             switch (data.size()) {
@@ -113,7 +129,7 @@ public:
                 throw runtime_error(message.str());
             }
         }
-        else if (attribName == "texcoord")
+        else if (sanitizedName == "texcoord")
         {
             texcoord = glm::vec4(0,0,0,1);
             switch (data.size()) {
@@ -129,8 +145,9 @@ public:
         }
         else
         {
-            message << "Attribute: " << attribName << " unsupported!";
-            throw runtime_error(message.str());
+            // Ignore any attributes the mesh provides that this vertex format does not use.
+            std::cerr << "VertexAttrib::setData ignoring unknown attribute '" << sanitizedName << "'\n";
+            return;
         }
     }
 
@@ -145,6 +162,12 @@ public:
     }
 
 private:
+    static void sanitize(string &name)
+    {
+        name.erase(remove_if(name.begin(), name.end(),
+                    [](unsigned char c){ return isspace(c); }), name.end());
+    }
+
     glm::vec4 position;
     glm::vec4 normal;
     glm::vec4 texcoord;

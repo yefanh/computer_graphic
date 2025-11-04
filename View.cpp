@@ -11,6 +11,8 @@
 #include "ShaderLocationsVault.h"
 #include "ObjectInstance.h"
 #include "sgraph/GLScenegraphRenderer.h"   // will indirectly include the MatrixStack definition
+#include "sgraph/KeyframeAnimationNode.h"
+#include "sgraph/SGNode.h"
 #include "VertexAttrib.h"
 
 View::View() { camMode = Stationary; }
@@ -95,19 +97,88 @@ void View::display(sgraph::IScenegraph *scenegraph, int tick) {
     glEnable(GL_DEPTH_TEST);
 
     modelview.push(glm::mat4(1.0));
-    glm::mat4 viewMat =
-        (camMode==Stationary)
-        ? glm::lookAt(initEye, initCenter, initUp)
-        : glm::lookAt(camPos, camPos+camForward, camUp);
+    glm::mat4 viewMat;
+    
+    if (camMode == Stationary) {
+        viewMat = glm::lookAt(initEye, initCenter, initUp);
+    } else if (camMode == Free) {
+        viewMat = glm::lookAt(camPos, camPos+camForward, camUp);
+    } else if (camMode == Plane) {
+        // Get plane animation node from scenegraph
+        sgraph::SGNode* planeAnimNode = scenegraph->getRoot()->getNode("plane-anim");
+        if (planeAnimNode) {
+            // Cast to KeyframeAnimationNode to access transform data
+            sgraph::KeyframeAnimationNode* keyframeNode = 
+                dynamic_cast<sgraph::KeyframeAnimationNode*>(planeAnimNode);
+            
+            if (keyframeNode && keyframeNode->getKeyframeCount() > 1) {
+                size_t count = keyframeNode->getKeyframeCount();
+                size_t index = static_cast<size_t>(tick) % count;
+                size_t nextIndex = (index + 1) % count;
+                size_t prevIndex = (index + count - 1) % count;
+
+                const auto& positions = keyframeNode->getPositions();
+                const auto& upVectors = keyframeNode->getUpVectors();
+
+                if (index < positions.size() && nextIndex < positions.size() && prevIndex < positions.size() && index < upVectors.size()) {
+                    glm::vec3 planePos = positions[index];
+
+                    glm::vec3 front = positions[nextIndex] - planePos;
+                    if (glm::dot(front, front) < 1e-5f) {
+                        front = planePos - positions[prevIndex];
+                    }
+                    if (glm::dot(front, front) < 1e-5f) {
+                        front = glm::vec3(0.0f, 0.0f, -1.0f);
+                    }
+                    front = glm::normalize(front);
+
+                    glm::vec3 up = upVectors[index];
+                    if (glm::dot(up, up) < 1e-5f) {
+                        up = glm::vec3(0.0f, 1.0f, 0.0f);
+                    } else {
+                        up = glm::normalize(up);
+                    }
+
+                    if (std::abs(glm::dot(front, up)) > 0.95f) {
+                        glm::vec3 fallbackUp(0.0f, 1.0f, 0.0f);
+                        if (std::abs(glm::dot(front, fallbackUp)) > 0.95f) {
+                            fallbackUp = glm::vec3(1.0f, 0.0f, 0.0f);
+                        }
+                        up = glm::normalize(glm::cross(glm::cross(front, fallbackUp), front));
+                    }
+
+                    const float cockpitForwardOffset = 12.0f;
+                    const float cockpitUpOffset = 4.0f;
+                    const float lookAheadDistance = 80.0f;
+
+                    glm::vec3 camEye = planePos + front * cockpitForwardOffset + up * cockpitUpOffset;
+                    glm::vec3 camCenter = camEye + front * lookAheadDistance;
+                    glm::vec3 correctedUp = glm::normalize(glm::cross(glm::cross(front, up), front));
+
+                    viewMat = glm::lookAt(camEye, camCenter, correctedUp);
+                } else {
+                    // Fallback if indices are out of bounds
+                    viewMat = glm::lookAt(initEye, initCenter, initUp);
+                }
+            } else {
+                // Fallback to stationary camera if plane node not found or has not enough keyframes
+                viewMat = glm::lookAt(initEye, initCenter, initUp);
+            }
+        } else {
+            // Fallback to stationary camera if plane node not found
+            viewMat = glm::lookAt(initEye, initCenter, initUp);
+        }
+    }
 
     modelview.top() = modelview.top() * viewMat;
 
     glUniformMatrix4fv(shaderLocations->getLocation("projection"),
                        1, GL_FALSE, glm::value_ptr(projection));
 
-    renderer->setTick(tick);
-
-    scenegraph->getRoot()->accept(renderer);
+    if (scenegraph && scenegraph->getRoot() && renderer) {
+        renderer->setTick(tick);
+        scenegraph->getRoot()->accept(renderer);
+    }
 
     modelview.pop();
     glFlush();
@@ -154,6 +225,10 @@ void View::setCameraFreeFly() {
     camUp        = initUp;
     pitchAccumRad = 0.0f;
     normalizeCameraBasis();
+}
+
+void View::setCameraPlane() {
+    camMode = Plane;
 }
 
 void View::moveLocal(float rightDelta, float upDelta, float forwardDelta) {

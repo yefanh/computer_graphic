@@ -28,7 +28,7 @@ Controller::Controller(Model& m, View& v, const std::string& commandsFilePath)
 void Controller::initScenegraph() {
     // Prefer CLI-provided file; else default
     std::string path = commandsPath.empty()
-        ? std::string("code/hogwarts.txt")
+        ? std::string("code/hogwarts-plane.txt")
         : commandsPath;
 
     std::ifstream inFile(path);
@@ -87,6 +87,11 @@ void Controller::onkey(int key, int scancode, int action, int mods)
             view.setCameraFreeFly();
             std::cout << "[Camera] Free-fly: arrows=strafe/up/down, "
                          "SHIFT+arrows=look, F/B=forward/back\n";
+            break;
+
+        case GLFW_KEY_3:
+            view.setCameraPlane();
+            std::cout << "[Camera] Plane view: flying with the plane!\n";
             break;
 
         // --- WITHOUT SHIFT: translate; WITH SHIFT: rotate in place ---

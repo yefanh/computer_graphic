@@ -25,6 +25,9 @@ public:
 
     void setTransform(int tick) override;
 
+protected:
+    ParentSGNode* copyNode() override;
+
 private:
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> upDirs;

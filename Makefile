@@ -10,8 +10,8 @@ HW_LIB_DIR             := $(HW_ROOT_REL)/lib
 
 # Course headers (glad, KHR) + professor demos-glfw include + Homebrew include
 # Prefer assignment/local copies; fall back to system Homebrew path if available
-INCLUDES = -I$(A1_DEPS_INCLUDE_DIR) \
-	-I$(HW_INCLUDE_DIR) \
+INCLUDES = -I. \
+	-I$(A1_DEPS_INCLUDE_DIR) \
 	-I$(DEMOS_GLFW_INCLUDE_DIR) \
 	-I/opt/homebrew/include
 

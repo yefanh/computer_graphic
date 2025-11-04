@@ -114,4 +114,12 @@ void KeyframeAnimationNode::setTransform(int tick) {
     TransformNode::setTransform(transform);
 }
 
+ParentSGNode* KeyframeAnimationNode::copyNode() {
+    auto* node = new KeyframeAnimationNode(name, scenegraph);
+    node->setKeyframes(positions, upDirs);
+    glm::mat4 current = this->getTransform();
+    node->TransformNode::setTransform(current);
+    return node;
+}
+
 } // namespace sgraph
