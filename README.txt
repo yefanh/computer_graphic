@@ -1,6 +1,20 @@
 Assignment 5 – Scene Graph Animation & Multiple Cameras
 ========================================================
 
+Prerequisites
+-------------
+This assignment is self-contained with all required dependencies included:
+    A5/
+    ├── include/        (glad, utility headers: ShaderProgram, PolygonMesh, etc.)
+    ├── lib/            (libglad.a)
+    ├── sgraph/         (scene graph implementation)
+    ├── code/           (scene files and keyframe data)
+    └── ...
+
+External dependencies (GLFW, GLM) are assumed to be installed system-wide
+(e.g., via Homebrew on macOS). The Makefile will automatically find them
+in /opt/homebrew/include and /opt/homebrew/lib.
+
 Build & Run
 -----------
 1. `cd /path/to/A5`

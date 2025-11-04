@@ -1,22 +1,17 @@
 OBJS = Scenegraphs.o View.o Controller.o Model.o sgraph/ScenegraphPrinter.o sgraph/KeyframeAnimationNode.o
 
-# Resolve shared resource paths using relatives so graders can build without edits.
-HW_ROOT_REL            := ..
-COURSE_ROOT_REL        := ../..
-A1_DEPS_INCLUDE_DIR    := $(HW_ROOT_REL)/a1/deps/include
-HW_INCLUDE_DIR         := $(HW_ROOT_REL)/include
-DEMOS_GLFW_INCLUDE_DIR := $(COURSE_ROOT_REL)/Introduction\ to\ OpenGL/demos-glfw/include
-HW_LIB_DIR             := $(HW_ROOT_REL)/lib
+# Use local include/ and lib/ directories for all dependencies
+# This makes the assignment self-contained and portable
+LOCAL_INCLUDE_DIR := ./include
+LOCAL_LIB_DIR     := ./lib
 
-# Course headers (glad, KHR) + professor demos-glfw include + Homebrew include
-# Prefer assignment/local copies; fall back to system Homebrew path if available
+# Include paths: local headers first, then system libraries (GLFW/GLM via Homebrew)
 INCLUDES = -I. \
-	-I$(A1_DEPS_INCLUDE_DIR) \
-	-I$(DEMOS_GLFW_INCLUDE_DIR) \
+	-I$(LOCAL_INCLUDE_DIR) \
 	-I/opt/homebrew/include
 
-# Course lib (libglad.a) + Homebrew lib (libglfw)
-LIBS = -L$(HW_LIB_DIR) -L/opt/homebrew/lib
+# Library paths: local libglad.a first, then system libraries
+LIBS = -L$(LOCAL_LIB_DIR) -L/opt/homebrew/lib
 LDFLAGS = -lglad -lglfw -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
 CFLAGS = -g -std=c++11
 PROGRAM = Scenegraphs
