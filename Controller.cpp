@@ -19,14 +19,27 @@
 
 using namespace sgraph;
 
+/**
+ * @brief Controller constructor - initializes scene graph.
+ * 
+ * @param m Reference to Model (holds scene graph data)
+ * @param v Reference to View (manages rendering)
+ * @param commandsFilePath Path to scene graph commands file (Assignment 5 requirement 3.1)
+ */
 Controller::Controller(Model& m, View& v, const std::string& commandsFilePath)
     : view(v), model(m), commandsPath(commandsFilePath)
 {
     initScenegraph();
 }
 
+/**
+ * @brief Load and parse scene graph from commands file.
+ * 
+ * Supports command-line file specification (Assignment 5 requirement 3.1).
+ * Defaults to "code/hogwarts-plane.txt" if no file specified.
+ */
 void Controller::initScenegraph() {
-    // Prefer CLI-provided file; else default
+    // Use CLI-provided file if available, otherwise use default
     std::string path = commandsPath.empty()
         ? std::string("code/hogwarts-plane.txt")
         : commandsPath;
@@ -37,10 +50,12 @@ void Controller::initScenegraph() {
         throw std::runtime_error("Cannot open commands file");
     }
 
+    // Parse scene graph from file
     sgraph::ScenegraphImporter importer;
     IScenegraph *scenegraph = importer.parse(inFile);
     model.setScenegraph(scenegraph);
 
+    // Print scene graph structure for debugging
     std::cout << "Scenegraph made from: " << path << std::endl;
     if (scenegraph && scenegraph->getRoot()) {
         std::cout << "scenegraph (final):" << std::endl;
@@ -51,34 +66,67 @@ void Controller::initScenegraph() {
 
 Controller::~Controller() {}
 
+/**
+ * @brief Main rendering loop with animation tick counter.
+ * 
+ * Implements tick-based animation (Assignment 5 requirement 2.3):
+ * - tickCount increments each frame
+ * - Passed to View::display() → renderer → animation nodes
+ * - Wraps at INT_MAX to prevent overflow
+ */
 void Controller::run() {
     IScenegraph *scenegraph = model.getScenegraph();
     auto meshes = scenegraph->getMeshes();
     view.init(this, meshes);
 
+    // Main render loop
     while (!view.shouldWindowClose()) {
+        // Render frame with current tick for animation
         view.display(scenegraph, tickCount);
+        // Increment tick with wraparound to prevent overflow
         tickCount = (tickCount == std::numeric_limits<int>::max()) ? 0 : tickCount + 1;
     }
     view.closeWindow();
     exit(EXIT_SUCCESS);
 }
 
+/**
+ * @brief Keyboard event handler for camera control and navigation.
+ * 
+ * Camera Switching (Assignment 5 requirement 2.5):
+ * - Key 1: Stationary camera
+ * - Key 2: Free-fly camera
+ * - Key 3: Chopper (circular orbit) camera
+ * - Key 4: Plane (first-person) camera
+ * 
+ * Free-fly Camera Controls (Assignment 4.2):
+ * - Arrow keys: Strafe left/right, move up/down
+ * - Shift + arrows: Look left/right (yaw), look up/down (pitch)
+ * - F/B keys: Move forward/backward
+ * 
+ * @param key GLFW key code
+ * @param scancode System-specific scancode
+ * @param action GLFW_PRESS, GLFW_RELEASE, or GLFW_REPEAT
+ * @param mods Modifier key flags (Shift, Ctrl, Alt)
+ */
 void Controller::onkey(int key, int scancode, int action, int mods)
 {
-    // Keep Shift state ourselves, so key repeats never lose it
+    // Track Shift key state manually for reliable repeat behavior
     if (key==GLFW_KEY_LEFT_SHIFT || key==GLFW_KEY_RIGHT_SHIFT) {
         if (action==GLFW_PRESS)   shiftDown = true;
         if (action==GLFW_RELEASE) shiftDown = false;
         return;
     }
+    // Only handle press and repeat events
     if (!(action==GLFW_PRESS || action==GLFW_REPEAT)) return;
 
-    const float moveStep  = 10.0f;
-    const float angleStep = glm::radians(10.0f); // visually clear per-hit rotation
+    const float moveStep  = 10.0f;               // Translation distance per key press
+    const float angleStep = glm::radians(10.0f); // Rotation angle per key press
     bool shift = shiftDown || (mods & GLFW_MOD_SHIFT);
 
     switch (key) {
+        // ========== Camera Mode Selection (Assignment 5 requirement 2.5) ==========
+        
         case GLFW_KEY_1:
             view.setCameraStationary();
             break;
@@ -99,13 +147,16 @@ void Controller::onkey(int key, int scancode, int action, int mods)
             std::cout << "[Camera] Plane view: flying with the plane!\n";
             break;
 
-        // --- WITHOUT SHIFT: translate; WITH SHIFT: rotate in place ---
+        // ========== Free-fly Camera Navigation ==========
+        // WITHOUT SHIFT: translate camera position
+        // WITH SHIFT: rotate camera (look around)
+        
         case GLFW_KEY_LEFT:
             if (shift) {
-                view.yawPitch(-angleStep, 0.0f);        // look left (in place)
+                view.yawPitch(-angleStep, 0.0f);        // Look left (yaw)
                 view.debugPrintCamera("Shift+Left (yaw left)");
             } else {
-                view.moveLocal(-moveStep, 0.0f, 0.0f);  // strafe left
+                view.moveLocal(-moveStep, 0.0f, 0.0f);  // Strafe left
                 view.debugPrintCamera("Left (strafe left)");
             }
             break;
