@@ -20,12 +20,8 @@ Controller::Controller(Model& m,View& v) {
 }
 
 void Controller::initScenegraph() {
-
-     
-    
     //read in the file of commands
-    //ifstream inFile("scenegraphmodels/two-humans-commands.txt");
-    //ifstream inFile("scenegraphmodels/face-hierarchy-commands.txt");
+    // Use the Hogwarts scene with the airplane as the main A6 scene
     ifstream inFile("scenegraphmodels/hogwarts-with-plane.txt");
     sgraph::ScenegraphImporter importer;
     
@@ -69,6 +65,9 @@ void Controller::onkey(int key, int scancode, int action, int mods)
             break;
         case GLFW_KEY_4:
             view.setCamera(FPS);
+            break;
+        case GLFW_KEY_S:
+            view.toggleShading();
             break;
         case GLFW_KEY_LEFT:
             if (mods & GLFW_MOD_SHIFT) {

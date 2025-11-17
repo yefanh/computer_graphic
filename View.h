@@ -48,7 +48,7 @@ public:
     void turnDown();
     void turnLeft();
     void turnRight();
-    
+    void toggleShading();
 
 private: 
     Camera currentCamera;
@@ -63,7 +63,8 @@ private:
     int frames;
     double time;
     int tick;
-    static const int MAX_LIGHTS = 10;
+    bool useToonShading;
+    static constexpr int MAX_LIGHTS = 10;
 
     void uploadLights(const vector<util::Light>& lights);
 };

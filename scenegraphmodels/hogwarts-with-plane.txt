@@ -10,23 +10,33 @@ light sun-light
 ambient 0.2 0.2 0.2
 diffuse 0.8 0.8 0.7
 specular 0.8 0.8 0.7
-direction -1 -1 -0.5
+position 0 200 150
 end-light
 
 light courtyard-fill
 ambient 0.1 0.1 0.1
 diffuse 0.6 0.6 0.8
 specular 0.6 0.6 0.8
-position 0 150 100
+position 50 150 -50
 end-light
 
-light plane-beacon
+# plane headlights (two colored spotlights)
+light plane-left-headlight
 ambient 0.0 0.0 0.0
-diffuse 1.0 0.5 0.2
-specular 1.0 0.5 0.2
-position 0 0 10
+diffuse 1.0 0.8 0.3
+specular 1.0 0.9 0.6
+position -2 0 10
 spot-direction 0 0 -1
-spot-angle 15
+spot-angle 10
+end-light
+
+light plane-right-headlight
+ambient 0.0 0.0 0.0
+diffuse 0.3 0.8 1.0
+specular 0.6 0.9 1.0
+position 2 0 10
+spot-direction 0 0 -1
+spot-angle 10
 end-light
 
 
@@ -39,7 +49,11 @@ assign-light courtyard-fill scene
 # plane
 
 material plane-material
-ambient 1 1 0
+emission 0 0 0
+ambient 0.3 0.3 0.0
+diffuse 0.9 0.9 0.2
+specular 0.9 0.9 0.9
+shininess 80
 end-material
 
 group plane plane
@@ -59,7 +73,8 @@ add-child s-plane r2-plane
 
 translate t-plane t-plane 0 -0.455 0
 add-child t-plane s-plane
-assign-light plane-beacon t-plane
+assign-light plane-left-headlight t-plane
+assign-light plane-right-headlight t-plane
 
 leaf plane-model plane-model instanceof plane
 add-child plane-model t-plane
@@ -84,6 +99,8 @@ add-child 1-object hogwarts
 
 material 1-box-material
 ambient 0.5 0.5 0.5
+diffuse 0.6 0.6 0.6
+shininess 10
 end-material
 
 translate t-1-box t-1-box 5 25 -5
@@ -100,6 +117,9 @@ assign-material 1-box 1-box-material
 
 material 1-cylinder-material
 ambient 1 0 0
+diffuse 1 0.2 0.2
+specular 0.9 0.9 0.9
+shininess 80
 end-material
 
 translate t-1-cylinder t-1-cylinder 5 50 -5
@@ -116,6 +136,9 @@ assign-material 1-cylinder 1-cylinder-material
 
 material 1-cone-material
 ambient 1 0 1
+diffuse 1 0.4 1
+specular 0.9 0.9 0.9
+shininess 80
 end-material
 
 translate t-1-cone t-1-cone 5 55 -5
@@ -139,6 +162,8 @@ add-child 2-object hogwarts
 
 material 2-box-material
 ambient 0.5 0.5 0.5
+diffuse 0.6 0.6 0.6
+shininess 10
 end-material
 
 translate t-2-box t-2-box 20 25 -5
@@ -155,6 +180,9 @@ assign-material 2-box 2-box-material
 
 material 2-cylinder-material
 ambient 1 0 0
+diffuse 1 0.2 0.2
+specular 0.9 0.9 0.9
+shininess 80
 end-material
 
 translate t-2-cylinder t-2-cylinder 20 50 -5
@@ -171,6 +199,9 @@ assign-material 2-cylinder 2-cylinder-material
 
 material 2-cone-material
 ambient 1 0 1
+diffuse 1 0.4 1
+specular 0.9 0.9 0.9
+shininess 80
 end-material
 
 translate t-2-cone t-2-cone 20 55 -5
@@ -192,6 +223,8 @@ add-child 3-object hogwarts
 
 material 3-box-material
 ambient 0.5 0.3 0.5
+diffuse 0.6 0.4 0.6
+shininess 5
 end-material
 
 translate t-3-box t-3-box 12.5 10 -27.5
@@ -213,6 +246,8 @@ add-child 4-object hogwarts
 
 material 4-box-material
 ambient 0.5 0.1 0.5
+diffuse 0.6 0.2 0.6
+shininess 5
 end-material
 
 translate t-4-box t-4-box 30 10 -27.5

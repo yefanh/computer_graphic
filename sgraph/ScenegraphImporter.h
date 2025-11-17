@@ -83,6 +83,12 @@ namespace sgraph {
                     else if (command == "assign-light") {
                         parseAssignLight(inputWithOutComments);
                     }
+                    else if (command == "image") {
+                        parseImage(inputWithOutComments);
+                    }
+                    else if (command == "assign-texture") {
+                        parseAssignTexture(inputWithOutComments);
+                    }
                     else if (command == "add-child") {
                         parseAddChild(inputWithOutComments);
                     }
@@ -173,6 +179,8 @@ namespace sgraph {
                     input >> name;
                     string command;
                     input >> command;
+                    bool hasDiffuse = false;
+                    bool hasSpecular = false;
                     while (command!="end-material") {
                         if (command == "ambient") {
                             input >> r >> g >> b;
@@ -181,10 +189,12 @@ namespace sgraph {
                         else if (command == "diffuse") {
                             input >> r >> g >> b;
                             mat.setDiffuse(r,g,b);
+                            hasDiffuse = true;
                         }
                         else if (command == "specular") {
                             input >> r >> g >> b;
                             mat.setSpecular(r,g,b);
+                            hasSpecular = true;
                         }
                         else if (command == "emission") {
                             input >> r >> g >> b;
@@ -196,6 +206,14 @@ namespace sgraph {
                         }
                         input >> command;
                     }
+                    // If diffuse not specified, default it to ambient so that
+                    // all objects participate in diffuse shading.
+                    if (!hasDiffuse) {
+                        glm::vec4 amb = mat.getAmbient();
+                        mat.setDiffuse(amb);
+                    }
+                    // If specular not specified, leave it at default 0, so
+                    // objects without explicit specular behave more diffuse.
                     materials[name] = mat;
                 }
 
@@ -299,6 +317,29 @@ namespace sgraph {
                     }
                 }
 
+                /**
+                 * Parse an image definition. For now we only record the
+                 * mapping from image name to path so that textures can be
+                 * hooked up later (step 2 of the assignment). Lighting-only
+                 * steps simply ignore this information.
+                 */
+                virtual void parseImage(istream& input) {
+                    string imagename,filepath;
+                    input >> imagename >> filepath;
+                    imagePaths[imagename] = filepath;
+                }
+
+                /**
+                 * Parse assigning a texture to a leaf. At this stage (1.1/1.2)
+                 * we only need lighting to work, so we safely ignore this
+                 * command; full texture support will be wired up in step 2.
+                 */
+                virtual void parseAssignTexture(istream& input) {
+                    string nodename,imagename;
+                    input >> nodename >> imagename;
+                    // intentionally left blank for now
+                }
+
                 virtual void parseAddChild(istream& input) {
                     string childname,parentname;
 
@@ -363,6 +404,7 @@ namespace sgraph {
                 map<string,util::Light> lights;
                 map<string,util::PolygonMesh<VertexAttrib> > meshes;
                 map<string,string> meshPaths;
+                map<string,string> imagePaths;
                 SGNode *root;
 
         

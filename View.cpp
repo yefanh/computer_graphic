@@ -11,6 +11,7 @@ using namespace std;
 #include "sgraph/GLAnimatingScenegraphRenderer.h"
 #include "VertexAttrib.h"
 
+constexpr int View::MAX_LIGHTS;
 
 View::View() {
     tick = 0;
@@ -21,6 +22,7 @@ View::View() {
     kbd_camera.right = glm::vec4(1.0f,0.0f,0.0f,0.0f);
     kbd_camera.move_speed = 5;
     kbd_camera.turn_speed = 5;
+    useToonShading = false;
 }
 
 View::~View(){
@@ -134,7 +136,7 @@ void View::moveRight() {
 void View::moveForward() {
     kbd_camera.eye = kbd_camera.eye - kbd_camera.move_speed * kbd_camera.behind;
 }
-    
+
 void View::moveBack() {
     kbd_camera.eye = kbd_camera.eye + kbd_camera.move_speed * kbd_camera.behind;
 }
@@ -161,6 +163,10 @@ void View::turnRight() {
     glm::mat4 transform = glm::rotate(glm::mat4(1.0),glm::radians(-kbd_camera.turn_speed),kbd_camera.up.xyz());
     kbd_camera.right =  transform * kbd_camera.right;
     kbd_camera.behind = transform * kbd_camera.behind;
+}
+
+void View::toggleShading() {
+    useToonShading = !useToonShading;
 }
 
 void View::uploadLights(const vector<util::Light>& lights) {
@@ -229,6 +235,8 @@ void View::display(sgraph::IScenegraph *scenegraph) {
     }
     vector<util::Light> lights = scenegraph->getLightsInViewCoordinates(modelview.top());
     uploadLights(lights);
+
+    glUniform1i(shaderLocations.getLocation("toonMode"),useToonShading ? 1 : 0);
 
     //send projection matrix to GPU    
     glUniformMatrix4fv(shaderLocations.getLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));

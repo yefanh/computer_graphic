@@ -27,6 +27,9 @@ uniform int numLights;
 uniform LightInfo lights[MAX_LIGHTS];
 uniform MaterialInfo material;
 
+// 0 = regular Phong, 1 = toon
+uniform int toonMode;
+
 vec3 applyLight(LightInfo light, vec3 normal) {
     vec3 color = vec3(0.0);
     vec3 n = normalize(normal);
@@ -62,13 +65,54 @@ vec3 applyLight(LightInfo light, vec3 normal) {
     return color;
 }
 
-void main()
-{
-    vec3 normal = normalize(fNormal);
+float lambertForLight(LightInfo light, vec3 normal) {
+    vec3 n = normalize(normal);
+    vec3 lightDir;
+    if (light.position.w == 0.0) {
+        lightDir = normalize(-light.position.xyz);
+    } else {
+        lightDir = normalize(light.position.xyz - fPosition);
+    }
+    return max(dot(n, lightDir), 0.0);
+}
+
+vec3 phongShade(vec3 normal) {
     vec3 color = material.emission;
     int count = min(numLights, MAX_LIGHTS);
     for (int i=0; i<count; i++) {
         color += applyLight(lights[i], normal);
     }
+    return color;
+}
+
+vec3 toonShade(vec3 normal) {
+    int count = min(numLights, MAX_LIGHTS);
+    float maxLambert = 0.0;
+    for (int i=0; i<count; i++) {
+        maxLambert = max(maxLambert, lambertForLight(lights[i], normal));
+    }
+
+    float level;
+    if (maxLambert > 0.8) {
+        level = 1.0;
+    } else if (maxLambert > 0.4) {
+        level = 0.6;
+    } else if (maxLambert > 0.1) {
+        level = 0.3;
+    } else {
+        level = 0.15;
+    }
+
+    vec3 base = material.diffuse;
+    vec3 color = material.ambient + level * base;
+    // keep emission as-is so self-emissive objects still glow
+    color += material.emission;
+    return color;
+}
+
+void main()
+{
+    vec3 normal = normalize(fNormal);
+    vec3 color = (toonMode == 0) ? phongShade(normal) : toonShade(normal);
     fColor = vec4(color,1.0);
 }

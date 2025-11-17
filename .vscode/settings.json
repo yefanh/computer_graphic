@@ -23,12 +23,13 @@
     ],
     "git.ignoreLimitWarning": true,
     "files.associations": {
-        "map": "cpp",
-        "new": "cpp",
-        "typeinfo": "cpp",
-        "ostream": "cpp",
-        "iosfwd": "cpp",
-        "iostream": "cpp",
-        "stack": "cpp"
+      "map": "cpp",
+      "new": "cpp",
+      "typeinfo": "cpp",
+      "ostream": "cpp",
+      "iosfwd": "cpp",
+      "iostream": "cpp",
+      "stack": "cpp",
+      "vector": "cpp"
     }
 }
