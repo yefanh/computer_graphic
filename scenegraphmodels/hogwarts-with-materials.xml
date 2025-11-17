@@ -1,0 +1,1055 @@
+<objects>
+  <light>
+    <position>30 100 50</position>
+    <ambient>0.3 0.3 0.3</ambient>
+    <diffuse>0.7 0.7 0.7</diffuse>
+    <specular>1 1 1</specular>
+  </light>
+
+  <light>
+    <position>120 100 -50</position>
+    <ambient>0.3 0.3 0.3</ambient>
+    <diffuse>0.7 0.7 0.7</diffuse>
+    <specular>1 1 1</specular>
+  </light>
+
+  <image path="brick.png" name="brick">    
+  </image>
+  <image path="white-brick.png" name="white-brick">
+  </image>
+  
+  <!-- 1 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>10 50 10</scale>
+      <translate>5 25 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 10 1</scale>
+      </transform>
+    </texture>
+    
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>5 5 5</scale>
+      <translate>5 50 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>6 1 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>5 10 5</scale>
+      <translate>5 55 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+  
+  <!-- 2 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>10 50 10</scale>
+      <translate>20 25 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 10 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>5 5 5</scale>
+      <translate>20 50 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>6 1 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>5 10 5</scale>
+      <translate>20 55 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+  
+  <!-- 3 -->
+  <box>
+    <color>0 1 1</color>
+    <transform>
+      <scale>15 20 35</scale>
+      <translate>12.5 10 -27.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>3 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 4 -->
+  <box>
+    <color>1 0 1</color>
+    <transform>
+      <scale>20 20 35</scale>
+      <translate>30 10 -27.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>4 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+  
+  <!-- 5 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>25 20 25</scale>
+      <translate>12.5 10 -57.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>5 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <!-- slightly larger cylinder-->
+  <cylinder>
+    <color>0.5 0.5 0.5</color>
+    <transform>
+      <scale>11 25 11</scale>
+      <translate>12.5 20 -57.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>13 5 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <!-- smaller cylinder-->
+  <cylinder>
+    <color>1 0 0</color>
+    <transform>
+      <scale>10 40 10</scale>
+      <translate>12.5 45 -57.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>12 8 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <!-- conical top-->
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>10 20 10</scale>
+      <translate>12.5 85 -57.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+  
+    <!--supporting minaret-left-->
+    <cylinder>
+      <color>1 0.5 0</color>
+      <transform>
+        <scale>4 30 4</scale>
+        <translate>1.5 30 -57.5</translate>
+      </transform>
+      <material>
+        <ambient>0.3 0.3 0.3</ambient>
+        <diffuse>0.7 0.7 0.7</diffuse>
+        <specular>0.7 0.7 0.7</specular>
+        <shininess>20</shininess>
+      </material>
+      <texture name="white-brick">
+        <transform>
+          <scale>5 6 1</scale>
+        </transform>
+      </texture>
+    </cylinder>
+  
+    <cone>
+      <color>0.6 0.4 0</color>
+      <transform>
+        <scale>4 10 4</scale>
+        <translate>1.5 60 -57.5</translate>
+      </transform>
+      <material>
+        <ambient>0.3 0.3 0.3</ambient>
+        <diffuse>0.7 0.7 0.7</diffuse>
+        <specular>0.7 0.7 0.7</specular>
+        <shininess>20</shininess>
+      </material>
+      <texture name="brick">
+        <transform>
+          <scale>1.5 1.5 1.5 </scale>
+        </transform>
+      </texture>
+    </cone>
+
+    <!--supporting minaret-right-->
+    <cylinder>
+      <color>1 0.5 0</color>
+      <transform>
+        <scale>4 30 4</scale>
+        <translate>23.5 30 -57.5</translate>
+      </transform>
+      <material>
+        <ambient>0.3 0.3 0.3</ambient>
+        <diffuse>0.7 0.7 0.7</diffuse>
+        <specular>0.7 0.7 0.7</specular>
+        <shininess>20</shininess>
+      </material>
+      <texture name="white-brick">
+        <transform>
+          <scale>5 6 1</scale>
+        </transform>
+      </texture>
+    </cylinder>
+  
+    <cone>
+      <color>0.6 0.4 0</color>
+      <transform>
+        <scale>4 10 4</scale>
+        <translate>23.5 60 -57.5</translate>
+      </transform>
+      <material>
+        <ambient>0.3 0.3 0.3</ambient>
+        <diffuse>0.7 0.7 0.7</diffuse>
+        <specular>0.7 0.7 0.7</specular>
+        <shininess>20</shininess>
+      </material>
+      <texture name="brick">
+        <transform>
+          <scale>1.5 1.5 1.5 </scale>
+        </transform>
+      </texture>
+    </cone>
+
+
+    <!--supporting minaret-down-->
+    <cylinder>
+      <color>1 0.5 0</color>
+      <transform>
+        <scale>4 30 4</scale>
+        <translate>12.5 30 -46.5</translate>
+      </transform>
+      <material>
+        <ambient>0.3 0.3 0.3</ambient>
+        <diffuse>0.7 0.7 0.7</diffuse>
+        <specular>0.7 0.7 0.7</specular>
+        <shininess>20</shininess>
+      </material>
+      <texture name="white-brick">
+        <transform>
+          <scale>5 6 1</scale>
+        </transform>
+      </texture>
+    </cylinder>
+    <cone>
+      <color>0.6 0.4 0</color>
+      <transform>
+        <scale>4 10 4</scale>
+        <translate>12.5 60 -46.5</translate>
+      </transform>
+      <material>
+        <ambient>0.3 0.3 0.3</ambient>
+        <diffuse>0.7 0.7 0.7</diffuse>
+        <specular>0.7 0.7 0.7</specular>
+        <shininess>20</shininess>
+      </material>
+      <texture name="brick">
+        <transform>
+          <scale>1.5 1.5 1.5 </scale>
+        </transform>
+      </texture>
+    </cone>
+
+    <!--supporting minaret-up-->
+    <cylinder>
+      <color>1 0.5 0</color>
+      <transform>
+        <scale>4 30 4</scale>
+        <translate>12.5 30 -68.5</translate>
+      </transform>
+      <material>
+        <ambient>0.3 0.3 0.3</ambient>
+        <diffuse>0.7 0.7 0.7</diffuse>
+        <specular>0.7 0.7 0.7</specular>
+        <shininess>20</shininess>
+      </material>
+      <texture name="white-brick">
+        <transform>
+          <scale>5 6 1</scale>
+        </transform>
+      </texture>
+    </cylinder>
+    <cone>
+      <color>0.6 0.4 0</color>
+      <transform>
+        <scale>4 10 4</scale>
+        <translate>12.5 60 -68.5</translate>
+      </transform>
+      <material>
+        <ambient>0.3 0.3 0.3</ambient>
+        <diffuse>0.7 0.7 0.7</diffuse>
+        <specular>0.7 0.7 0.7</specular>
+        <shininess>20</shininess>
+      </material>
+      <texture name="brick">
+        <transform>
+          <scale>1.5 1.5 1.5 </scale>
+        </transform>
+      </texture>
+    </cone>
+  <!-- 6 -->
+  <box>
+    <color>1 0 1</color>
+    <transform>
+      <scale>50 20 10</scale>
+      <translate>50 10 -50</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>10 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+  
+  <!-- 7 -->
+  <box>
+    <color>1 1 0</color>
+    <transform>
+      <scale>15 20 20</scale>
+      <translate>47.5 10 -35</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>3 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 8 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>15 50 15</scale>
+      <translate>47.5 25 -17.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>3 10 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>7.5 10 7.5</scale>
+      <translate>47.5 50 -17.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>9 2 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>7.5 10 7.5</scale>
+      <translate>47.5 60 -17.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+
+  <!-- 9 -->
+  <box>
+    <color>1 1 0</color>
+    <transform>
+      <scale>15 20 10</scale>
+      <translate>32.5 10 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>3 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 10 -->
+  <box>
+    <color>0 1 0</color>
+    <transform>
+      <scale>10 20 35</scale>
+      <translate>60 10 -27.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 11 -->
+  <box>
+    <color>1 1 0</color>
+    <transform>
+      <scale>10 20 15</scale>
+      <translate>70 10 -27.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 12 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>10 50 10</scale>
+      <translate>70 25 -40</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 10 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>5 5 5</scale>
+      <translate>70 50 -40</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>6 1 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>5 10 5</scale>
+      <translate>70 55 -40</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+
+  <!-- 13 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>10 50 10</scale>
+      <translate>70 25 -15</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 10 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>5 5 5</scale>
+      <translate>70 50 -15</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>6 1 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>5 10 5</scale>
+      <translate>70 55 -15</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+
+  <!-- 14 -->
+  <box>
+    <color>0 1 0</color>
+    <transform>
+      <scale>10 20 35</scale>
+      <translate>80 10 -27.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 15 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>10 50 10</scale>
+      <translate>80 25 -45</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 10 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>5 5 5</scale>
+      <translate>80 50 -45</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>6 1 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>5 10 5</scale>
+      <translate>80 55 -45</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+
+  <!-- 16 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>10 50 10</scale>
+      <translate>80 25 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 10 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>5 5 5</scale>
+      <translate>80 50 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>6 1 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>5 10 5</scale>
+      <translate>80 55 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+
+  <!-- 17 -->
+  <box>
+    <color>0 1 1</color>
+    <transform>
+      <scale>36 20 10</scale>
+      <translate>103 10 -27</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>7 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 18 -->
+  <box>
+    <color>0 1 1</color>
+    <transform>
+      <scale>20 20 10</scale>
+      <translate>95 10 -50</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>4 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 19 -->
+  <cylinder>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>12.5 40 12.5</scale>
+      <translate>113 0 -50</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>15 8 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>12.5 50 12.5</scale>
+      <translate>113 40 -50</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>3 3 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+
+  <!-- 20 -->
+  <box>
+    <color>0 1 1</color>
+    <transform>
+      <scale>20 20 10</scale>
+      <translate>131 10 -50</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>4 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 21 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>10 50 10</scale>
+      <translate>136 25 -42</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 10 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>5 5 5</scale>
+      <translate>136 50 -42</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>6 1 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>5 10 5</scale>
+      <translate>136 55 -42</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+
+  <!-- 22 -->
+  <box>
+    <color>1 1 0.8</color>
+    <transform>
+      <scale>10 50 10</scale>
+      <translate>126 25 -27</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 10 1</scale>
+      </transform>
+    </texture>
+  </box>
+  <cylinder>
+    <color>0 0 0</color>
+    <transform>
+      <scale>5 5 5</scale>
+      <translate>126 50 -27</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>6 1 1</scale>
+      </transform>
+    </texture>
+  </cylinder>
+  <cone>
+    <color>0.6 0.4 0</color>
+    <transform>
+      <scale>5 10 5</scale>
+      <translate>126 55 -27</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="brick">
+      <transform>
+        <scale>1.5 1.5 1.5 </scale>
+      </transform>
+    </texture>
+  </cone>
+
+  <!-- 23 -->
+  <box>
+    <color>0 1 1</color>
+    <transform>
+      <scale>10 20 15</scale>
+      <translate>136 10 -29.5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>2 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+
+  <!-- 24 -->
+  <box>
+    <color>0 1 0</color>
+    <transform>
+      <scale>5 20 10</scale>
+      <translate>12.5 10 -5</translate>
+    </transform>
+    <material>
+      <ambient>0.3 0.3 0.3</ambient>
+      <diffuse>0.7 0.7 0.7</diffuse>
+      <specular>0.7 0.7 0.7</specular>
+      <shininess>20</shininess>
+    </material>
+    <texture name="white-brick">
+      <transform>
+        <scale>1 4 1</scale>
+      </transform>
+    </texture>
+  </box>
+  
+</objects>

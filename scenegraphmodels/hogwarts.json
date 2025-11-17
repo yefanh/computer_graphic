@@ -1,0 +1,1647 @@
+{
+  "scaleinstances": "false",
+  "instances": [
+    {
+      "name": "sphere",
+      "path": "models/sphere.obj"
+    },
+    {
+      "name": "box",
+      "path": "models/box.obj"
+    },
+    {
+      "name": "cylinder",
+      "path": "models/cylinder.obj"
+    },
+    {
+      "name": "cone",
+      "path": "models/cone.obj"
+    }
+  ],
+  "root": {
+    "type": "group",
+    "name": "Root of scene graph",
+    "children": [
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              5.0,
+              25.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              50.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              5.0,
+              50.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              5.0,
+              55.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              10.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              20.0,
+              25.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              50.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              20.0,
+              50.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              20.0,
+              55.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              10.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              10.0,
+              -27.5
+            ]
+          },
+          {
+            "scale": [
+              15.0,
+              20.0,
+              35.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.3,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              30.0,
+              10.0,
+              -27.5
+            ]
+          },
+          {
+            "scale": [
+              20.0,
+              20.0,
+              35.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.1,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              10.0,
+              -57.5
+            ]
+          },
+          {
+            "scale": [
+              25.0,
+              20.0,
+              25.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              20.0,
+              -57.5
+            ]
+          },
+          {
+            "scale": [
+              11.0,
+              25.0,
+              11.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              45.0,
+              -57.5
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              40.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              1.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              85.0,
+              -57.5
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              20.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              30.0,
+              -67.5
+            ]
+          },
+          {
+            "scale": [
+              4.0,
+              30.0,
+              4.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              60.0,
+              -67.5
+            ]
+          },
+          {
+            "scale": [
+              4.0,
+              10.0,
+              4.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              30.0,
+              -47.5
+            ]
+          },
+          {
+            "scale": [
+              4.0,
+              30.0,
+              4.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              60.0,
+              -47.5
+            ]
+          },
+          {
+            "scale": [
+              4.0,
+              10.0,
+              4.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              22.5,
+              30.0,
+              -57.5
+            ]
+          },
+          {
+            "scale": [
+              4.0,
+              30.0,
+              4.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              22.5,
+              60.0,
+              -57.5
+            ]
+          },
+          {
+            "scale": [
+              4.0,
+              10.0,
+              4.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              2.5,
+              30.0,
+              -57.5
+            ]
+          },
+          {
+            "scale": [
+              4.0,
+              30.0,
+              4.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              2.5,
+              60.0,
+              -57.5
+            ]
+          },
+          {
+            "scale": [
+              4.0,
+              10.0,
+              4.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              50.0,
+              10.0,
+              -50.0
+            ]
+          },
+          {
+            "scale": [
+              50.0,
+              20.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.3,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              47.5,
+              10.0,
+              -35.0
+            ]
+          },
+          {
+            "scale": [
+              15.0,
+              20.0,
+              20.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.9,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              47.5,
+              25.0,
+              -17.5
+            ]
+          },
+          {
+            "scale": [
+              15.0,
+              50.0,
+              15.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              47.5,
+              50.0,
+              -17.5
+            ]
+          },
+          {
+            "scale": [
+              7.5,
+              10.0,
+              7.5
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              47.5,
+              60.0,
+              -17.5
+            ]
+          },
+          {
+            "scale": [
+              7.5,
+              10.0,
+              7.5
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              32.5,
+              10.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              15.0,
+              20.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.9,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              60.0,
+              10.0,
+              -27.5
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              20.0,
+              35.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.1,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              70.0,
+              10.0,
+              -27.5
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              20.0,
+              15.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.9
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              70.0,
+              25.0,
+              -40.0
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              50.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              70.0,
+              50.0,
+              -40.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              70.0,
+              55.0,
+              -40.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              10.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              70.0,
+              25.0,
+              -15.0
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              50.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              70.0,
+              50.0,
+              -15.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              70.0,
+              55.0,
+              -15.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              10.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              80.0,
+              10.0,
+              -27.5
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              20.0,
+              35.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.1,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              80.0,
+              25.0,
+              -50.0
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              50.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              80.0,
+              50.0,
+              -50.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              80.0,
+              55.0,
+              -50.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              10.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              80.0,
+              25.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              50.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              80.0,
+              50.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              80.0,
+              55.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              10.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              103.0,
+              10.0,
+              -27.0
+            ]
+          },
+          {
+            "scale": [
+              36.0,
+              20.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.9,
+              0.1,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              95.0,
+              10.0,
+              -50.0
+            ]
+          },
+          {
+            "scale": [
+              20.0,
+              20.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.1,
+              0.1,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              113.0,
+              0.0,
+              -50.0
+            ]
+          },
+          {
+            "scale": [
+              12.5,
+              40.0,
+              12.5
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              113.0,
+              40.0,
+              -50.0
+            ]
+          },
+          {
+            "scale": [
+              12.5,
+              50.0,
+              12.5
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              131.0,
+              10.0,
+              -50.0
+            ]
+          },
+          {
+            "scale": [
+              20.0,
+              20.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.1,
+              0.1,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              136.0,
+              25.0,
+              -42.0
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              50.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              136.0,
+              50.0,
+              -42.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              136.0,
+              55.0,
+              -42.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              10.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              126.0,
+              25.0,
+              -27.0
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              50.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.5,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              126.0,
+              50.0,
+              -27.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              5.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cylinder",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              126.0,
+              55.0,
+              -27.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              10.0,
+              5.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "cone",
+          "material": {
+            "color": [
+              1.0,
+              0.0,
+              1.0
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              136.0,
+              10.0,
+              -29.5
+            ]
+          },
+          {
+            "scale": [
+              10.0,
+              20.0,
+              15.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.9,
+              0.5
+            ]
+          }
+        }
+      },
+      {
+        "type": "transform",
+        "transform": [
+          {
+            "translate": [
+              12.5,
+              10.0,
+              -5.0
+            ]
+          },
+          {
+            "scale": [
+              5.0,
+              20.0,
+              10.0
+            ]
+          }
+        ],
+        "child": {
+          "type": "object",
+          "instanceof": "box",
+          "material": {
+            "color": [
+              0.5,
+              0.9,
+              0.5
+            ]
+          }
+        }
+      }
+    ]
+  }
+}

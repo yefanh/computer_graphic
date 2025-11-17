@@ -1,0 +1,22 @@
+#all the instances
+instance box models/box.obj
+
+#material
+material mat-node-3-0
+emission 0 0 0
+ambient 1 0 0
+diffuse 1 0 0
+specular 1 0 0
+shininess 0
+end-material
+
+#the root
+group node-1-0 root
+scale node-2-0 scale 10 10 10
+leaf node-3-0 one-box instanceof box #comment here?
+assign-material node-3-0 mat-node-3-0
+
+add-child node-3-0 node-2-0
+add-child node-2-0 node-1-0
+assign-root node-1-0
+

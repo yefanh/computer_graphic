@@ -1,0 +1,34 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "c:\\Users\\ashesh\\Documents\\teaching\\CS 4300\\private\\coding\\C++\\glfw\\HelloOpenGLMVC",
+            "binaryPath": "c:\\Users\\ashesh\\Documents\\teaching\\CS 4300\\private\\coding\\C++\\glfw\\HelloOpenGLMVC\\HelloOpenGLMVC",
+            "binaryArgs": []
+        },
+        {
+            "cwd": "c:\\Users\\ashesh\\Documents\\teaching\\CS 4300\\private\\coding\\C++\\glfw\\Scenegraphs",
+            "binaryPath": "c:\\Users\\ashesh\\Documents\\teaching\\CS 4300\\private\\coding\\C++\\glfw\\Scenegraphs\\Scenegraphs.exe",
+            "binaryArgs": []
+        },
+        {
+            "cwd": "/Users/ashesh/Documents/teaching/CS 4300/private/coding/C++/glfw/Scenegraphs",
+            "binaryPath": "/Users/ashesh/Documents/teaching/CS 4300/private/coding/C++/glfw/Scenegraphs/Scenegraphs",
+            "binaryArgs": []
+        },
+        {
+            "cwd": "/Users/ashesh/Documents/teaching/CS 4300/private/coding/C++/glfw/ScenegraphsKeyframesCameras",
+            "binaryPath": "/Users/ashesh/Documents/teaching/CS 4300/private/coding/C++/glfw/ScenegraphsKeyframesCameras/ScenegraphsWithKeyframeCameras",
+            "binaryArgs": []
+        }
+    ],
+    "git.ignoreLimitWarning": true,
+    "files.associations": {
+        "map": "cpp",
+        "new": "cpp",
+        "typeinfo": "cpp",
+        "ostream": "cpp",
+        "iosfwd": "cpp",
+        "iostream": "cpp",
+        "stack": "cpp"
+    }
+}

@@ -1,0 +1,13 @@
+group two-humanoids two-humanoids
+
+
+#one human, 80 inches tall
+
+
+scale s-human-1 s-human-1 80 80 80
+add-child s-human-1 two-humanoids
+
+import human-1 scenegraphmodels/humanoid-commands.txt
+add-child human-1 s-human-1
+
+assign-root two-humanoids
