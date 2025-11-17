@@ -25,6 +25,8 @@ ambient 0.0 0.0 0.0
 diffuse 1.0 0.5 0.2
 specular 1.0 0.5 0.2
 position 0 0 10
+spot-direction 0 0 -1
+spot-angle 15
 end-light
 
 
