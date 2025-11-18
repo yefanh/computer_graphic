@@ -30,17 +30,20 @@ protected:
      * The material associated with the object instance at this leaf
      */
     util::Material material;
+    std::string textureName;
 
 public:
     LeafNode(const string& instanceOf,util::Material& material,const string& name,sgraph::IScenegraph *graph)
         :AbstractSGNode(name,graph) {
-        this->objInstanceName = instanceOf;
-        this->material = material;
+    this->objInstanceName = instanceOf;
+    this->material = material;
+    this->textureName = "";
     }
 
     LeafNode(const string& instanceOf,const string& name,sgraph::IScenegraph *graph)
         :AbstractSGNode(name,graph) {
-        this->objInstanceName = instanceOf;
+    this->objInstanceName = instanceOf;
+    this->textureName = "";
     }
 	
 	~LeafNode(){}
@@ -62,6 +65,14 @@ public:
         return material;
     }
 
+    void setTextureName(const std::string& texture) {
+        textureName = texture;
+    }
+
+    std::string getTextureName() const {
+        return textureName;
+    }
+
     /**
      * Get the name of the instance this leaf contains
      * 
@@ -79,6 +90,7 @@ public:
 
     SGNode *clone() {
         LeafNode *newclone = new LeafNode(this->objInstanceName,material,name,scenegraph);
+        newclone->textureName = this->textureName;
         newclone->copyLightsFrom(*this);
         return newclone;
     }

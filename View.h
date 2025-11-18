@@ -20,6 +20,10 @@
 #include <vector>
 using namespace std;
 
+namespace sgraph {
+    class GLAnimatingScenegraphRenderer;
+}
+
 enum Camera {STATIONARY,KEYBOARD,FPS,CHOPPER};
 
 class View
@@ -33,7 +37,9 @@ public:
     };
     View();
     ~View();
-    void init(Callbacks* callbacks,map<string,util::PolygonMesh<VertexAttrib>>& meshes);
+    void init(Callbacks* callbacks,
+              map<string,util::PolygonMesh<VertexAttrib>>& meshes,
+              const map<string,string>& texturePaths);
     void display(sgraph::IScenegraph *scenegraph);
     bool shouldWindowClose();
     void closeWindow();
@@ -49,24 +55,37 @@ public:
     void turnLeft();
     void turnRight();
     void toggleShading();
+    void resize(int width,int height);
 
 private: 
     Camera currentCamera;
     KeyboardCamera kbd_camera;
     GLFWwindow* window;
     util::ShaderProgram program;
+    util::ShaderProgram toonProgram;
     util::ShaderLocationsVault shaderLocations;
+    util::ShaderLocationsVault toonShaderLocations;
     map<string,util::ObjectInstance *> objects;
+    map<string,util::ObjectInstance *> toonObjects;
+    map<string,GLuint> textures;
+    GLuint defaultTexture;
     glm::mat4 projection;
     stack<glm::mat4> modelview;
-    sgraph::SGNodeVisitor *renderer;
+    sgraph::GLAnimatingScenegraphRenderer *renderer;
+    sgraph::GLAnimatingScenegraphRenderer *toonRenderer;
     int frames;
     double time;
     int tick;
     bool useToonShading;
     static constexpr int MAX_LIGHTS = 10;
 
-    void uploadLights(const vector<util::Light>& lights);
+    void uploadLights(const vector<util::Light>& lights,
+                      util::ShaderProgram& activeProgram,
+                      util::ShaderLocationsVault& activeLocations);
+    void loadTextures(const map<string,string>& texturePaths);
+    GLuint createTextureFromImage(const vector<unsigned char>& pixels,int width,int height);
+    bool loadPPM(const string& filename,vector<unsigned char>& pixels,int& width,int& height);
+    GLuint createSolidTexture(unsigned char r,unsigned char g,unsigned char b);
 };
 
 #endif

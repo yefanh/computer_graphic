@@ -42,7 +42,8 @@ void Controller::run()
 {
     sgraph::IScenegraph * scenegraph = model.getScenegraph();
     map<string,util::PolygonMesh<VertexAttrib> > meshes = scenegraph->getMeshes();
-    view.init(this,meshes);
+    map<string,string> texturePaths = scenegraph->getTexturePaths();
+    view.init(this,meshes,texturePaths);
     while (!view.shouldWindowClose()) {
         view.display(scenegraph);
     }
@@ -125,7 +126,7 @@ void Controller::onkey(int key, int scancode, int action, int mods)
 void Controller::reshape(int width, int height) 
 {
     cout <<"Window reshaped to width=" << width << " and height=" << height << endl;
-    glViewport(0, 0, width, height);
+    view.resize(width,height);
 }
 
 void Controller::dispose()

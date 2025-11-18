@@ -42,3 +42,40 @@ Several examples of scene graphs have been given, in the scenegraphmodels folder
 4. face-hierarchy-with-copy-commands.txt: shows an example of a command that allows one to create a copy of part of a scene graph. See towards the end of this file.
 
 5. two-humanoids.txt: shows an example of how one command can be used to import an entire scene graph from another command file. This is helpful when creating a more complicated scene. Instead of writing all the commands in one file, one can create smaller pieces in separate files and then create a "main commands file" that imports them.
+
+
+Texture usage and attributions
+------------------------------
+
+This assignment uses a few small PPM textures, all of which were created specifically for this project and do not come from external copyrighted sources:
+
+- `textures/castle-brick.ppm`: hand-crafted 4×4 red brick checker pattern, written manually as a P3 PPM file in a text editor.
+- `textures/tower-stone.ppm`: hand-crafted muted stone tiling pattern, written manually as a P3 PPM file in a text editor.
+- `textures/roof-tiles.ppm`: hand-crafted magenta roof-tile pattern, written manually as a P3 PPM file in a text editor.
+- `textures/white.ppm`: 1×1 solid white fallback texture, written manually as a P3 PPM file in a text editor.
+
+No third‑party images or websites were used; all textures were authored by the student for this assignment.
+
+
+Assignment A6 summary
+---------------------
+
+a. Feature status
+
+- Basic scenegraph (group / transform / leaf nodes) and command-language loading: working.
+- Multiple lights, materials, and keyframe cameras: working.
+- Animated airplane with spotlight following the airplane: working.
+- Toon shading (press `S` to toggle between Phong+texture and toon-only modes): working.
+- Texture mapping using PPM images on boxes, cylinders, and cones with mipmapping: working.
+- No known crashes on startup or during normal camera/airplane interaction.
+
+b. Contribution breakdown
+
+- This was an individual assignment; all parts of the implementation (scenegraph extensions, animation, shaders, texture loading, and configuration) were done by Yefan He.
+
+c. Notes for grading
+
+- Tested on macOS with the provided `include/` and `lib/` folders using the supplied Makefile:
+    - `make`
+    - `./ScenegraphsWithKeyframeCameras`
+- Use keys 1–4 to switch cameras; `F`/`B` and the arrow keys to move; `S` to toggle between Phong+texture shading and toon shading.

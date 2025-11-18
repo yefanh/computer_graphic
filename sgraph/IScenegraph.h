@@ -78,6 +78,8 @@ namespace sgraph
        */
         virtual void setMeshPaths(map<string,string>& meshPaths)=0;
 
+  virtual void setTexturePaths(map<string,string>& texturePaths)=0;
+
       /**
        * Get the meshes used by this scene graph
        * 
@@ -92,6 +94,8 @@ namespace sgraph
        * @return map<string,string> 
        */
         virtual map<string,string> getMeshPaths()=0;
+
+  virtual map<string,string> getTexturePaths()=0;
 
         /**
          * Collect all lights in the scene graph, transform them into the provided

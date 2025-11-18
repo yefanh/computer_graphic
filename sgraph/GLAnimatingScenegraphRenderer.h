@@ -24,8 +24,13 @@ namespace sgraph {
          * @param os the map of ObjectInstance objects
          * @param shaderLocations the shader locations for the program used to render
          */
-        GLAnimatingScenegraphRenderer(int *tick,stack<glm::mat4>& mv,map<string,util::ObjectInstance *>& os,util::ShaderLocationsVault& shaderLocations) 
-            : GLScenegraphRenderer(mv,os,shaderLocations)
+        GLAnimatingScenegraphRenderer(int *tick,
+                                      stack<glm::mat4>& mv,
+                                      map<string,util::ObjectInstance *>& os,
+                                      util::ShaderLocationsVault& shaderLocations,
+                                      map<string,GLuint>& textures,
+                                      GLuint defaultTexture) 
+            : GLScenegraphRenderer(mv,os,shaderLocations,textures,defaultTexture)
             , tick(tick) {
             
         }

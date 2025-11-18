@@ -104,6 +104,7 @@ namespace sgraph {
                     scenegraph->makeScenegraph(root);
                     scenegraph->setMeshes(meshes);
                     scenegraph->setMeshPaths(meshPaths);
+                    scenegraph->setTexturePaths(imagePaths);
                     return scenegraph;
                 }
                 else {
@@ -337,7 +338,10 @@ namespace sgraph {
                 virtual void parseAssignTexture(istream& input) {
                     string nodename,imagename;
                     input >> nodename >> imagename;
-                    // intentionally left blank for now
+                    LeafNode *leafNode = dynamic_cast<LeafNode *>(nodes[nodename]);
+                    if (leafNode!=NULL) {
+                        leafNode->setTextureName(imagename);
+                    }
                 }
 
                 virtual void parseAddChild(istream& input) {

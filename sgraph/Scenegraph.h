@@ -28,7 +28,8 @@ namespace sgraph {
   protected:
     SGNode *root;
     map<string,util::PolygonMesh<VertexAttrib> > meshes;
-    map<string,string> meshPaths;
+  map<string,string> meshPaths;
+  map<string,string> texturePaths;
 
 
     /**
@@ -100,6 +101,14 @@ namespace sgraph {
 
     map<string,string> getMeshPaths() {
       return this->meshPaths;
+    }
+
+    void setTexturePaths(map<string,string>& texturePaths) {
+      this->texturePaths = texturePaths;
+    }
+
+    map<string,string> getTexturePaths() {
+      return this->texturePaths;
     }
 
     vector<util::Light> getLightsInViewCoordinates(const glm::mat4& view) {

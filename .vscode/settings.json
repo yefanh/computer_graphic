@@ -30,6 +30,7 @@
       "iosfwd": "cpp",
       "iostream": "cpp",
       "stack": "cpp",
-      "vector": "cpp"
+      "vector": "cpp",
+      "limits": "cpp"
     }
 }
