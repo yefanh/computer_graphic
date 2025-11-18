@@ -57,6 +57,26 @@ This assignment uses a few small PPM textures, all of which were created specifi
 No third‑party images or websites were used; all textures were authored by the student for this assignment.
 
 
+Build and run (multi-platform)
+------------------------------
+
+The Makefile in this folder is exactly the course-provided demos-glfw template. To compile/run:
+
+1. Place this `A6` folder next to the shared `../include` and `../lib` directories that contain GLAD/GLFW/ShaderProgram.
+2. Open a terminal inside `A6` and run `make`.
+3. Run the executable:
+   - macOS / Linux: `./ScenegraphsWithKeyframeCameras`
+   - Windows (MinGW or WSL): `ScenegraphsWithKeyframeCameras.exe`
+
+The Makefile automatically selects the correct compiler/flags:
+
+- Windows (`OS=Windows_NT`): `g++` with `-lopengl32 -lgdi32`, output `.exe`.
+- macOS: `clang++` with Cocoa/OpenGL/IOKit frameworks.
+- Other Unix-like systems: default compiler (clang++) with the same `../include` and `../lib`.
+
+As long as the graders place the folder beside their standard `include`/`lib`, no modifications are needed and it builds on all platforms.
+
+
 Assignment A6 summary
 ---------------------
 
@@ -75,7 +95,7 @@ b. Contribution breakdown
 
 c. Notes for grading
 
-- Tested on macOS with the provided `include/` and `lib/` folders using the supplied Makefile:
-    - `make`
-    - `./ScenegraphsWithKeyframeCameras`
+- Built and run successfully using the supplied Makefile together with the course `include/` and `lib/` folders (same layout as the demos-glfw examples):
+    - On Unix-like systems: `make` then `./ScenegraphsWithKeyframeCameras`
+    - On Windows (MinGW/WSL): `make` then `ScenegraphsWithKeyframeCameras.exe`
 - Use keys 1–4 to switch cameras; `F`/`B` and the arrow keys to move; `S` to toggle between Phong+texture shading and toon shading.
