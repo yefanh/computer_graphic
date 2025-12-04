@@ -29,6 +29,28 @@ public:
     void display(sgraph::IScenegraph *scenegraph);
     bool shouldWindowClose();
     void closeWindow();
+    
+    /**
+     * @brief Start ray tracing and output result to a PPM image file
+     * @param scenegraph The scene graph to ray trace
+     */
+    void raytrace(sgraph::IScenegraph *scenegraph);
+    
+    /**
+     * @brief Get the current modelview matrix (for ray tracing camera setup)
+     * @return The modelview matrix stack
+     */
+    stack<glm::mat4>& getModelview() { return modelview; }
+    
+    /**
+     * @brief Get the window width
+     */
+    int getWindowWidth();
+    
+    /**
+     * @brief Get the window height
+     */
+    int getWindowHeight();
 
 private: 
 

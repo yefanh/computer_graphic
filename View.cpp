@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
+#include <fstream>
 using namespace std;
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -217,6 +218,98 @@ void View::closeWindow() {
     glfwDestroyWindow(window);
 
     glfwTerminate();
+}
+
+int View::getWindowWidth() {
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    return width;
+}
+
+int View::getWindowHeight() {
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    return height;
+}
+
+void View::raytrace(sgraph::IScenegraph *scenegraph) {
+    int width = getWindowWidth();
+    int height = getWindowHeight();
+    
+    cout << "Starting ray tracing..." << endl;
+    cout << "Image size: " << width << " x " << height << endl;
+    
+    // Create image buffer (RGB for each pixel)
+    vector<unsigned char> image(width * height * 3);
+    
+    // Set up the camera (same as in display())
+    // The modelview matrix transforms from world space to view space
+    glm::mat4 viewMatrix = glm::lookAt(
+        glm::vec3(0.0f, 40.0f, 40.0f),  // camera position
+        glm::vec3(0.0f, 0.0f, 0.0f),     // look at point
+        glm::vec3(0.0f, 1.0f, 0.0f)      // up vector
+    );
+    
+    // Field of view and aspect ratio (same as projection setup)
+    float fovy = glm::radians(60.0f);
+    float aspect = (float)width / height;
+    
+    // Calculate the image plane dimensions in view space
+    // At z = -1 (normalized), the half-height is tan(fovy/2)
+    float halfHeight = tan(fovy / 2.0f);
+    float halfWidth = halfHeight * aspect;
+    
+    // For each pixel, cast a ray
+    for (int j = 0; j < height; j++) {
+        for (int i = 0; i < width; i++) {
+            // Convert pixel coordinates to normalized device coordinates
+            // NDC range: [-1, 1] for both x and y
+            // Note: y is flipped because image coordinates start from top
+            float ndcX = (2.0f * (i + 0.5f) / width) - 1.0f;
+            float ndcY = 1.0f - (2.0f * (j + 0.5f) / height);
+            
+            // Convert to view space coordinates on the image plane (at z = -1)
+            float viewX = ndcX * halfWidth;
+            float viewY = ndcY * halfHeight;
+            
+            // Ray starts at origin (camera position in view space)
+            // Ray direction points towards the pixel on the image plane
+            glm::vec3 rayDir = glm::normalize(glm::vec3(viewX, viewY, -1.0f));
+            
+            // TODO: In 1.3/1.4, we will actually cast this ray into the scene
+            // For now, just output a test pattern to verify the setup works
+            
+            // Simple test pattern: gradient based on pixel position
+            unsigned char r = (unsigned char)(255.0f * i / width);
+            unsigned char g = (unsigned char)(255.0f * j / height);
+            unsigned char b = 128;
+            
+            // Write to image buffer (PPM stores from top to bottom)
+            int index = (j * width + i) * 3;
+            image[index] = r;
+            image[index + 1] = g;
+            image[index + 2] = b;
+        }
+        
+        // Progress indicator
+        if (j % 100 == 0) {
+            cout << "Progress: " << (j * 100 / height) << "%" << endl;
+        }
+    }
+    
+    // Write image to PPM file
+    string filename = "raytraced_output.ppm";
+    ofstream outFile(filename, ios::binary);
+    if (outFile.is_open()) {
+        // PPM header
+        outFile << "P6\n" << width << " " << height << "\n255\n";
+        // Write pixel data
+        outFile.write(reinterpret_cast<char*>(image.data()), image.size());
+        outFile.close();
+        cout << "Ray tracing complete! Output saved to: " << filename << endl;
+    } else {
+        cerr << "Error: Could not open file for writing: " << filename << endl;
+    }
 }
 
 

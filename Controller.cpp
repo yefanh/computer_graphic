@@ -5,6 +5,7 @@
 #include "sgraph/LeafNode.h"
 #include "sgraph/ScaleTransform.h"
 #include "ObjImporter.h"
+#include <GLFW/glfw3.h>
 using namespace sgraph;
 #include <iostream>
 using namespace std;
@@ -56,7 +57,17 @@ void Controller::run()
 
 void Controller::onkey(int key, int scancode, int action, int mods)
 {
-    cout << (char)key << " pressed" << endl;
+    // Only respond to key press, not release
+    if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+        cout << (char)key << " pressed" << endl;
+        
+        // 'S' key triggers ray tracing
+        if (key == 'S' || key == 's') {
+            cout << "Switching to ray tracing mode..." << endl;
+            sgraph::IScenegraph * scenegraph = model.getScenegraph();
+            view.raytrace(scenegraph);
+        }
+    }
 }
 
 void Controller::reshape(int width, int height) 
