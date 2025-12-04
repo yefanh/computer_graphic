@@ -6,7 +6,8 @@ KDTree::KDTree(util::PolygonMesh<VertexAttrib>& mesh) {
     vector<VertexAttrib> vertices = mesh.getVertexAttributes();
     vector<float> v;
     minBounds = glm::vec3(numeric_limits<float>::max(),numeric_limits<float>::max(),numeric_limits<float>::max());
-    maxBounds = glm::vec3(numeric_limits<float>::min(),numeric_limits<float>::min(),numeric_limits<float>::min());
+    // Use lowest() instead of min() - min() returns smallest positive number, not negative infinity!
+    maxBounds = glm::vec3(-numeric_limits<float>::max(),-numeric_limits<float>::max(),-numeric_limits<float>::max());
     for (int i=0;i<vertices.size();i+=1) {
         v = vertices[i].getData("position");
         glm::vec3 glmv = glm::vec3(v[0],v[1],v[2]);
@@ -16,13 +17,26 @@ KDTree::KDTree(util::PolygonMesh<VertexAttrib>& mesh) {
         
         v = vertices[i].getData("normal");
         this->normals.push_back(glm::vec3(v[0],v[1],v[2]));
+
+        v = vertices[i].getData("texcoord");
+        this->texcoords.push_back(glm::vec2(v[0],v[1]));
+    }
+
+    // Extract triangles from the mesh
+    // Each triangle is stored as 3 vertex indices
+    vector<unsigned int> indices = mesh.getPrimitives();
+    int primitiveSize = mesh.getPrimitiveSize();
+    if (primitiveSize == 3) {
+        for (size_t i = 0; i < indices.size(); i += 3) {
+            this->triangles.push_back(glm::ivec3(indices[i], indices[i+1], indices[i+2]));
+        }
     }
     
     maxPointsPerLeaf = 5;
     root = buildKDTree(maxPointsPerLeaf);
 
-    //now extract and add the triangles to the kdtree
-    
+    // Now add the triangles to the KD-tree nodes
+    addTrianglesToTree();
         
 }
 
@@ -32,10 +46,48 @@ KDTree::~KDTree() {
     }
 }
 
-HitRecord KDTree::intersect(Ray& objectRay,Ray& viewRay,glm::mat4 normalMatrix) {
+/**
+ * @brief Main intersection function for KD-Tree
+ * 
+ * Per Section 2.2.3: First check if ray intersects bounding box.
+ * If yes, use the bounding box intersection to find tmin and tmax.
+ * If no, return immediately without traversing the tree.
+ */
+HitRecord KDTree::intersect(const Ray& objectRay,
+                            const Ray& viewRay,
+                            const glm::mat4& modelviewMatrix,
+                            const glm::mat4& normalMatrix,
+                            const util::Material& material,
+                            const string& textureName) {
     HitRecord hitRecord;
-
-    return hitRecord;
+    
+    if (root == NULL) {
+        return hitRecord;
+    }
+    
+    // Section 2.2.3: Check if ray intersects bounding box first
+    float tmin, tmax;
+    bool hitBox = intersect_bounding_box(objectRay, &tmin, &tmax);
+    
+    if (!hitBox) {
+        // Ray completely misses the object - no need to traverse KD-tree
+        return hitRecord;
+    }
+    
+    // Ensure tmin is at least 0 (we don't want intersections behind the ray origin)
+    if (tmin < 0.0f) {
+        tmin = 0.0f;
+    }
+    
+    // Create a set to track tested triangles across the entire traversal
+    // This prevents testing the same triangle multiple times
+    set<int> testedTriangles;
+    
+    // Delegate to root node's intersect method with computed tmin/tmax
+    HitRecord result = root->intersect(objectRay, viewRay, modelviewMatrix, normalMatrix,
+                          material, textureName, tmin, tmax, testedTriangles);
+    
+    return result;
 }
 
 
@@ -135,7 +187,130 @@ KDNode *KDTree::buildKDTree(vector<int>& sortedByX,vector<int>& sortedByY,vector
 
 }
 
-bool KDTree::intersect_bounding_box(Ray& objectRay,float *min_t,float *max_t) {
+/**
+ * @brief Test if ray intersects the axis-aligned bounding box
+ * 
+ * Section 2.2.3: Use the bounds stored in the KD-tree to check if the ray
+ * will hit the corresponding bounding box. If yes, compute tmin and tmax.
+ * 
+ * Uses the "slab method" for ray-AABB intersection.
+ * For each axis, compute the t values where the ray enters and exits the slab.
+ * The ray intersects the box if and only if all intervals overlap.
+ * 
+ * @param objectRay The ray in object space
+ * @param min_t Output: minimum t value (entry point)
+ * @param max_t Output: maximum t value (exit point)
+ * @return true if ray intersects bounding box, false otherwise
+ */
+bool KDTree::intersect_bounding_box(const Ray& objectRay, float *min_t, float *max_t) {
+    glm::vec3 rayOrigin = glm::vec3(objectRay.getStart());
+    glm::vec3 rayDir = glm::vec3(objectRay.getDirection());
     
-    return false;
+    float tmin = -numeric_limits<float>::infinity();
+    float tmax = numeric_limits<float>::infinity();
+    
+    // For each axis (x, y, z)
+    for (int i = 0; i < 3; i++) {
+        float origin = rayOrigin[i];
+        float dir = rayDir[i];
+        float boxMin = minBounds[i];
+        float boxMax = maxBounds[i];
+        
+        if (abs(dir) < 0.0000001f) {
+            // Ray is parallel to this slab
+            // Check if origin is within the slab
+            if (origin < boxMin || origin > boxMax) {
+                // Ray is parallel and outside the slab - no intersection
+                return false;
+            }
+            // Ray is parallel and inside the slab - this axis doesn't constrain t
+        } else {
+            // Compute t values for intersection with the two planes of this slab
+            float invDir = 1.0f / dir;
+            float t1 = (boxMin - origin) * invDir;
+            float t2 = (boxMax - origin) * invDir;
+            
+            // Make sure t1 is the near intersection, t2 is the far
+            if (t1 > t2) {
+                float temp = t1;
+                t1 = t2;
+                t2 = temp;
+            }
+            
+            // Update the interval
+            if (t1 > tmin) tmin = t1;
+            if (t2 < tmax) tmax = t2;
+            
+            // Check if the interval is valid
+            if (tmin > tmax) {
+                return false;
+            }
+        }
+    }
+    
+    // Check if the intersection is in the positive direction of the ray
+    if (tmax < 0) {
+        return false;
+    }
+    
+    *min_t = tmin;
+    *max_t = tmax;
+    return true;
+}
+
+// Add all triangles to the KD-tree nodes
+void KDTree::addTrianglesToTree() {
+    if (root == NULL) return;
+    
+    // For each triangle, find which nodes it belongs to
+    for (int triIndex = 0; triIndex < triangles.size(); triIndex++) {
+        addTriangleToNode(root, triIndex);
+    }
+}
+
+// Recursively add a triangle to the appropriate nodes
+// Per instructor: "When a triangle straddles the split plane, it must be added to both halves."
+// This means a triangle can appear in multiple nodes.
+void KDTree::addTriangleToNode(KDNode* node, int triangleIndex) {
+    if (node == NULL) return;
+    
+    glm::ivec3 tri = triangles[triangleIndex];
+    
+    // Check if this is a leaf node or internal node
+    KDLeafNode* leaf = dynamic_cast<KDLeafNode*>(node);
+    KDInternalNode* internal = dynamic_cast<KDInternalNode*>(node);
+    
+    if (leaf != NULL) {
+        // For leaf node: add any triangle that reaches this leaf
+        // The triangle was already determined to belong here by the internal node logic above
+        leaf->addTriangle(triangleIndex);
+    }
+    else if (internal != NULL) {
+        // For internal node: check where each vertex lies relative to split plane
+        glm::vec4 plane = internal->getPlane();
+        
+        float d0 = glm::dot(plane, glm::vec4(vertices[tri.x], 1.0f));
+        float d1 = glm::dot(plane, glm::vec4(vertices[tri.y], 1.0f));
+        float d2 = glm::dot(plane, glm::vec4(vertices[tri.z], 1.0f));
+        
+        bool allOnPlane = (abs(d0) < 0.0001f && abs(d1) < 0.0001f && abs(d2) < 0.0001f);
+        bool hasLeft = (d0 < -0.0001f || d1 < -0.0001f || d2 < -0.0001f);
+        bool hasRight = (d0 > 0.0001f || d1 > 0.0001f || d2 > 0.0001f);
+        
+        // Triangle lies completely on the split plane - store in internal node
+        if (allOnPlane) {
+            internal->addTriangle(triangleIndex);
+        }
+        else {
+            // Triangle straddles the plane or is on one side
+            // Add to left if any vertex is on the left OR on the plane
+            if (hasLeft || !hasRight) {
+                addTriangleToNode(internal->getLeft(), triangleIndex);
+            }
+            // Add to right if any vertex is on the right OR on the plane
+            if (hasRight || !hasLeft) {
+                addTriangleToNode(internal->getRight(), triangleIndex);
+            }
+        }
+    }
 }

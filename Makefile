@@ -1,4 +1,4 @@
-OBJS = Scenegraphs.o View.o Controller.o Model.o
+OBJS = Scenegraphs.o View.o Controller.o Model.o KDTree.o KDAbstractNode.o KDInternalNode.o KDLeafNode.o
 INCLUDES = -I../include
 LIBS = -L../lib
 LDFLAGS = -lglad -lglfw3
@@ -28,7 +28,19 @@ Controller.o: Controller.cpp Controller.h
 	$(COMPILER) $(INCLUDES) $(CFLAGS) -c Controller.cpp	
 
 Model.o: Model.cpp Model.h
-	$(COMPILER) $(INCLUDES) $(CFLAGS) -c Model.cpp		
+	$(COMPILER) $(INCLUDES) $(CFLAGS) -c Model.cpp
+
+KDTree.o: KDTree.cpp KDTree.h
+	$(COMPILER) $(INCLUDES) $(CFLAGS) -c KDTree.cpp
+
+KDAbstractNode.o: KDAbstractNode.cpp KDAbstractNode.h
+	$(COMPILER) $(INCLUDES) $(CFLAGS) -c KDAbstractNode.cpp
+
+KDInternalNode.o: KDInternalNode.cpp KDInternalNode.h
+	$(COMPILER) $(INCLUDES) $(CFLAGS) -c KDInternalNode.cpp
+
+KDLeafNode.o: KDLeafNode.cpp KDLeafNode.h
+	$(COMPILER) $(INCLUDES) $(CFLAGS) -c KDLeafNode.cpp		
 	
 RM = rm	-f
 ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...

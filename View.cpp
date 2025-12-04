@@ -234,8 +234,8 @@ int View::getWindowHeight() {
 }
 
 void View::raytrace(sgraph::IScenegraph *scenegraph) {
-    int width = getWindowWidth();
-    int height = getWindowHeight();
+    int width = 800;
+    int height = 800;
     
     // Set up the modelview stack with camera transform (same as display())
     stack<glm::mat4> rayModelview;
