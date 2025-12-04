@@ -1,0 +1,1 @@
+This program implements lights and textures in a scene graph.
