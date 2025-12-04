@@ -8,6 +8,7 @@ using namespace std;
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include "sgraph/GLScenegraphRenderer.h"
+#include "sgraph/RaycastRenderer.h"
 #include "VertexAttrib.h"
 #include "sgraph/LightGatherer.h"
 
@@ -236,80 +237,29 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
     int width = getWindowWidth();
     int height = getWindowHeight();
     
-    cout << "Starting ray tracing..." << endl;
-    cout << "Image size: " << width << " x " << height << endl;
-    
-    // Create image buffer (RGB for each pixel)
-    vector<unsigned char> image(width * height * 3);
-    
-    // Set up the camera (same as in display())
-    // The modelview matrix transforms from world space to view space
-    glm::mat4 viewMatrix = glm::lookAt(
-        glm::vec3(0.0f, 40.0f, 40.0f),  // camera position
-        glm::vec3(0.0f, 0.0f, 0.0f),     // look at point
+    // Set up the modelview stack with camera transform (same as display())
+    stack<glm::mat4> rayModelview;
+    rayModelview.push(glm::mat4(1.0));
+    rayModelview.top() = rayModelview.top() * glm::lookAt(
+        glm::vec3(0.0f, 40.0f, 40.0f),  // camera position (same as OpenGL)
+        glm::vec3(0.0f, 0.0f, 0.0f),     // look at origin
         glm::vec3(0.0f, 1.0f, 0.0f)      // up vector
     );
     
-    // Field of view and aspect ratio (same as projection setup)
-    float fovy = glm::radians(60.0f);
-    float aspect = (float)width / height;
+    // Gather lights in view space (same as display())
+    sgraph::LightGatherer* gatherer = new sgraph::LightGatherer(rayModelview);
+    scenegraph->getRoot()->accept(gatherer);
+    vector<util::Light> lightsInViewSpace = gatherer->getLightsInViewSpace();
+    delete gatherer;
     
-    // Calculate the image plane dimensions in view space
-    // At z = -1 (normalized), the half-height is tan(fovy/2)
-    float halfHeight = tan(fovy / 2.0f);
-    float halfWidth = halfHeight * aspect;
+    // Get meshes from scene graph
+    map<string, util::PolygonMesh<VertexAttrib>> meshes = scenegraph->getMeshes();
     
-    // For each pixel, cast a ray
-    for (int j = 0; j < height; j++) {
-        for (int i = 0; i < width; i++) {
-            // Convert pixel coordinates to normalized device coordinates
-            // NDC range: [-1, 1] for both x and y
-            // Note: y is flipped because image coordinates start from top
-            float ndcX = (2.0f * (i + 0.5f) / width) - 1.0f;
-            float ndcY = 1.0f - (2.0f * (j + 0.5f) / height);
-            
-            // Convert to view space coordinates on the image plane (at z = -1)
-            float viewX = ndcX * halfWidth;
-            float viewY = ndcY * halfHeight;
-            
-            // Ray starts at origin (camera position in view space)
-            // Ray direction points towards the pixel on the image plane
-            glm::vec3 rayDir = glm::normalize(glm::vec3(viewX, viewY, -1.0f));
-            
-            // TODO: In 1.3/1.4, we will actually cast this ray into the scene
-            // For now, just output a test pattern to verify the setup works
-            
-            // Simple test pattern: gradient based on pixel position
-            unsigned char r = (unsigned char)(255.0f * i / width);
-            unsigned char g = (unsigned char)(255.0f * j / height);
-            unsigned char b = 128;
-            
-            // Write to image buffer (PPM stores from top to bottom)
-            int index = (j * width + i) * 3;
-            image[index] = r;
-            image[index + 1] = g;
-            image[index + 2] = b;
-        }
-        
-        // Progress indicator
-        if (j % 100 == 0) {
-            cout << "Progress: " << (j * 100 / height) << "%" << endl;
-        }
-    }
+    // Create the raycast renderer
+    sgraph::RaycastRenderer rayRenderer(rayModelview, meshes, lightsInViewSpace);
     
-    // Write image to PPM file
-    string filename = "raytraced_output.ppm";
-    ofstream outFile(filename, ios::binary);
-    if (outFile.is_open()) {
-        // PPM header
-        outFile << "P6\n" << width << " " << height << "\n255\n";
-        // Write pixel data
-        outFile.write(reinterpret_cast<char*>(image.data()), image.size());
-        outFile.close();
-        cout << "Ray tracing complete! Output saved to: " << filename << endl;
-    } else {
-        cerr << "Error: Could not open file for writing: " << filename << endl;
-    }
+    // Perform ray tracing and save to file
+    rayRenderer.raytrace(scenegraph, width, height, "raytraced_output.ppm");
 }
 
 
