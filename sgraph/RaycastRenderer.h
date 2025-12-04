@@ -250,6 +250,12 @@ private:
 
     /**
      * @brief Compute shading at a hit point using Phong lighting model
+     * 
+     * Section 3: Replicates the lighting shader from previous assignment.
+     * Supports point/directional lights, spot lights, and ambient/diffuse/specular.
+     * Does NOT include texture mapping as per assignment requirements.
+     * 
+     * Section 3.1: Uses interpolated normals from barycentric coordinates.
      */
     glm::vec3 shade(const HitRecord& hit) {
         glm::vec3 color(0.0f);
@@ -259,6 +265,7 @@ private:
         glm::vec3 normal = glm::normalize(glm::vec3(hit.getNormal()));
         
         // View direction (from intersection point to camera, which is at origin in view space)
+        // Same as shader: viewVec = -fPosition.xyz
         glm::vec3 viewDir = glm::normalize(-viewPos);
 
         // Ensure normal faces the camera
@@ -266,45 +273,62 @@ private:
             normal = -normal;
         }
 
-        // Accumulate lighting from all lights
+        // Accumulate lighting from all lights (same as shader loop)
         for (const util::Light& light : lights) {
-            glm::vec3 ambient = glm::vec3(light.getAmbient()) * glm::vec3(material.getAmbient());
-            
-            // Light direction
+            // Light direction calculation (same as shader)
             glm::vec3 lightPos = glm::vec3(light.getPosition());
             glm::vec3 lightDir;
             
-            if (light.getPosition().w == 0.0f) {
-                // Directional light
-                lightDir = glm::normalize(-lightPos);
-            } else {
-                // Point light
+            if (light.getPosition().w != 0.0f) {
+                // Point light: lightVec = normalize(light.position.xyz - fPosition.xyz)
                 lightDir = glm::normalize(lightPos - viewPos);
+            } else {
+                // Directional light: lightVec = normalize(-light.position.xyz)
+                lightDir = glm::normalize(-lightPos);
             }
 
-            // Diffuse
-            float diff = max(glm::dot(normal, lightDir), 0.0f);
-            glm::vec3 diffuse = diff * glm::vec3(light.getDiffuse()) * glm::vec3(material.getDiffuse());
+            // nDotL for diffuse
+            float nDotL = glm::dot(normal, lightDir);
 
-            // Specular (Blinn-Phong)
-            glm::vec3 halfDir = glm::normalize(lightDir + viewDir);
-            float spec = pow(max(glm::dot(normal, halfDir), 0.0f), material.getShininess());
-            glm::vec3 specular = spec * glm::vec3(light.getSpecular()) * glm::vec3(material.getSpecular());
+            // Ambient: material.ambient * light.ambient
+            glm::vec3 ambient = glm::vec3(material.getAmbient()) * glm::vec3(light.getAmbient());
+            
+            // Diffuse: material.diffuse * light.diffuse * max(nDotL, 0)
+            glm::vec3 diffuse = glm::vec3(material.getDiffuse()) * glm::vec3(light.getDiffuse()) * glm::max(nDotL, 0.0f);
 
-            // Spotlight effect
+            // Specular using Phong reflection model (same as shader: reflect(-lightVec, normal))
+            glm::vec3 specular(0.0f);
+            if (nDotL > 0.0f) {
+                // reflectVec = reflect(-lightVec, normalView)
+                glm::vec3 reflectDir = glm::reflect(-lightDir, normal);
+                reflectDir = glm::normalize(reflectDir);
+                
+                // rDotV = max(dot(reflectVec, viewVec), 0.0)
+                float rDotV = glm::max(glm::dot(reflectDir, viewDir), 0.0f);
+                
+                // specular = material.specular * light.specular * pow(rDotV, shininess)
+                specular = glm::vec3(material.getSpecular()) * glm::vec3(light.getSpecular()) 
+                         * glm::pow(rDotV, material.getShininess());
+            }
+
+            // Spotlight effect (if spotlight is enabled)
             float spotEffect = 1.0f;
             if (light.getSpotCutoff() < 180.0f) {
+                // Spotlight direction
                 glm::vec3 spotDir = glm::normalize(glm::vec3(light.getSpotDirection()));
+                // cosAngle between light direction and spotlight direction
                 float cosAngle = glm::dot(-lightDir, spotDir);
+                // cosSpotCutoff from Light class
                 float cosCutoff = cos(glm::radians(light.getSpotCutoff()));
                 
                 if (cosAngle < cosCutoff) {
+                    // Outside spotlight cone
                     spotEffect = 0.0f;
-                } else {
-                    spotEffect = pow(cosAngle, 1.0f);  // Can add spotlight exponent
                 }
+                // Note: Could add spotlight exponent for soft edges
             }
 
+            // Accumulate: ambient + diffuse + specular (with spotlight attenuation)
             color += ambient + spotEffect * (diffuse + specular);
         }
 
