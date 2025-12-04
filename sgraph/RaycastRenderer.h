@@ -11,6 +11,7 @@
 #include "IScenegraph.h"
 #include "../Ray.h"
 #include "../HitRecord.h"
+#include "../RaytraceMesh.h"
 #include "PolygonMesh.h"
 #include "../VertexAttrib.h"
 #include "Light.h"
@@ -47,6 +48,20 @@ public:
         : modelview(mv)
         , meshes(meshes)
         , lights(lights) {
+        // For each mesh being used by the scene graph, 
+        // create a corresponding RaytraceMesh object
+        for (auto& pair : meshes) {
+            raytraceMeshes[pair.first] = new RaytraceMesh(pair.second);
+        }
+    }
+
+    /**
+     * @brief Destructor - clean up RaytraceMesh objects
+     */
+    ~RaycastRenderer() {
+        for (auto& pair : raytraceMeshes) {
+            delete pair.second;
+        }
     }
 
     /**
@@ -158,15 +173,19 @@ public:
 
     /**
      * @brief Visit leaf node - test ray intersection with the mesh
+     * 
+     * Identifies the RaytraceMesh object associated with the leaf
+     * and processes the ray using the corresponding raytraceable object.
      */
     void visitLeafNode(LeafNode* leafNode) override {
         string meshName = leafNode->getInstanceOf();
         
-        if (meshes.find(meshName) == meshes.end()) {
-            return;  // Mesh not found
+        // Find the corresponding RaytraceMesh object
+        if (raytraceMeshes.find(meshName) == raytraceMeshes.end()) {
+            return;  // RaytraceMesh not found
         }
 
-        util::PolygonMesh<VertexAttrib>& mesh = meshes[meshName];
+        RaytraceMesh* raytraceMesh = raytraceMeshes[meshName];
         util::Material material = leafNode->getMaterial();
         string textureName = leafNode->getTextureName();
 
@@ -178,14 +197,15 @@ public:
         // Transform ray from view space to object space
         glm::vec4 objRayStart = inverseModelview * currentRay.getStart();
         glm::vec4 objRayDir = inverseModelview * currentRay.getDirection();
-        // Note: direction doesn't need normalization for intersection test
-        // but we normalize for consistency
         objRayDir.w = 0.0f;  // Ensure it's a direction vector
         
         Ray objectRay(objRayStart, objRayDir);
 
-        // Test intersection with all triangles in the mesh
-        HitRecord hit = intersectMesh(objectRay, mesh, modelviewMatrix, normalMatrix, material, textureName);
+        // Use RaytraceMesh to find intersection
+        // Pass both object space ray and view space ray (for convenience)
+        HitRecord hit = raytraceMesh->intersect(objectRay, currentRay, 
+                                                 modelviewMatrix, normalMatrix, 
+                                                 material, textureName);
 
         // Keep the closest hit
         if (hit.hasHit() && hit.getT() < closestHit.getT()) {
@@ -222,157 +242,11 @@ public:
 private:
     stack<glm::mat4>& modelview;
     map<string, util::PolygonMesh<VertexAttrib>>& meshes;
+    map<string, RaytraceMesh*> raytraceMeshes;  // RaytraceMesh for each mesh
     vector<util::Light>& lights;
     
     Ray currentRay;        // Current ray being cast (in view space)
     HitRecord closestHit;  // Closest intersection found so far
-
-    /**
-     * @brief Test ray intersection with all triangles in a mesh
-     */
-    HitRecord intersectMesh(const Ray& objectRay, 
-                            util::PolygonMesh<VertexAttrib>& mesh,
-                            const glm::mat4& modelviewMatrix,
-                            const glm::mat4& normalMatrix,
-                            const util::Material& material,
-                            const string& textureName) {
-        HitRecord closestHit;
-        
-        vector<VertexAttrib> vertices = mesh.getVertexAttributes();
-        vector<unsigned int> indices = mesh.getPrimitives();
-        int primitiveSize = mesh.getPrimitiveSize();
-
-        // Only handle triangles (primitiveSize == 3)
-        if (primitiveSize != 3) {
-            return closestHit;
-        }
-
-        // Pre-extract all vertex data to avoid repeated getData() calls
-        vector<glm::vec3> positions(vertices.size());
-        vector<glm::vec3> normals(vertices.size());
-        vector<glm::vec2> texcoords(vertices.size());
-        
-        for (size_t v = 0; v < vertices.size(); v++) {
-            vector<float> pos = vertices[v].getData("position");
-            vector<float> norm = vertices[v].getData("normal");
-            vector<float> tex = vertices[v].getData("texcoord");
-            positions[v] = glm::vec3(pos[0], pos[1], pos[2]);
-            normals[v] = glm::vec3(norm[0], norm[1], norm[2]);
-            texcoords[v] = glm::vec2(tex[0], tex[1]);
-        }
-
-        // Iterate through all triangles
-        for (size_t i = 0; i < indices.size(); i += 3) {
-            unsigned int i0 = indices[i];
-            unsigned int i1 = indices[i+1];
-            unsigned int i2 = indices[i+2];
-            
-            // Get vertex positions
-            glm::vec4 v0 = glm::vec4(positions[i0], 1.0f);
-            glm::vec4 v1 = glm::vec4(positions[i1], 1.0f);
-            glm::vec4 v2 = glm::vec4(positions[i2], 1.0f);
-
-            // Test ray-triangle intersection
-            float t;
-            glm::vec3 baryCoords;
-            if (rayTriangleIntersect(objectRay, v0, v1, v2, t, baryCoords)) {
-                if (t > 0.0001f && t < closestHit.getT()) {
-                    // Compute intersection point in object space
-                    glm::vec4 objIntersection = objectRay.getPointAt(t);
-                    
-                    // Transform intersection point to view space
-                    glm::vec4 viewIntersection = modelviewMatrix * objIntersection;
-
-                    // Get vertex normals
-                    glm::vec4 n0 = glm::vec4(normals[i0], 0.0f);
-                    glm::vec4 n1 = glm::vec4(normals[i1], 0.0f);
-                    glm::vec4 n2 = glm::vec4(normals[i2], 0.0f);
-
-                    // Interpolate normal using barycentric coordinates
-                    glm::vec4 objNormal = baryCoords.x * n0 + baryCoords.y * n1 + baryCoords.z * n2;
-                    objNormal.w = 0.0f;
-                    objNormal = glm::normalize(objNormal);
-
-                    // Transform normal to view space
-                    glm::vec4 viewNormal = normalMatrix * objNormal;
-                    viewNormal.w = 0.0f;
-                    viewNormal = glm::normalize(viewNormal);
-
-                    // Fill hit record
-                    closestHit.setT(t);
-                    closestHit.setIntersectionPoint(viewIntersection);
-                    closestHit.setNormal(viewNormal);
-                    closestHit.setMaterial(material);
-                    closestHit.setTextureName(textureName);
-
-                    // Interpolate texture coordinates
-                    glm::vec2 tc = baryCoords.x * texcoords[i0] + 
-                                   baryCoords.y * texcoords[i1] + 
-                                   baryCoords.z * texcoords[i2];
-                    closestHit.setTextureCoordinates(tc);
-                }
-            }
-        }
-
-        return closestHit;
-    }
-
-    /**
-     * @brief Moller-Trumbore ray-triangle intersection algorithm
-     * 
-     * @param ray The ray to test
-     * @param v0, v1, v2 Triangle vertices
-     * @param t Output: parameter t at intersection
-     * @param baryCoords Output: barycentric coordinates (u, v, w) where w = 1 - u - v
-     * @return true if intersection exists
-     */
-    bool rayTriangleIntersect(const Ray& ray, 
-                              const glm::vec4& v0, const glm::vec4& v1, const glm::vec4& v2,
-                              float& t, glm::vec3& baryCoords) {
-        const float EPSILON = 0.0000001f;
-        
-        glm::vec3 rayOrigin = glm::vec3(ray.getStart());
-        glm::vec3 rayDir = glm::vec3(ray.getDirection());
-        glm::vec3 vertex0 = glm::vec3(v0);
-        glm::vec3 vertex1 = glm::vec3(v1);
-        glm::vec3 vertex2 = glm::vec3(v2);
-
-        glm::vec3 edge1 = vertex1 - vertex0;
-        glm::vec3 edge2 = vertex2 - vertex0;
-        glm::vec3 h = glm::cross(rayDir, edge2);
-        float a = glm::dot(edge1, h);
-
-        // Ray is parallel to triangle
-        if (a > -EPSILON && a < EPSILON) {
-            return false;
-        }
-
-        float f = 1.0f / a;
-        glm::vec3 s = rayOrigin - vertex0;
-        float u = f * glm::dot(s, h);
-
-        if (u < 0.0f || u > 1.0f) {
-            return false;
-        }
-
-        glm::vec3 q = glm::cross(s, edge1);
-        float v = f * glm::dot(rayDir, q);
-
-        if (v < 0.0f || u + v > 1.0f) {
-            return false;
-        }
-
-        // Compute t to find intersection point
-        t = f * glm::dot(edge2, q);
-
-        if (t > EPSILON) {
-            // Barycentric coordinates: (1-u-v, u, v) for vertices (v0, v1, v2)
-            baryCoords = glm::vec3(1.0f - u - v, u, v);
-            return true;
-        }
-
-        return false;
-    }
 
     /**
      * @brief Compute shading at a hit point using Phong lighting model
