@@ -38,6 +38,9 @@ class KDTree {
     const vector<glm::vec3>& getNormals() const { return normals; }
     const vector<glm::vec2>& getTexcoords() const { return texcoords; }
 
+    void setMeshName(const string& name) { meshName = name; }
+    string getMeshName() const { return meshName; }
+
     private:
     KDNode *buildKDTree(int maxPointsPerLeaf);
     KDNode *buildKDTree(vector<int>& sortedByX,vector<int>& sortedByY,vector<int>& sortedByZ,int maxPointsPerLeaf,int depth);
@@ -46,6 +49,7 @@ class KDTree {
     void addTriangleToNode(KDNode* node, int triangleIndex);
     int countTrianglesInNode(KDNode* node); // Debug helper
     
+    string meshName;
 
     private:
     KDNode *root;

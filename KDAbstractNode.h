@@ -39,6 +39,7 @@ class KDAbstractNode: public KDNode {
      * 
      * @param triangleList List of triangle indices to test
      * @param objectRay Ray in object space
+     * @param viewRay Ray in view space (needed to measure distance from the ray origin)
      * @param modelviewMatrix Modelview matrix
      * @param normalMatrix Normal matrix
      * @param material Material properties
@@ -50,6 +51,7 @@ class KDAbstractNode: public KDNode {
      */
     HitRecord testTriangles(const vector<int>& triangleList,
                            const Ray& objectRay,
+                           const Ray& viewRay,
                            const glm::mat4& modelviewMatrix,
                            const glm::mat4& normalMatrix,
                            const util::Material& material,

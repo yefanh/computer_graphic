@@ -1,5 +1,14 @@
 #include "KDAbstractNode.h"
 #include "KDTree.h"
+#include <cmath>
+
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+#ifndef M_PI_2
+#define M_PI_2 1.57079632679489661923
+#endif
 
 KDAbstractNode::KDAbstractNode(vector<glm::vec3> *listOfPoints,vector<glm::vec3> *listOfNormals,vector<int> indices,KDTree *t) 
 : KDNode(t) {
@@ -20,6 +29,7 @@ KDAbstractNode::KDAbstractNode(vector<glm::vec3> *listOfPoints,vector<glm::vec3>
  */
 HitRecord KDAbstractNode::testTriangles(const vector<int>& triangleList,
                                         const Ray& objectRay,
+                                        const Ray& viewRay,
                                         const glm::mat4& modelviewMatrix,
                                         const glm::mat4& normalMatrix,
                                         const util::Material& material,
@@ -61,7 +71,9 @@ HitRecord KDAbstractNode::testTriangles(const vector<int>& triangleList,
                     
                     // Transform intersection point to view space
                     glm::vec4 viewIntersection = modelviewMatrix * objIntersection;
-                    float viewT = glm::length(glm::vec3(viewIntersection));
+                    // Distance along the current view-space ray (needed for correct ordering
+                    // of secondary rays such as shadows/reflections)
+                    float viewT = glm::length(glm::vec3(viewIntersection - viewRay.getStart()));
                     
                     // Get vertex normals
                     glm::vec3 n0 = normals[tri.x];
@@ -89,6 +101,69 @@ HitRecord KDAbstractNode::testTriangles(const vector<int>& triangleList,
                     glm::vec2 tc1 = texcoords[tri.y];
                     glm::vec2 tc2 = texcoords[tri.z];
                     glm::vec2 tc = baryCoords.x * tc0 + baryCoords.y * tc1 + baryCoords.z * tc2;
+
+                    // Procedural UVs for Sphere and Box
+                    string meshName = tree->getMeshName();
+                    if (meshName.find("sphere") != string::npos) {
+                        glm::vec3 p = glm::vec3(objIntersection);
+                        p = glm::normalize(p);
+                        float phi = asin(p.y);
+                        float theta = atan2(p.z, p.x);
+                        float u = (theta + M_PI) / (2 * M_PI);
+                        float v = (phi + M_PI_2) / M_PI;
+                        tc = glm::vec2(u, v);
+                    } else if (meshName.find("box") != string::npos) {
+                        glm::vec3 p = glm::vec3(objIntersection);
+                        glm::vec3 absP = glm::abs(p);
+                        float u = 0, v = 0;
+                        
+                        // Determine which face was hit based on the largest component
+                        if (absP.x >= absP.y && absP.x >= absP.z) {
+                            if (p.x > 0) { 
+                                // Right Face (x = 0.5)
+                                // s in [0.5, 0.75], t in [0.25, 0.5]
+                                // Right is +z, Up is +y
+                                u = 0.5f + (p.z + 0.5f) * 0.25f;
+                                v = 0.25f + (p.y + 0.5f) * 0.25f;
+                            } else { 
+                                // Left Face (x = -0.5)
+                                // s in [0, 0.25], t in [0.25, 0.5]
+                                // Left is +z (so Right is -z), Up is +y
+                                u = 0.0f + (0.5f - p.z) * 0.25f;
+                                v = 0.25f + (p.y + 0.5f) * 0.25f;
+                            }
+                        } else if (absP.y >= absP.x && absP.y >= absP.z) {
+                            if (p.y > 0) { 
+                                // Top Face (y = 0.5)
+                                // s in [0.25, 0.5], t in [0.5, 0.75]
+                                // Right is +x, Up is +z
+                                u = 0.25f + (p.x + 0.5f) * 0.25f;
+                                v = 0.5f + (p.z + 0.5f) * 0.25f;
+                            } else { 
+                                // Bottom Face (y = -0.5)
+                                // s in [0.25, 0.5], t in [0, 0.25]
+                                // Right is +x, Down is +z (so Up is -z)
+                                u = 0.25f + (p.x + 0.5f) * 0.25f;
+                                v = 0.0f + (0.5f - p.z) * 0.25f;
+                            }
+                        } else {
+                            if (p.z > 0) { 
+                                // Front Face (z = 0.5)
+                                // s in [0.75, 1.0], t in [0.25, 0.5]
+                                // Left is +x (so Right is -x), Up is +y
+                                u = 0.75f + (0.5f - p.x) * 0.25f;
+                                v = 0.25f + (p.y + 0.5f) * 0.25f;
+                            } else { 
+                                // Back Face (z = -0.5)
+                                // s in [0.25, 0.5], t in [0.25, 0.5]
+                                // Right is +x, Up is +y
+                                u = 0.25f + (p.x + 0.5f) * 0.25f;
+                                v = 0.25f + (p.y + 0.5f) * 0.25f;
+                            }
+                        }
+                        tc = glm::vec2(u, v);
+                    }
+
                     closestHit.setTextureCoordinates(tc);
                 }
             }

@@ -54,7 +54,11 @@ public:
                         const glm::mat4& modelviewMatrix,
                         const glm::mat4& normalMatrix,
                         const util::Material& material,
-                        const string& textureName) {
+                        const string& textureName,
+                        const string& meshName) {
+        // Set the mesh name in the KD-Tree so nodes can access it
+        kdTree.setMeshName(meshName);
+        
         // Delegate to KD-Tree's intersect function
         // Per Section 2.2: "For now, use tmin = 0 and tmax = infinity when calling this function."
         return kdTree.intersect(objectRay, viewRay, modelviewMatrix, normalMatrix, 

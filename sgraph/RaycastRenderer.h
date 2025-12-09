@@ -206,7 +206,7 @@ public:
         // Pass both object space ray and view space ray (for convenience)
         HitRecord hit = raytraceMesh->intersect(objectRay, currentRay, 
                                                  modelviewMatrix, normalMatrix, 
-                                                 material, textureName);
+                                                 material, textureName, meshName);
 
         // Keep the closest hit using view-space distance when available
         if (hit.hasHit()) {
@@ -274,7 +274,7 @@ private:
 
     glm::vec3 shadeRecursive(const HitRecord& hit, IScenegraph* scenegraph, int bounce) {
         const int MAX_BOUNCES = 5;
-        if (bounce > MAX_BOUNCES) {
+        if (bounce >= MAX_BOUNCES) {
             return glm::vec3(0.0f);
         }
 
@@ -283,6 +283,22 @@ private:
         util::Material material = hit.getMaterial();
         glm::vec3 viewPos = glm::vec3(hit.getIntersectionPoint());
         glm::vec3 normal = glm::normalize(glm::vec3(hit.getNormal()));
+
+        // Texture lookup
+        glm::vec3 textureColor(1.0f);
+        if (hit.getTextureName().length() > 0) {
+            map<string, util::TextureImage *> textures = scenegraph->getTextures();
+            if (textures.find(hit.getTextureName()) != textures.end()) {
+                util::TextureImage *texture = textures[hit.getTextureName()];
+                glm::vec2 texCoords = hit.getTextureCoordinates();
+                glm::vec4 texSample = texture->getColor(texCoords.s, texCoords.t);
+                textureColor = glm::vec3(texSample);
+                // Normalize texture color if it's in 0-255 range
+                if (textureColor.r > 1.0f || textureColor.g > 1.0f || textureColor.b > 1.0f) {
+                    textureColor /= 255.0f;
+                }
+            }
+        }
         
         // View direction (from intersection point to camera, which is at origin in view space)
         // Same as shader: viewVec = -fPosition.xyz
@@ -321,11 +337,12 @@ private:
             HitRecord shadowHit = raycast(shadowRay, scenegraph);
             
             if (shadowHit.hasHit()) {
+                float hitDist = shadowHit.getViewT();
                 // For point lights, check if obstacle is closer than light along this ray
                 // For directional lights, any hit means shadow
                 if (light.getPosition().w != 0.0f) {
                     float maxT = distToLight - SHADOW_EPSILON;
-                    if (shadowHit.getT() > 0.0f && shadowHit.getT() < maxT) {
+                    if (hitDist > 0.0f && hitDist < maxT) {
                         inShadow = true;
                     }
                 } else {
@@ -338,14 +355,14 @@ private:
             float nDotL = glm::dot(normal, lightDir);
 
             // Ambient: material.ambient * light.ambient
-            glm::vec3 ambient = glm::vec3(material.getAmbient()) * glm::vec3(light.getAmbient());
+            glm::vec3 ambient = glm::vec3(material.getAmbient()) * glm::vec3(light.getAmbient()) * textureColor;
             
             glm::vec3 diffuse(0.0f);
             glm::vec3 specular(0.0f);
 
             if (!inShadow) {
                 // Diffuse: material.diffuse * light.diffuse * max(nDotL, 0)
-                diffuse = glm::vec3(material.getDiffuse()) * glm::vec3(light.getDiffuse()) * glm::max(nDotL, 0.0f);
+                diffuse = glm::vec3(material.getDiffuse()) * glm::vec3(light.getDiffuse()) * glm::max(nDotL, 0.0f) * textureColor;
 
                 // Specular using Phong reflection model (same as shader: reflect(-lightVec, normal))
                 if (nDotL > 0.0f) {

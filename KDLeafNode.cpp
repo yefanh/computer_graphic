@@ -18,7 +18,7 @@ HitRecord KDLeafNode::intersect(const Ray& objectRay,
                                 float tmax,
                                 set<int>& testedTriangles) {
     // Test all triangles in this leaf node within (tmin, tmax)
-    return testTriangles(triangleIndices, objectRay, modelviewMatrix,
+    return testTriangles(triangleIndices, objectRay, viewRay, modelviewMatrix,
                         normalMatrix, material, textureName,
                         tmin, tmax, testedTriangles);
 }

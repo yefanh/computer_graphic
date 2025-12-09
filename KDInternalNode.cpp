@@ -80,7 +80,7 @@ HitRecord KDInternalNode::intersect(const Ray& objectRay,
             // check both sides as well as the split plane itself"
             
             // Test triangles on the split plane (stored in this internal node)
-            HitRecord planeHit = testTriangles(triangleIndices, objectRay, modelviewMatrix,
+            HitRecord planeHit = testTriangles(triangleIndices, objectRay, viewRay, modelviewMatrix,
                                               normalMatrix, material, textureName,
                                               tmin, tmax, testedTriangles);
             if (planeHit.hasHit() && planeHit.getT() < closestHit.getT()) {
@@ -153,7 +153,7 @@ HitRecord KDInternalNode::intersect(const Ray& objectRay,
         }
         
         // 2. Then check triangles on the split plane
-        HitRecord planeHit = testTriangles(triangleIndices, objectRay, modelviewMatrix,
+        HitRecord planeHit = testTriangles(triangleIndices, objectRay, viewRay, modelviewMatrix,
                                           normalMatrix, material, textureName,
                                           tmin, tmax, testedTriangles);
         if (planeHit.hasHit() && planeHit.getT() < closestHit.getT()) {
@@ -192,7 +192,7 @@ HitRecord KDInternalNode::intersect(const Ray& objectRay,
         
         // Check plane triangles if P or Q is near the plane
         if (needCheckPlane) {
-            HitRecord planeHit = testTriangles(triangleIndices, objectRay, modelviewMatrix,
+            HitRecord planeHit = testTriangles(triangleIndices, objectRay, viewRay, modelviewMatrix,
                                               normalMatrix, material, textureName,
                                               tmin, tmax, testedTriangles);
             if (planeHit.hasHit() && planeHit.getT() < closestHit.getT()) {
@@ -218,7 +218,7 @@ HitRecord KDInternalNode::intersect(const Ray& objectRay,
         
         // Check plane triangles if P or Q is near the plane
         if (needCheckPlane) {
-            HitRecord planeHit = testTriangles(triangleIndices, objectRay, modelviewMatrix,
+            HitRecord planeHit = testTriangles(triangleIndices, objectRay, viewRay, modelviewMatrix,
                                               normalMatrix, material, textureName,
                                               tmin, tmax, testedTriangles);
             if (planeHit.hasHit() && planeHit.getT() < closestHit.getT()) {
