@@ -234,8 +234,15 @@ int View::getWindowHeight() {
 }
 
 void View::raytrace(sgraph::IScenegraph *scenegraph) {
-    int width = 800;
-    int height = 800;
+    int width = 0;
+    int height = 0;
+    glfwGetWindowSize(window, &width, &height); // logical size (avoids Retina doubling)
+    if (width <= 0 || height <= 0) {
+        width = 800;
+        height = 800;
+    }
+    width = std::min(width, 800);
+    height = std::min(height, 800);
     
     // Set up the modelview stack with camera transform (same as display())
     stack<glm::mat4> rayModelview;

@@ -26,6 +26,7 @@ public:
      */
     HitRecord() {
         t = std::numeric_limits<float>::infinity();  // infinity means no hit
+        viewT = std::numeric_limits<float>::infinity();
         intersectionPoint = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
         normal = glm::vec4(0.0f, 0.0f, 0.0f, 0.0f);
         textureCoordinates = glm::vec2(0.0f, 0.0f);
@@ -59,6 +60,19 @@ public:
 
     void setT(float t) {
         this->t = t;
+    }
+
+    /**
+     * @brief Get distance along the view-space ray
+     *
+     * Used for consistent closest-hit comparison across differently scaled objects.
+     */
+    float getViewT() const {
+        return viewT;
+    }
+
+    void setViewT(float vt) {
+        this->viewT = vt;
     }
 
     /**
@@ -146,6 +160,7 @@ private:
      * Initialized to infinity to indicate "no hit"
      */
     float t;
+    float viewT;
 
     /**
      * Intersection point (in view coordinates)

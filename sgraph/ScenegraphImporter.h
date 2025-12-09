@@ -190,6 +190,22 @@ namespace sgraph {
                             input >> r;
                             mat.setShininess(r);
                         }
+                        else if (command == "absorption") {
+                            input >> r;
+                            mat.setAbsorption(r);
+                        }
+                        else if (command == "reflection") {
+                            input >> r;
+                            mat.setReflection(r);
+                        }
+                        else if (command == "transparency") {
+                            input >> r;
+                            mat.setTransparency(r);
+                        }
+                        else if (command == "refractive") {
+                            input >> r;
+                            mat.setRefractiveIndex(r);
+                        }
                         input >> command;
                     }
                     materials[name] = mat;

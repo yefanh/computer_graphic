@@ -288,14 +288,18 @@ void KDTree::addTriangleToNode(KDNode* node, int triangleIndex) {
     else if (internal != NULL) {
         // For internal node: check where each vertex lies relative to split plane
         glm::vec4 plane = internal->getPlane();
-        
+        const float EPS = 0.0001f;
         float d0 = glm::dot(plane, glm::vec4(vertices[tri.x], 1.0f));
         float d1 = glm::dot(plane, glm::vec4(vertices[tri.y], 1.0f));
         float d2 = glm::dot(plane, glm::vec4(vertices[tri.z], 1.0f));
         
-        bool allOnPlane = (abs(d0) < 0.0001f && abs(d1) < 0.0001f && abs(d2) < 0.0001f);
-        bool hasLeft = (d0 < -0.0001f || d1 < -0.0001f || d2 < -0.0001f);
-        bool hasRight = (d0 > 0.0001f || d1 > 0.0001f || d2 > 0.0001f);
+        bool on0 = abs(d0) < EPS;
+        bool on1 = abs(d1) < EPS;
+        bool on2 = abs(d2) < EPS;
+        bool allOnPlane = (on0 && on1 && on2);
+        bool hasLeft = (d0 < -EPS || d1 < -EPS || d2 < -EPS);
+        bool hasRight = (d0 > EPS || d1 > EPS || d2 > EPS);
+        bool touchesPlane = on0 || on1 || on2; // any vertex on plane should go to both sides
         
         // Triangle lies completely on the split plane - store in internal node
         if (allOnPlane) {
@@ -303,12 +307,12 @@ void KDTree::addTriangleToNode(KDNode* node, int triangleIndex) {
         }
         else {
             // Triangle straddles the plane or is on one side
-            // Add to left if any vertex is on the left OR on the plane
-            if (hasLeft || !hasRight) {
+            bool sendLeft = hasLeft || touchesPlane;
+            bool sendRight = hasRight || touchesPlane;
+            if (sendLeft) {
                 addTriangleToNode(internal->getLeft(), triangleIndex);
             }
-            // Add to right if any vertex is on the right OR on the plane
-            if (hasRight || !hasLeft) {
+            if (sendRight) {
                 addTriangleToNode(internal->getRight(), triangleIndex);
             }
         }

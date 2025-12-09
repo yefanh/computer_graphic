@@ -23,6 +23,7 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include <cmath>
 using namespace std;
 
 namespace sgraph {
@@ -118,7 +119,7 @@ public:
                 glm::vec3 color;
                 if (hitRecord.hasHit()) {
                     // Use Phong shading to compute color
-                    color = shade(hitRecord);
+                    color = shade(hitRecord, scenegraph);
                 } else {
                     // Background color (black)
                     color = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -207,9 +208,19 @@ public:
                                                  modelviewMatrix, normalMatrix, 
                                                  material, textureName);
 
-        // Keep the closest hit
-        if (hit.hasHit() && hit.getT() < closestHit.getT()) {
-            closestHit = hit;
+        // Keep the closest hit using view-space distance when available
+        if (hit.hasHit()) {
+            float candidateDist = hit.getViewT();
+            if (!std::isfinite(candidateDist)) {
+                candidateDist = hit.getT();
+            }
+            float currentDist = closestHit.getViewT();
+            if (!std::isfinite(currentDist)) {
+                currentDist = closestHit.getT();
+            }
+            if (candidateDist < currentDist) {
+                closestHit = hit;
+            }
         }
     }
 
@@ -257,7 +268,16 @@ private:
      * 
      * Section 3.1: Uses interpolated normals from barycentric coordinates.
      */
-    glm::vec3 shade(const HitRecord& hit) {
+    glm::vec3 shade(const HitRecord& hit, IScenegraph* scenegraph) {
+        return shadeRecursive(hit, scenegraph, 0);
+    }
+
+    glm::vec3 shadeRecursive(const HitRecord& hit, IScenegraph* scenegraph, int bounce) {
+        const int MAX_BOUNCES = 5;
+        if (bounce > MAX_BOUNCES) {
+            return glm::vec3(0.0f);
+        }
+
         glm::vec3 color(0.0f);
         
         util::Material material = hit.getMaterial();
@@ -278,13 +298,40 @@ private:
             // Light direction calculation (same as shader)
             glm::vec3 lightPos = glm::vec3(light.getPosition());
             glm::vec3 lightDir;
+            float distToLight = std::numeric_limits<float>::infinity();
             
             if (light.getPosition().w != 0.0f) {
                 // Point light: lightVec = normalize(light.position.xyz - fPosition.xyz)
                 lightDir = glm::normalize(lightPos - viewPos);
+                // measure from the offset shadow origin to the light, in the same space as shadow ray
+                distToLight = glm::length(lightPos - viewPos);
             } else {
                 // Directional light: lightVec = normalize(-light.position.xyz)
                 lightDir = glm::normalize(-lightPos);
+            }
+
+            // Shadow check
+            bool inShadow = false;
+            // Fudge factor to avoid self-intersection using surface normal
+            const float SHADOW_EPSILON = 0.001f;
+            glm::vec3 shadowRayStart = viewPos + SHADOW_EPSILON * normal; 
+            Ray shadowRay(glm::vec4(shadowRayStart, 1.0f), glm::vec4(lightDir, 0.0f));
+            
+            // Cast shadow ray
+            HitRecord shadowHit = raycast(shadowRay, scenegraph);
+            
+            if (shadowHit.hasHit()) {
+                // For point lights, check if obstacle is closer than light along this ray
+                // For directional lights, any hit means shadow
+                if (light.getPosition().w != 0.0f) {
+                    float maxT = distToLight - SHADOW_EPSILON;
+                    if (shadowHit.getT() > 0.0f && shadowHit.getT() < maxT) {
+                        inShadow = true;
+                    }
+                } else {
+                    // Directional light - any hit is shadow
+                    inShadow = true;
+                }
             }
 
             // nDotL for diffuse
@@ -293,22 +340,26 @@ private:
             // Ambient: material.ambient * light.ambient
             glm::vec3 ambient = glm::vec3(material.getAmbient()) * glm::vec3(light.getAmbient());
             
-            // Diffuse: material.diffuse * light.diffuse * max(nDotL, 0)
-            glm::vec3 diffuse = glm::vec3(material.getDiffuse()) * glm::vec3(light.getDiffuse()) * glm::max(nDotL, 0.0f);
-
-            // Specular using Phong reflection model (same as shader: reflect(-lightVec, normal))
+            glm::vec3 diffuse(0.0f);
             glm::vec3 specular(0.0f);
-            if (nDotL > 0.0f) {
-                // reflectVec = reflect(-lightVec, normalView)
-                glm::vec3 reflectDir = glm::reflect(-lightDir, normal);
-                reflectDir = glm::normalize(reflectDir);
-                
-                // rDotV = max(dot(reflectVec, viewVec), 0.0)
-                float rDotV = glm::max(glm::dot(reflectDir, viewDir), 0.0f);
-                
-                // specular = material.specular * light.specular * pow(rDotV, shininess)
-                specular = glm::vec3(material.getSpecular()) * glm::vec3(light.getSpecular()) 
-                         * glm::pow(rDotV, material.getShininess());
+
+            if (!inShadow) {
+                // Diffuse: material.diffuse * light.diffuse * max(nDotL, 0)
+                diffuse = glm::vec3(material.getDiffuse()) * glm::vec3(light.getDiffuse()) * glm::max(nDotL, 0.0f);
+
+                // Specular using Phong reflection model (same as shader: reflect(-lightVec, normal))
+                if (nDotL > 0.0f) {
+                    // reflectVec = reflect(-lightVec, normalView)
+                    glm::vec3 reflectDir = glm::reflect(-lightDir, normal);
+                    reflectDir = glm::normalize(reflectDir);
+                    
+                    // rDotV = max(dot(reflectVec, viewVec), 0.0)
+                    float rDotV = glm::max(glm::dot(reflectDir, viewDir), 0.0f);
+                    
+                    // specular = material.specular * light.specular * pow(rDotV, shininess)
+                    specular = glm::vec3(material.getSpecular()) * glm::vec3(light.getSpecular()) 
+                            * glm::pow(rDotV, material.getShininess());
+                }
             }
 
             // Spotlight effect (if spotlight is enabled)
@@ -330,6 +381,25 @@ private:
 
             // Accumulate: ambient + diffuse + specular (with spotlight attenuation)
             color += ambient + spotEffect * (diffuse + specular);
+        }
+
+        // Reflection
+        if (material.getReflection() > 0.0f) {
+            glm::vec3 reflectDir = glm::reflect(-viewDir, normal);
+            reflectDir = glm::normalize(reflectDir);
+            
+            const float REFLECT_EPSILON = 0.001f;
+            glm::vec3 reflectRayStart = viewPos + REFLECT_EPSILON * normal;
+            Ray reflectRay(glm::vec4(reflectRayStart, 1.0f), glm::vec4(reflectDir, 0.0f));
+            
+            HitRecord reflectHit = raycast(reflectRay, scenegraph);
+            glm::vec3 reflectColor(0.0f);
+            
+            if (reflectHit.hasHit()) {
+                reflectColor = shadeRecursive(reflectHit, scenegraph, bounce + 1);
+            }
+            
+            color = material.getAbsorption() * color + material.getReflection() * reflectColor;
         }
 
         return color;
