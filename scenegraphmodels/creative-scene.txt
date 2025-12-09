@@ -1,0 +1,286 @@
+# Creative Scene: "Cozy Village at Sunset"
+# A peaceful village scene with houses, trees, and decorations
+# 17+ objects with meaningful arrangement
+
+# Instances
+instance box models/box-outside.obj
+instance sphere models/sphere.obj
+instance cylinder models/cylinder.obj
+instance cone models/cone.obj
+instance house models/house.obj
+
+# === MATERIALS ===
+
+# Ground - green grass
+material grass-mat
+emission 0 0 0
+ambient 0.1 0.2 0.1
+diffuse 0.3 0.6 0.2
+specular 0.1 0.1 0.1
+shininess 5
+end-material
+
+# House walls - warm beige
+material wall-mat
+emission 0 0 0
+ambient 0.2 0.15 0.1
+diffuse 0.8 0.7 0.5
+specular 0.2 0.2 0.2
+shininess 10
+end-material
+
+# Tree trunk - brown
+material trunk-mat
+emission 0 0 0
+ambient 0.1 0.05 0.02
+diffuse 0.4 0.25 0.1
+specular 0.05 0.05 0.05
+shininess 5
+end-material
+
+# Tree leaves - green
+material leaves-mat
+emission 0 0 0
+ambient 0.05 0.15 0.05
+diffuse 0.2 0.5 0.15
+specular 0.1 0.1 0.1
+shininess 10
+end-material
+
+# Sun - bright yellow
+material sun-mat
+emission 0.8 0.6 0.2
+ambient 1.0 0.9 0.4
+diffuse 1.0 0.9 0.5
+specular 1.0 1.0 0.8
+shininess 100
+end-material
+
+# Path - gray stone
+material path-mat
+emission 0 0 0
+ambient 0.1 0.1 0.1
+diffuse 0.5 0.5 0.5
+specular 0.2 0.2 0.2
+shininess 20
+end-material
+
+# Flowers - colorful
+material flower-red-mat
+emission 0.05 0 0
+ambient 0.2 0.05 0.05
+diffuse 0.9 0.2 0.2
+specular 0.3 0.1 0.1
+shininess 20
+end-material
+
+material flower-yellow-mat
+emission 0.05 0.05 0
+ambient 0.2 0.2 0.05
+diffuse 0.9 0.9 0.2
+specular 0.3 0.3 0.1
+shininess 20
+end-material
+
+# === LIGHTS ===
+
+# Warm sunset light from the side
+light sun-light
+ambient 0.3 0.25 0.2
+diffuse 1.0 0.8 0.5
+specular 1.0 0.9 0.7
+position 50 40 30
+end-light
+
+# Soft fill light
+light fill-light
+ambient 0.1 0.1 0.15
+diffuse 0.3 0.3 0.4
+specular 0.2 0.2 0.3
+position -30 20 20
+end-light
+
+# Texture
+image white textures/white.ppm
+
+# === SCENE GRAPH ===
+group root root
+assign-light sun-light root
+assign-light fill-light root
+
+# 1. Ground (grass field)
+translate ground-t ground-t 0 -0.5 0
+scale ground-s ground-s 60 1 60
+leaf ground ground instanceof box
+assign-material ground grass-mat
+assign-texture ground white
+add-child ground ground-s
+add-child ground-s ground-t
+add-child ground-t root
+
+# 2. Main House (CUSTOM MESH - the complex object!)
+translate house1-t house1-t 0 0 0
+scale house1-s house1-s 3 3 3
+leaf house1 house1 instanceof house
+assign-material house1 wall-mat
+assign-texture house1 white
+add-child house1 house1-s
+add-child house1-s house1-t
+add-child house1-t root
+
+# 3. Second smaller house
+translate house2-t house2-t -15 0 -5
+scale house2-s house2-s 2 2 2
+rotate house2-r house2-r 0 1 0 30
+leaf house2 house2 instanceof house
+assign-material house2 wall-mat
+assign-texture house2 white
+add-child house2 house2-s
+add-child house2-s house2-r
+add-child house2-r house2-t
+add-child house2-t root
+
+# 4. Stone path
+translate path-t path-t 0 0.01 8
+scale path-s path-s 3 0.1 10
+leaf path path instanceof box
+assign-material path path-mat
+assign-texture path white
+add-child path path-s
+add-child path-s path-t
+add-child path-t root
+
+# Tree 1 (right side)
+# 5. Trunk
+translate tree1-trunk-t tree1-trunk-t 12 2 -3
+scale tree1-trunk-s tree1-trunk-s 0.8 4 0.8
+leaf tree1-trunk tree1-trunk instanceof cylinder
+assign-material tree1-trunk trunk-mat
+assign-texture tree1-trunk white
+add-child tree1-trunk tree1-trunk-s
+add-child tree1-trunk-s tree1-trunk-t
+add-child tree1-trunk-t root
+
+# 6. Leaves (cone shape)
+translate tree1-leaves-t tree1-leaves-t 12 6 -3
+scale tree1-leaves-s tree1-leaves-s 3 5 3
+leaf tree1-leaves tree1-leaves instanceof cone
+assign-material tree1-leaves leaves-mat
+assign-texture tree1-leaves white
+add-child tree1-leaves tree1-leaves-s
+add-child tree1-leaves-s tree1-leaves-t
+add-child tree1-leaves-t root
+
+# Tree 2 (left side)
+# 7. Trunk
+translate tree2-trunk-t tree2-trunk-t -10 2.5 5
+scale tree2-trunk-s tree2-trunk-s 1 5 1
+leaf tree2-trunk tree2-trunk instanceof cylinder
+assign-material tree2-trunk trunk-mat
+assign-texture tree2-trunk white
+add-child tree2-trunk tree2-trunk-s
+add-child tree2-trunk-s tree2-trunk-t
+add-child tree2-trunk-t root
+
+# 8. Leaves
+translate tree2-leaves-t tree2-leaves-t -10 8 5
+scale tree2-leaves-s tree2-leaves-s 4 6 4
+leaf tree2-leaves tree2-leaves instanceof cone
+assign-material tree2-leaves leaves-mat
+assign-texture tree2-leaves white
+add-child tree2-leaves tree2-leaves-s
+add-child tree2-leaves-s tree2-leaves-t
+add-child tree2-leaves-t root
+
+# 9. Sun in the sky
+translate sun-t sun-t 30 25 -20
+scale sun-s sun-s 4 4 4
+leaf sun sun instanceof sphere
+assign-material sun sun-mat
+assign-texture sun white
+add-child sun sun-s
+add-child sun-s sun-t
+add-child sun-t root
+
+# Flower garden (in front of house)
+# 10. Red flower 1
+translate flower1-t flower1-t 5 0.4 6
+scale flower1-s flower1-s 0.4 0.4 0.4
+leaf flower1 flower1 instanceof sphere
+assign-material flower1 flower-red-mat
+assign-texture flower1 white
+add-child flower1 flower1-s
+add-child flower1-s flower1-t
+add-child flower1-t root
+
+# 11. Yellow flower 1
+translate flower2-t flower2-t 6 0.4 7
+scale flower2-s flower2-s 0.4 0.4 0.4
+leaf flower2 flower2 instanceof sphere
+assign-material flower2 flower-yellow-mat
+assign-texture flower2 white
+add-child flower2 flower2-s
+add-child flower2-s flower2-t
+add-child flower2-t root
+
+# 12. Red flower 2
+translate flower3-t flower3-t 5.5 0.4 8
+scale flower3-s flower3-s 0.35 0.35 0.35
+leaf flower3 flower3 instanceof sphere
+assign-material flower3 flower-red-mat
+assign-texture flower3 white
+add-child flower3 flower3-s
+add-child flower3-s flower3-t
+add-child flower3-t root
+
+# 13. Yellow flower 2
+translate flower4-t flower4-t -5 0.4 6
+scale flower4-s flower4-s 0.4 0.4 0.4
+leaf flower4 flower4 instanceof sphere
+assign-material flower4 flower-yellow-mat
+assign-texture flower4 white
+add-child flower4 flower4-s
+add-child flower4-s flower4-t
+add-child flower4-t root
+
+# 14. Red flower 3
+translate flower5-t flower5-t -6 0.4 7
+scale flower5-s flower5-s 0.35 0.35 0.35
+leaf flower5 flower5 instanceof sphere
+assign-material flower5 flower-red-mat
+assign-texture flower5 white
+add-child flower5 flower5-s
+add-child flower5-s flower5-t
+add-child flower5-t root
+
+# 15. Stone decoration 1
+translate stone1-t stone1-t 8 0.3 10
+scale stone1-s stone1-s 0.6 0.3 0.5
+leaf stone1 stone1 instanceof sphere
+assign-material stone1 path-mat
+assign-texture stone1 white
+add-child stone1 stone1-s
+add-child stone1-s stone1-t
+add-child stone1-t root
+
+# 16. Stone decoration 2
+translate stone2-t stone2-t -8 0.25 12
+scale stone2-s stone2-s 0.5 0.25 0.4
+leaf stone2 stone2 instanceof sphere
+assign-material stone2 path-mat
+assign-texture stone2 white
+add-child stone2 stone2-s
+add-child stone2-s stone2-t
+add-child stone2-t root
+
+# 17. Bush (ellipsoid from sphere)
+translate bush-t bush-t 8 0.8 -2
+scale bush-s bush-s 1.5 1 1.2
+leaf bush bush instanceof sphere
+assign-material bush leaves-mat
+assign-texture bush white
+add-child bush bush-s
+add-child bush-s bush-t
+add-child bush-t root
+
+assign-root root

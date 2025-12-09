@@ -23,6 +23,7 @@
 #include <iostream>
 #include <fstream>
 #include <limits>
+#include <cmath>
 using namespace std;
 
 namespace sgraph {
@@ -207,9 +208,19 @@ public:
                                                  modelviewMatrix, normalMatrix, 
                                                  material, textureName);
 
-        // Keep the closest hit
-        if (hit.hasHit() && hit.getT() < closestHit.getT()) {
-            closestHit = hit;
+        // Keep the closest hit using view-space distance when available
+        if (hit.hasHit()) {
+            float candidateDist = hit.getViewT();
+            if (!std::isfinite(candidateDist)) {
+                candidateDist = hit.getT();
+            }
+            float currentDist = closestHit.getViewT();
+            if (!std::isfinite(currentDist)) {
+                currentDist = closestHit.getT();
+            }
+            if (candidateDist < currentDist) {
+                closestHit = hit;
+            }
         }
     }
 

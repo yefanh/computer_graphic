@@ -8,7 +8,7 @@
 class Controller: public Callbacks
 {
 public:
-    Controller(Model& m,View& v);
+    Controller(Model& m,View& v, string sceneFile);
     ~Controller();
     void run();
 
@@ -17,10 +17,11 @@ public:
     virtual void onkey(int key, int scancode, int action, int mods);
     virtual void error_callback(int error, const char* description);
 private:
-    void initScenegraph();
+    void initScenegraph(string sceneFile);
 
     View view;
     Model model;
+    bool raytraceRequested = false;
 };
 
 #endif

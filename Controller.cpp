@@ -13,19 +13,19 @@ using namespace std;
 #include "sgraph/ScenegraphExporter.h"
 #include "sgraph/ScenegraphImporter.h"
 
-Controller::Controller(Model& m,View& v) {
+Controller::Controller(Model& m,View& v, string sceneFile) {
     model = m;
     view = v;
 
-    initScenegraph();
+    initScenegraph(sceneFile);
 }
 
-void Controller::initScenegraph() {
+void Controller::initScenegraph(string sceneFile) {
 
      
     
     //read in the file of commands
-    ifstream inFile("scenegraphmodels/simple.txt");
+    ifstream inFile(sceneFile);
     //ifstream inFile("tryout.txt");
     sgraph::ScenegraphImporter importer;
     
@@ -49,7 +49,12 @@ void Controller::run()
     map<string,util::TextureImage *> textures = scenegraph->getTextures();
     view.init(this,meshes,textures);
     while (!view.shouldWindowClose()) {
-        view.display(scenegraph);
+        if (raytraceRequested) {
+            view.raytrace(scenegraph);
+            raytraceRequested = false;
+        } else {
+            view.display(scenegraph);
+        }
     }
     view.closeWindow();
     exit(EXIT_SUCCESS);
@@ -61,11 +66,10 @@ void Controller::onkey(int key, int scancode, int action, int mods)
     if (action == GLFW_PRESS || action == GLFW_REPEAT) {
         cout << (char)key << " pressed" << endl;
         
-        // 'S' key triggers ray tracing
+        // 'S' key triggers ray tracing mode (outputs image instead of screen)
         if (key == 'S' || key == 's') {
             cout << "Switching to ray tracing mode..." << endl;
-            sgraph::IScenegraph * scenegraph = model.getScenegraph();
-            view.raytrace(scenegraph);
+            raytraceRequested = true;
         }
     }
 }

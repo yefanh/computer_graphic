@@ -37,12 +37,6 @@ HitRecord KDAbstractNode::testTriangles(const vector<int>& triangleList,
     
     // Test each triangle in the list
     for (int triIndex : triangleList) {
-        // Skip if already tested (avoid duplicate testing)
-        if (testedTriangles.find(triIndex) != testedTriangles.end()) {
-            continue;
-        }
-        testedTriangles.insert(triIndex);
-        
         glm::ivec3 tri = triangles[triIndex];
         
         // Get vertex positions
@@ -57,40 +51,50 @@ HitRecord KDAbstractNode::testTriangles(const vector<int>& triangleList,
             // Per Section 2.2.1: "report the closest intersection that is within (tmin, tmax)"
             // Use a small tolerance for boundary cases (precision issues near split planes)
             const float EPSILON = 0.0001f;
-            if (t > tmin - EPSILON && t < tmax + EPSILON && t > EPSILON && t < closestHit.getT()) {
-                // Compute intersection point in object space
-                glm::vec4 objIntersection = objectRay.getPointAt(t);
-                
-                // Transform intersection point to view space
-                glm::vec4 viewIntersection = modelviewMatrix * objIntersection;
-                
-                // Get vertex normals
-                glm::vec3 n0 = normals[tri.x];
-                glm::vec3 n1 = normals[tri.y];
-                glm::vec3 n2 = normals[tri.z];
-                
-                // Interpolate normal using barycentric coordinates
-                glm::vec3 objNormal = baryCoords.x * n0 + baryCoords.y * n1 + baryCoords.z * n2;
-                objNormal = glm::normalize(objNormal);
-                
-                // Transform normal to view space
-                glm::vec4 viewNormal = normalMatrix * glm::vec4(objNormal, 0.0f);
-                viewNormal = glm::normalize(viewNormal);
-                
-                // Fill hit record
-                closestHit.setT(t);
-                closestHit.setIntersectionPoint(viewIntersection);
-                closestHit.setNormal(viewNormal);
-                closestHit.setMaterial(material);
-                closestHit.setTextureName(textureName);
-                
-                // Interpolate texture coordinates
-                glm::vec2 tc0 = texcoords[tri.x];
-                glm::vec2 tc1 = texcoords[tri.y];
-                glm::vec2 tc2 = texcoords[tri.z];
-                glm::vec2 tc = baryCoords.x * tc0 + baryCoords.y * tc1 + baryCoords.z * tc2;
-                closestHit.setTextureCoordinates(tc);
+            
+            // Check if intersection is within the current node's range
+            if (t > tmin - EPSILON && t < tmax + EPSILON && t > EPSILON) {
+                // Valid intersection in range
+                if (t < closestHit.getT()) {
+                    // Compute intersection point in object space
+                    glm::vec4 objIntersection = objectRay.getPointAt(t);
+                    
+                    // Transform intersection point to view space
+                    glm::vec4 viewIntersection = modelviewMatrix * objIntersection;
+                    float viewT = glm::length(glm::vec3(viewIntersection));
+                    
+                    // Get vertex normals
+                    glm::vec3 n0 = normals[tri.x];
+                    glm::vec3 n1 = normals[tri.y];
+                    glm::vec3 n2 = normals[tri.z];
+                    
+                    // Interpolate normal using barycentric coordinates
+                    glm::vec3 objNormal = baryCoords.x * n0 + baryCoords.y * n1 + baryCoords.z * n2;
+                    objNormal = glm::normalize(objNormal);
+                    
+                    // Transform normal to view space
+                    glm::vec4 viewNormal = normalMatrix * glm::vec4(objNormal, 0.0f);
+                    viewNormal = glm::normalize(viewNormal);
+                    
+                    // Fill hit record
+                    closestHit.setT(t);
+                    closestHit.setIntersectionPoint(viewIntersection);
+                    closestHit.setNormal(viewNormal);
+                    closestHit.setMaterial(material);
+                    closestHit.setTextureName(textureName);
+                    closestHit.setViewT(viewT);
+                    
+                    // Interpolate texture coordinates
+                    glm::vec2 tc0 = texcoords[tri.x];
+                    glm::vec2 tc1 = texcoords[tri.y];
+                    glm::vec2 tc2 = texcoords[tri.z];
+                    glm::vec2 tc = baryCoords.x * tc0 + baryCoords.y * tc1 + baryCoords.z * tc2;
+                    closestHit.setTextureCoordinates(tc);
+                }
             }
+        }
+        else {
+            // No intersection at all with this triangle for this segment; allow other nodes to test it.
         }
     }
     
@@ -146,4 +150,3 @@ bool KDAbstractNode::rayTriangleIntersect(const Ray& ray,
     
     return false;
 }
-
