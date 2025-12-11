@@ -1,0 +1,90 @@
+# Instances
+instance box models/box-outside.obj
+instance sphere models/sphere.obj
+
+# Materials (absorption + reflection + transparency = 1)
+material ground-material
+emission 0 0 0
+ambient 0.15 0.15 0.15
+diffuse 0.3 0.3 0.35
+specular 0.8 0.8 0.8
+shininess 80
+reflection 0.7
+absorption 0.3
+end-material
+
+material box-material
+emission 0 0 0
+ambient 0.3 0.1 0.1
+diffuse 0.9 0.3 0.3
+specular 0.6 0.6 0.6
+shininess 60
+reflection 0.1
+absorption 0.9
+end-material
+
+material sphere-material
+emission 0 0 0
+ambient 0.25 0.25 0.25
+diffuse 0.4 0.4 0.4
+specular 0.9 0.9 0.9
+shininess 120
+reflection 0.4
+absorption 0.6
+end-material
+
+# Lights
+light one-light
+ambient 0.3 0.3 0.3
+diffuse 1.6 1.6 1.6
+specular 1.2 1.2 1.2
+position 30 50 20
+end-light
+
+light two-light
+ambient 0.2 0.2 0.2
+diffuse 0.8 0.8 0.8
+specular 0.6 0.6 0.6
+position -40 30 -20
+end-light
+
+# Textures
+image checkerboard textures/checkerboard.ppm
+image white textures/white.ppm
+
+# Scene graph
+group root root
+assign-light one-light root
+assign-light two-light root
+
+# Ground plane (high reflection)
+translate ground-t ground-t 0 -27 0
+scale ground-s ground-s 200 2 200
+leaf ground ground instanceof box
+assign-material ground ground-material
+assign-texture ground white
+add-child ground ground-s
+add-child ground-s ground-t
+add-child ground-t root
+
+# Box (textured for contrast)
+translate box-t box-t -15 -15 -10
+scale box-s box-s 10 10 10
+leaf one-box one-box instanceof box
+assign-material one-box box-material
+assign-texture one-box checkerboard
+add-child one-box box-s
+add-child box-s box-t
+add-child box-t root
+
+# Sphere (reflective, no texture)
+translate sphere-t sphere-t 15 -15 -10
+scale sphere-s sphere-s 7 7 7
+leaf one-sphere one-sphere instanceof sphere
+assign-material one-sphere sphere-material
+assign-texture one-sphere white
+add-child one-sphere sphere-s
+add-child sphere-s sphere-t
+add-child sphere-t root
+
+assign-root root

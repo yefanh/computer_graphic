@@ -1,4 +1,4 @@
-# Christmas snowy scene - optimized for speed while meeting requirements
+# Christmas snowy scene with 15+ objects, spot light, reflections/shadows
 
 # Instances
 instance box models/box-outside.obj
@@ -7,14 +7,30 @@ instance cylinder models/cylinder.obj
 instance cone models/cone.obj
 
 # ==================== MATERIALS ====================
+
+# Icy ground material (frozen surface look)
 material ground-material
 emission 0 0 0
 ambient 0.15 0.2 0.3
 diffuse 0.5 0.6 0.75
-specular 0.4 0.4 0.4
-shininess 40
-reflection 0.15
-absorption 0.85
+specular 0.6 0.6 0.7
+shininess 60
+reflection 0.3
+transparency 0.1
+absorption 0.6
+refractive 1.31
+end-material
+
+material ice-material
+emission 0 0 0
+ambient 0.2 0.25 0.35
+diffuse 0.4 0.5 0.7
+specular 0.7 0.7 0.8
+shininess 80
+reflection 0.2
+transparency 0.3
+absorption 0.5
+refractive 1.33
 end-material
 
 material trunk-material
@@ -32,7 +48,8 @@ ambient 0.05 0.2 0.05
 diffuse 0.2 0.7 0.2
 specular 0.2 0.2 0.2
 shininess 30
-absorption 1.0
+reflection 0.05
+absorption 0.95
 end-material
 
 material star-material
@@ -44,6 +61,7 @@ shininess 80
 absorption 1.0
 end-material
 
+# Moon - highly emissive, no shadow (pure light source)
 material moon-material
 emission 2.0 1.8 0.8
 ambient 0.8 0.75 0.3
@@ -53,6 +71,7 @@ shininess 5
 absorption 1.0
 end-material
 
+# Sky - deeper blue color (more saturated)
 material sky-material
 emission 0.02 0.05 0.15
 ambient 0.1 0.15 0.5
@@ -66,36 +85,40 @@ material gift-red
 emission 0 0 0
 ambient 0.4 0.15 0.15
 diffuse 0.95 0.3 0.35
-specular 0.3 0.3 0.3
-shininess 30
-absorption 1.0
+specular 0.5 0.5 0.5
+shininess 60
+reflection 0.15
+absorption 0.85
 end-material
 
 material gift-green
 emission 0 0 0
 ambient 0.1 0.3 0.15
 diffuse 0.3 0.85 0.45
-specular 0.3 0.3 0.3
-shininess 30
-absorption 1.0
+specular 0.5 0.5 0.5
+shininess 60
+reflection 0.15
+absorption 0.85
 end-material
 
 material gift-blue
 emission 0 0 0
 ambient 0.15 0.2 0.4
 diffuse 0.35 0.5 0.95
-specular 0.3 0.3 0.3
-shininess 30
-absorption 1.0
+specular 0.5 0.5 0.5
+shininess 60
+reflection 0.15
+absorption 0.85
 end-material
 
 material gift-gold
 emission 0.05 0.04 0
 ambient 0.4 0.35 0.15
 diffuse 0.95 0.8 0.35
-specular 0.4 0.4 0.3
-shininess 40
-absorption 1.0
+specular 0.7 0.6 0.3
+shininess 80
+reflection 0.2
+absorption 0.8
 end-material
 
 material tree-mat-material
@@ -107,15 +130,7 @@ shininess 20
 absorption 1.0
 end-material
 
-material snowman-material
-emission 0 0 0
-ambient 0.25 0.25 0.3
-diffuse 0.7 0.7 0.75
-specular 0.4 0.4 0.45
-shininess 30
-absorption 1.0
-end-material
-
+# Snowman detail materials
 material coal-material
 emission 0 0 0
 ambient 0.02 0.02 0.02
@@ -152,85 +167,98 @@ shininess 10
 absorption 1.0
 end-material
 
+material snowman-material
+emission 0 0 0
+ambient 0.25 0.25 0.3
+diffuse 0.7 0.7 0.75
+specular 0.4 0.4 0.45
+shininess 30
+absorption 1.0
+end-material
+
+# ==================== ORNAMENT MATERIALS (Colorful!) ====================
 material ornament-red
 emission 0 0 0
 ambient 0.3 0.05 0.05
 diffuse 0.9 0.1 0.1
-specular 0.5 0.5 0.5
-shininess 60
-reflection 0.2
-absorption 0.8
+specular 0.8 0.8 0.8
+shininess 100
+reflection 0.3
+absorption 0.7
 end-material
 
 material ornament-blue
 emission 0 0 0
 ambient 0.05 0.05 0.3
 diffuse 0.1 0.2 0.9
-specular 0.4 0.4 0.4
-shininess 50
-absorption 1.0
+specular 0.8 0.8 0.8
+shininess 100
+reflection 0.3
+absorption 0.7
 end-material
 
 material ornament-gold
 emission 0.1 0.08 0
 ambient 0.3 0.25 0.05
 diffuse 0.9 0.75 0.2
-specular 0.6 0.6 0.4
-shininess 60
-reflection 0.2
-absorption 0.8
+specular 0.9 0.85 0.5
+shininess 100
+reflection 0.4
+absorption 0.6
 end-material
 
 material ornament-purple
 emission 0 0 0
 ambient 0.2 0.05 0.25
 diffuse 0.6 0.1 0.8
-specular 0.4 0.4 0.4
-shininess 50
-absorption 1.0
+specular 0.8 0.8 0.8
+shininess 100
+reflection 0.3
+absorption 0.7
 end-material
 
 material ornament-silver
 emission 0 0 0
 ambient 0.25 0.25 0.28
 diffuse 0.7 0.7 0.75
-specular 0.6 0.6 0.6
-shininess 60
-reflection 0.25
-absorption 0.75
+specular 0.95 0.95 0.95
+shininess 120
+reflection 0.5
+absorption 0.5
 end-material
 
 material ornament-cyan
 emission 0 0 0
 ambient 0.05 0.25 0.25
 diffuse 0.1 0.85 0.85
-specular 0.4 0.4 0.4
-shininess 50
-absorption 1.0
+specular 0.8 0.8 0.8
+shininess 100
+reflection 0.3
+absorption 0.7
 end-material
 
 # ==================== LIGHTS ====================
 light key-light
-ambient 0.25 0.25 0.3
-diffuse 1.8 1.8 1.9
-specular 1.0 1.0 1.0
+ambient 0.2 0.2 0.25
+diffuse 1.6 1.6 1.7
+specular 1.2 1.2 1.2
 position 80 100 60
 end-light
 
 light fill-light
-ambient 0.15 0.15 0.15
-diffuse 0.6 0.6 0.6
+ambient 0.1 0.1 0.1
+diffuse 0.5 0.5 0.5
 specular 0.3 0.3 0.3
-position -70 60 40
+position -70 60 -40
 end-light
 
 light spot-light
 ambient 0.05 0.05 0.05
-diffuse 1.2 1.0 0.8
-specular 0.8 0.7 0.6
-position -60 70 -10
+diffuse 1.4 1.2 1.0
+specular 1.0 0.9 0.8
+position -60 80 -10
 spot-direction 0 -1 0
-spot-angle 25
+spot-angle 20
 end-light
 
 # ==================== TEXTURES ====================
@@ -243,9 +271,9 @@ assign-light key-light root
 assign-light fill-light root
 assign-light spot-light root
 
-# 1. Ground
+# ---------- Icy Ground (frozen surface) ----------
 translate ground-t ground-t 0 -30 0
-scale ground-s ground-s 250 2 250
+scale ground-s ground-s 400 2 400
 leaf ground ground instanceof box
 assign-material ground ground-material
 assign-texture ground white
@@ -253,7 +281,8 @@ add-child ground ground-s
 add-child ground-s ground-t
 add-child ground-t root
 
-# 2. Sky
+# ---------- Sky Backdrop (larger hemisphere-like coverage, deeper blue) ----------
+# Back wall
 translate sky-back-t sky-back-t 0 100 -350
 scale sky-back-s sky-back-s 700 350 2
 leaf sky-back sky-back instanceof box
@@ -263,7 +292,37 @@ add-child sky-back sky-back-s
 add-child sky-back-s sky-back-t
 add-child sky-back-t root
 
-# 3. Tree mat
+# Left wall
+translate sky-left-t sky-left-t -350 100 0
+scale sky-left-s sky-left-s 2 350 700
+leaf sky-left sky-left instanceof box
+assign-material sky-left sky-material
+assign-texture sky-left white
+add-child sky-left sky-left-s
+add-child sky-left-s sky-left-t
+add-child sky-left-t root
+
+# Right wall
+translate sky-right-t sky-right-t 350 100 0
+scale sky-right-s sky-right-s 2 350 700
+leaf sky-right sky-right instanceof box
+assign-material sky-right sky-material
+assign-texture sky-right white
+add-child sky-right sky-right-s
+add-child sky-right-s sky-right-t
+add-child sky-right-t root
+
+# Top ceiling
+translate sky-top-t sky-top-t 0 275 0
+scale sky-top-s sky-top-s 700 2 700
+leaf sky-top sky-top instanceof box
+assign-material sky-top sky-material
+assign-texture sky-top white
+add-child sky-top sky-top-s
+add-child sky-top-s sky-top-t
+add-child sky-top-t root
+
+# ---------- Brown tree mat (replaces white circle under tree) ----------
 translate tree-mat-t tree-mat-t -60 -29.5 -10
 scale tree-mat-s tree-mat-s 55 1 55
 leaf tree-mat tree-mat instanceof cylinder
@@ -273,7 +332,18 @@ add-child tree-mat tree-mat-s
 add-child tree-mat-s tree-mat-t
 add-child tree-mat-t root
 
-# 4. Tree trunk
+# ---------- Small yellow base for snowman ----------
+translate snowman-base-plate-t snowman-base-plate-t 50 -29.5 30
+scale snowman-base-plate-s snowman-base-plate-s 12 1 12
+leaf snowman-base-plate snowman-base-plate instanceof cylinder
+assign-material snowman-base-plate gift-gold
+assign-texture snowman-base-plate white
+add-child snowman-base-plate snowman-base-plate-s
+add-child snowman-base-plate-s snowman-base-plate-t
+add-child snowman-base-plate-t root
+
+# ==================== CHRISTMAS TREE (BIGGER!) ====================
+# Tree trunk (scaled up 1.5x)
 translate trunk-t trunk-t -60 -30 -10
 scale trunk-s trunk-s 9 36 9
 leaf trunk trunk instanceof cylinder
@@ -283,7 +353,7 @@ add-child trunk trunk-s
 add-child trunk-s trunk-t
 add-child trunk-t root
 
-# 5. Tree layer 1
+# Layer 1 - Bottom (scaled up 1.5x)
 translate leaves1-t leaves1-t -60 -6 -10
 scale leaves1-s leaves1-s 30 30 30
 leaf leaves1 leaves1 instanceof cone
@@ -293,7 +363,7 @@ add-child leaves1 leaves1-s
 add-child leaves1-s leaves1-t
 add-child leaves1-t root
 
-# 6. Tree layer 2
+# Layer 2 - Middle (scaled up 1.5x)
 translate leaves2-t leaves2-t -60 19 -10
 scale leaves2-s leaves2-s 24 24 24
 leaf leaves2 leaves2 instanceof cone
@@ -303,7 +373,7 @@ add-child leaves2 leaves2-s
 add-child leaves2-s leaves2-t
 add-child leaves2-t root
 
-# 7. Tree layer 3
+# Layer 3 - Top (scaled up 1.5x)
 translate leaves3-t leaves3-t -60 38 -10
 scale leaves3-s leaves3-s 18 18 18
 leaf leaves3 leaves3 instanceof cone
@@ -313,7 +383,7 @@ add-child leaves3 leaves3-s
 add-child leaves3-s leaves3-t
 add-child leaves3-t root
 
-# 8. Star
+# Star on top (scaled up)
 translate star-t star-t -60 54 -10
 scale star-s star-s 5 5 5
 leaf star star instanceof sphere
@@ -323,7 +393,10 @@ add-child star star-s
 add-child star-s star-t
 add-child star-t root
 
-# 9-11. Ornaments layer 1
+# ==================== ORNAMENTS ON TREE (FULLY VISIBLE on surface!) ====================
+# Tree center: x=-60, z=-10. Balls placed OUTSIDE cone surface (z much higher)
+
+# ====== Layer 1 (Bottom, y=-2 to 8) - balls at z=8~12 ======
 translate orn1-t orn1-t -48 3 10
 scale orn1-s orn1-s 2.5 2.5 2.5
 leaf orn1 orn1 instanceof sphere
@@ -351,8 +424,7 @@ add-child orn3 orn3-s
 add-child orn3-s orn3-t
 add-child orn3-t root
 
-# 12-14. Ornaments layer 2
-translate orn4-t orn4-t -50 21 6
+translate orn4-t orn4-t -52 6 11
 scale orn4-s orn4-s 2.2 2.2 2.2
 leaf orn4 orn4 instanceof sphere
 assign-material orn4 ornament-purple
@@ -361,7 +433,7 @@ add-child orn4 orn4-s
 add-child orn4-s orn4-t
 add-child orn4-t root
 
-translate orn5-t orn5-t -70 21 6
+translate orn5-t orn5-t -68 6 11
 scale orn5-s orn5-s 2.2 2.2 2.2
 leaf orn5 orn5 instanceof sphere
 assign-material orn5 ornament-silver
@@ -370,7 +442,7 @@ add-child orn5 orn5-s
 add-child orn5-s orn5-t
 add-child orn5-t root
 
-translate orn6-t orn6-t -60 19 8
+translate orn6-t orn6-t -55 -1 11
 scale orn6-s orn6-s 2.2 2.2 2.2
 leaf orn6 orn6 instanceof sphere
 assign-material orn6 ornament-cyan
@@ -379,9 +451,8 @@ add-child orn6 orn6-s
 add-child orn6-s orn6-t
 add-child orn6-t root
 
-# 15-17. Ornaments layer 3
-translate orn7-t orn7-t -53 41 2
-scale orn7-s orn7-s 1.8 1.8 1.8
+translate orn7-t orn7-t -65 -1 11
+scale orn7-s orn7-s 2.2 2.2 2.2
 leaf orn7 orn7 instanceof sphere
 assign-material orn7 ornament-red
 assign-texture orn7 white
@@ -389,25 +460,108 @@ add-child orn7 orn7-s
 add-child orn7-s orn7-t
 add-child orn7-t root
 
-translate orn8-t orn8-t -67 41 2
-scale orn8-s orn8-s 1.8 1.8 1.8
+# ====== Layer 2 (Middle, y=19 to 28) - balls at z=4~8 ======
+translate orn8-t orn8-t -50 21 6
+scale orn8-s orn8-s 2.2 2.2 2.2
 leaf orn8 orn8 instanceof sphere
-assign-material orn8 ornament-blue
+assign-material orn8 ornament-gold
 assign-texture orn8 white
 add-child orn8 orn8-s
 add-child orn8-s orn8-t
 add-child orn8-t root
 
-translate orn9-t orn9-t -60 43 4
-scale orn9-s orn9-s 1.8 1.8 1.8
+translate orn9-t orn9-t -70 21 6
+scale orn9-s orn9-s 2.2 2.2 2.2
 leaf orn9 orn9 instanceof sphere
-assign-material orn9 ornament-gold
+assign-material orn9 ornament-purple
 assign-texture orn9 white
 add-child orn9 orn9-s
 add-child orn9-s orn9-t
 add-child orn9-t root
 
-# 18-21. Gifts
+translate orn10-t orn10-t -60 19 8
+scale orn10-s orn10-s 2.2 2.2 2.2
+leaf orn10 orn10 instanceof sphere
+assign-material orn10 ornament-silver
+assign-texture orn10 white
+add-child orn10 orn10-s
+add-child orn10-s orn10-t
+add-child orn10-t root
+
+translate orn11-t orn11-t -54 25 7
+scale orn11-s orn11-s 2 2 2
+leaf orn11 orn11 instanceof sphere
+assign-material orn11 ornament-cyan
+assign-texture orn11 white
+add-child orn11 orn11-s
+add-child orn11-s orn11-t
+add-child orn11-t root
+
+translate orn12-t orn12-t -66 25 7
+scale orn12-s orn12-s 2 2 2
+leaf orn12 orn12 instanceof sphere
+assign-material orn12 ornament-red
+assign-texture orn12 white
+add-child orn12 orn12-s
+add-child orn12-s orn12-t
+add-child orn12-t root
+
+translate orn13-t orn13-t -60 23 7
+scale orn13-s orn13-s 2 2 2
+leaf orn13 orn13 instanceof sphere
+assign-material orn13 ornament-blue
+assign-texture orn13 white
+add-child orn13 orn13-s
+add-child orn13-s orn13-t
+add-child orn13-t root
+
+# ====== Layer 3 (Top, y=40 to 50) - balls at z=0~4 ======
+translate orn14-t orn14-t -53 41 2
+scale orn14-s orn14-s 1.8 1.8 1.8
+leaf orn14 orn14 instanceof sphere
+assign-material orn14 ornament-gold
+assign-texture orn14 white
+add-child orn14 orn14-s
+add-child orn14-s orn14-t
+add-child orn14-t root
+
+translate orn15-t orn15-t -67 41 2
+scale orn15-s orn15-s 1.8 1.8 1.8
+leaf orn15 orn15 instanceof sphere
+assign-material orn15 ornament-purple
+assign-texture orn15 white
+add-child orn15 orn15-s
+add-child orn15-s orn15-t
+add-child orn15-t root
+
+translate orn16-t orn16-t -60 43 4
+scale orn16-s orn16-s 1.8 1.8 1.8
+leaf orn16 orn16 instanceof sphere
+assign-material orn16 ornament-red
+assign-texture orn16 white
+add-child orn16 orn16-s
+add-child orn16-s orn16-t
+add-child orn16-t root
+
+translate orn17-t orn17-t -56 46 3
+scale orn17-s orn17-s 1.6 1.6 1.6
+leaf orn17 orn17 instanceof sphere
+assign-material orn17 ornament-blue
+assign-texture orn17 white
+add-child orn17 orn17-s
+add-child orn17-s orn17-t
+add-child orn17-t root
+
+translate orn18-t orn18-t -64 46 3
+scale orn18-s orn18-s 1.6 1.6 1.6
+leaf orn18 orn18 instanceof sphere
+assign-material orn18 ornament-cyan
+assign-texture orn18 white
+add-child orn18 orn18-s
+add-child orn18-s orn18-t
+add-child orn18-t root
+
+# ==================== PRESENTS (Prettier checkerboard!) ====================
 translate gift1-t gift1-t -45 -30 8
 scale gift1-s gift1-s 10 10 10
 leaf gift1 gift1 instanceof box
@@ -444,17 +598,8 @@ add-child gift4 gift4-s
 add-child gift4-s gift4-t
 add-child gift4-t root
 
-# 22. Snowman base plate
-translate snowman-base-plate-t snowman-base-plate-t 50 -29.5 30
-scale snowman-base-plate-s snowman-base-plate-s 12 1 12
-leaf snowman-base-plate snowman-base-plate instanceof cylinder
-assign-material snowman-base-plate gift-gold
-assign-texture snowman-base-plate white
-add-child snowman-base-plate snowman-base-plate-s
-add-child snowman-base-plate-s snowman-base-plate-t
-add-child snowman-base-plate-t root
-
-# 23-25. Snowman body
+# ==================== SNOWMAN (Smaller & Cuter!) ====================
+# Base: radius 7, center y = -23 (top at -16)
 translate snowman-base-t snowman-base-t 50 -23 30
 scale snowman-base-s snowman-base-s 7 7 7
 leaf snowman-base snowman-base instanceof sphere
@@ -464,6 +609,7 @@ add-child snowman-base snowman-base-s
 add-child snowman-base-s snowman-base-t
 add-child snowman-base-t root
 
+# Mid: radius 5, center y = -12 (overlaps base, top at -7)
 translate snowman-mid-t snowman-mid-t 50 -12 30
 scale snowman-mid-s snowman-mid-s 5 5 5
 leaf snowman-mid snowman-mid instanceof sphere
@@ -473,6 +619,7 @@ add-child snowman-mid snowman-mid-s
 add-child snowman-mid-s snowman-mid-t
 add-child snowman-mid-t root
 
+# Head: radius 3.5, center y = -4 (overlaps mid)
 translate snowman-head-t snowman-head-t 50 -4 30
 scale snowman-head-s snowman-head-s 3.5 3.5 3.5
 leaf snowman-head snowman-head instanceof sphere
@@ -482,7 +629,7 @@ add-child snowman-head snowman-head-s
 add-child snowman-head-s snowman-head-t
 add-child snowman-head-t root
 
-# 26-27. Eyes
+# --- Eyes (coal) ---
 translate eye-left-t eye-left-t 48.5 -3 33
 scale eye-left-s eye-left-s 0.6 0.6 0.6
 leaf eye-left eye-left instanceof sphere
@@ -501,7 +648,7 @@ add-child eye-right eye-right-s
 add-child eye-right-s eye-right-t
 add-child eye-right-t root
 
-# 28. Nose
+# --- Carrot Nose ---
 translate nose-t nose-t 50 -4.5 33.5
 rotate nose-r nose-r 90 1 0 0
 scale nose-s nose-s 0.8 3 0.8
@@ -513,7 +660,35 @@ add-child nose-s nose-r
 add-child nose-r nose-t
 add-child nose-t root
 
-# 29-30. Buttons
+# --- Smile (3 coal dots) ---
+translate mouth1-t mouth1-t 48.8 -5.8 33
+scale mouth1-s mouth1-s 0.35 0.35 0.35
+leaf mouth1 mouth1 instanceof sphere
+assign-material mouth1 coal-material
+assign-texture mouth1 white
+add-child mouth1 mouth1-s
+add-child mouth1-s mouth1-t
+add-child mouth1-t root
+
+translate mouth2-t mouth2-t 50 -6.2 33.2
+scale mouth2-s mouth2-s 0.35 0.35 0.35
+leaf mouth2 mouth2 instanceof sphere
+assign-material mouth2 coal-material
+assign-texture mouth2 white
+add-child mouth2 mouth2-s
+add-child mouth2-s mouth2-t
+add-child mouth2-t root
+
+translate mouth3-t mouth3-t 51.2 -5.8 33
+scale mouth3-s mouth3-s 0.35 0.35 0.35
+leaf mouth3 mouth3 instanceof sphere
+assign-material mouth3 coal-material
+assign-texture mouth3 white
+add-child mouth3 mouth3-s
+add-child mouth3-s mouth3-t
+add-child mouth3-t root
+
+# --- Buttons (coal on body) ---
 translate btn1-t btn1-t 50 -10 34.8
 scale btn1-s btn1-s 0.5 0.5 0.5
 leaf btn1 btn1 instanceof sphere
@@ -532,7 +707,30 @@ add-child btn2 btn2-s
 add-child btn2-s btn2-t
 add-child btn2-t root
 
-# 31. Scarf
+# --- Twig Arms ---
+translate arm-left-t arm-left-t 44 -11 30
+rotate arm-left-r arm-left-r -30 0 0 1
+scale arm-left-s arm-left-s 0.4 6 0.4
+leaf arm-left arm-left instanceof cylinder
+assign-material arm-left twig-material
+assign-texture arm-left white
+add-child arm-left arm-left-s
+add-child arm-left-s arm-left-r
+add-child arm-left-r arm-left-t
+add-child arm-left-t root
+
+translate arm-right-t arm-right-t 56 -11 30
+rotate arm-right-r arm-right-r 30 0 0 1
+scale arm-right-s arm-right-s 0.4 6 0.4
+leaf arm-right arm-right instanceof cylinder
+assign-material arm-right twig-material
+assign-texture arm-right white
+add-child arm-right arm-right-s
+add-child arm-right-s arm-right-r
+add-child arm-right-r arm-right-t
+add-child arm-right-t root
+
+# --- Scarf ---
 translate scarf-t scarf-t 50 -7.5 30
 scale scarf-s scarf-s 4.5 1 4.5
 leaf scarf scarf instanceof cylinder
@@ -542,7 +740,7 @@ add-child scarf scarf-s
 add-child scarf-s scarf-t
 add-child scarf-t root
 
-# 32. Moon
+# ==================== MOON (Emissive, no shadow) ====================
 translate moon-t moon-t 150 160 -250
 scale moon-s moon-s 30 30 30
 leaf moon moon instanceof sphere

@@ -34,13 +34,24 @@ public:
      * @brief Start ray tracing and output result to a PPM image file
      * @param scenegraph The scene graph to ray trace
      */
-    void raytrace(sgraph::IScenegraph *scenegraph);
+    void raytrace(sgraph::IScenegraph *scenegraph, int maxBounces = 5);
     
     /**
      * @brief Get the current modelview matrix (for ray tracing camera setup)
      * @return The modelview matrix stack
      */
     stack<glm::mat4>& getModelview() { return modelview; }
+    
+    /**
+     * @brief Set custom camera angles for interactive control
+     */
+    void setCameraAngles(float horizontal, float vertical, float distance);
+    
+    /**
+     * @brief Move camera along its current gaze direction by delta units (positive = forward)
+     * @return Updated distance from camera to target
+     */
+    float moveCameraAlongGaze(float delta);
     
     /**
      * @brief Get the window width
@@ -63,6 +74,11 @@ private:
     stack<glm::mat4> modelview;
     sgraph::SGNodeVisitor *renderer;
     int frames;
+    
+    // Camera state for interactive control
+    glm::vec3 cameraPosition;
+    glm::vec3 cameraTarget;
+    glm::vec3 cameraUp;
     double time;
 };
 

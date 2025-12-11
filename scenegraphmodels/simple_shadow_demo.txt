@@ -1,0 +1,87 @@
+# Instances
+instance box models/box-outside.obj
+instance sphere models/sphere.obj
+
+# Materials (no reflection/transparency, highlight shadows)
+material ground-material
+emission 0 0 0
+ambient 0.1 0.1 0.1
+diffuse 0.5 0.5 0.55
+specular 0.1 0.1 0.1
+shininess 20
+absorption 1.0
+end-material
+
+material box-material
+emission 0 0 0
+ambient 0.2 0.05 0.05
+diffuse 0.9 0.2 0.2
+specular 0.3 0.3 0.3
+shininess 40
+absorption 1.0
+end-material
+
+material sphere-material
+emission 0 0 0
+ambient 0.1 0.1 0.2
+diffuse 0.3 0.3 0.8
+specular 0.5 0.5 0.5
+shininess 80
+absorption 1.0
+end-material
+
+# Lights (key light above/side, weak fill)
+light key-light
+ambient 0.1 0.1 0.1
+diffuse 1.2 1.2 1.2
+specular 0.8 0.8 0.8
+position 30 60 10
+end-light
+
+light fill-light
+ambient 0.05 0.05 0.05
+diffuse 0.3 0.3 0.3
+specular 0.2 0.2 0.2
+position -40 20 -20
+end-light
+
+# Textures
+image white textures/white.ppm
+image checkerboard textures/checkerboard.ppm
+
+# Scene graph
+group root root
+assign-light key-light root
+assign-light fill-light root
+
+# Ground plane
+translate ground-t ground-t 0 -15 0
+scale ground-s ground-s 180 2 180
+leaf ground ground instanceof box
+assign-material ground ground-material
+assign-texture ground white
+add-child ground ground-s
+add-child ground-s ground-t
+add-child ground-t root
+
+# Box on ground for a clear shadow
+translate box-t box-t -20 0 -12
+scale box-s box-s 12 12 12
+leaf one-box one-box instanceof box
+assign-material one-box box-material
+assign-texture one-box checkerboard
+add-child one-box box-s
+add-child box-s box-t
+add-child box-t root
+
+# Sphere at similar height for easy shadow comparison
+translate sphere-t sphere-t 25 0 -8
+scale sphere-s sphere-s 12 12 12
+leaf one-sphere one-sphere instanceof sphere
+assign-material one-sphere sphere-material
+assign-texture one-sphere white
+add-child one-sphere sphere-s
+add-child sphere-s sphere-t
+add-child sphere-t root
+
+assign-root root

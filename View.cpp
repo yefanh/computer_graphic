@@ -13,7 +13,10 @@ using namespace std;
 #include "sgraph/LightGatherer.h"
 
 View::View() {
-
+    // Initialize default camera position
+    cameraPosition = glm::vec3(0.0f, 40.0f, 40.0f);
+    cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+    cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
 }
 
 View::~View(){
@@ -139,7 +142,7 @@ void View::display(sgraph::IScenegraph *scenegraph) {
     
     
     modelview.push(glm::mat4(1.0));
-    modelview.top() = modelview.top() * glm::lookAt(glm::vec3(0.0f,40.0f,40.0f),glm::vec3(0.0f,0.0f,0.0f),glm::vec3(0.0f,1.0f,0.0f));
+    modelview.top() = modelview.top() * glm::lookAt(cameraPosition, cameraTarget, cameraUp);
     //send projection matrix to GPU    
     glUniformMatrix4fv(shaderLocations.getLocation("projection"), 1, GL_FALSE, glm::value_ptr(projection));
     
@@ -221,6 +224,45 @@ void View::closeWindow() {
     glfwTerminate();
 }
 
+void View::setCameraAngles(float horizontal, float vertical, float distance) {
+    // Convert angles to radians
+    float h = glm::radians(horizontal);
+    float v = glm::radians(vertical);
+    
+    // Calculate camera position using spherical coordinates
+    float x = distance * cos(v) * sin(h);
+    float y = distance * sin(v);
+    float z = distance * cos(v) * cos(h);
+    
+    // Update the stored camera position
+    cameraPosition = glm::vec3(x, y, z);
+    // Camera always looks at origin
+    cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
+    // Up vector stays constant
+    cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+    
+    cout << "Camera updated: position=(" << x << ", " << y << ", " << z << ")" << endl;
+}
+
+float View::moveCameraAlongGaze(float delta) {
+    glm::vec3 gaze = cameraTarget - cameraPosition;
+    float dist = glm::length(gaze);
+    if (dist < 0.0001f) {
+        return dist;
+    }
+    gaze = glm::normalize(gaze);
+    // prevent crossing the target; keep a small offset
+    float maxForward = dist - 0.1f;
+    float clampedDelta = delta;
+    if (delta > 0 && delta > maxForward) {
+        clampedDelta = maxForward;
+    }
+    cameraPosition += clampedDelta * gaze;
+    float newDist = glm::length(cameraTarget - cameraPosition);
+    cout << "Camera moved. New position: (" << cameraPosition.x << ", " << cameraPosition.y << ", " << cameraPosition.z << ") distance=" << newDist << endl;
+    return newDist;
+}
+
 int View::getWindowWidth() {
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
@@ -233,7 +275,7 @@ int View::getWindowHeight() {
     return height;
 }
 
-void View::raytrace(sgraph::IScenegraph *scenegraph) {
+void View::raytrace(sgraph::IScenegraph *scenegraph, int maxBounces) {
     int width = 0;
     int height = 0;
     glfwGetWindowSize(window, &width, &height); // logical size (avoids Retina doubling)
@@ -247,11 +289,7 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
     // Set up the modelview stack with camera transform (same as display())
     stack<glm::mat4> rayModelview;
     rayModelview.push(glm::mat4(1.0));
-    rayModelview.top() = rayModelview.top() * glm::lookAt(
-        glm::vec3(0.0f, 40.0f, 40.0f),  // camera position (same as OpenGL)
-        glm::vec3(0.0f, 0.0f, 0.0f),     // look at origin
-        glm::vec3(0.0f, 1.0f, 0.0f)      // up vector
-    );
+    rayModelview.top() = rayModelview.top() * glm::lookAt(cameraPosition, cameraTarget, cameraUp);
     
     // Gather lights in view space (same as display())
     sgraph::LightGatherer* gatherer = new sgraph::LightGatherer(rayModelview);
@@ -263,10 +301,10 @@ void View::raytrace(sgraph::IScenegraph *scenegraph) {
     map<string, util::PolygonMesh<VertexAttrib>> meshes = scenegraph->getMeshes();
     
     // Create the raycast renderer
-    sgraph::RaycastRenderer rayRenderer(rayModelview, meshes, lightsInViewSpace);
+    sgraph::RaycastRenderer rayRenderer(rayModelview, meshes, lightsInViewSpace, maxBounces);
     
     // Perform ray tracing and save to file
-    rayRenderer.raytrace(scenegraph, width, height, "raytraced_output.ppm");
+    rayRenderer.raytrace(scenegraph, width, height, "raytraced_output.ppm", maxBounces);
 }
 
 

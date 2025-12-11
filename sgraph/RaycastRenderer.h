@@ -45,10 +45,12 @@ public:
      */
     RaycastRenderer(stack<glm::mat4>& mv, 
                     map<string, util::PolygonMesh<VertexAttrib>>& meshes,
-                    vector<util::Light>& lights)
+                    vector<util::Light>& lights,
+                    int maxBounces = 5)
         : modelview(mv)
         , meshes(meshes)
-        , lights(lights) {
+        , lights(lights)
+        , maxBounces(maxBounces) {
         // For each mesh being used by the scene graph, 
         // create a corresponding RaytraceMesh object
         for (auto& pair : meshes) {
@@ -73,11 +75,14 @@ public:
      * @param height Image height in pixels
      * @param filename Output PPM filename
      */
-    void raytrace(IScenegraph* scenegraph, int width, int height, const string& filename) {
+    void raytrace(IScenegraph* scenegraph, int width, int height, const string& filename, int maxBounces = 5) {
         cout << "Starting ray tracing..." << endl;
         cout << "Image size: " << width << " x " << height << endl;
         cout << "This may take a while without KD-tree acceleration..." << endl;
         cout.flush();
+
+        // Allow caller to control bounce depth (defaults to 5)
+        this->maxBounces = maxBounces;
 
         // Create image buffer (RGB for each pixel)
         vector<unsigned char> image(width * height * 3);
@@ -255,6 +260,7 @@ private:
     map<string, util::PolygonMesh<VertexAttrib>>& meshes;
     map<string, RaytraceMesh*> raytraceMeshes;  // RaytraceMesh for each mesh
     vector<util::Light>& lights;
+    int maxBounces;
     
     Ray currentRay;        // Current ray being cast (in view space)
     HitRecord closestHit;  // Closest intersection found so far
@@ -269,12 +275,11 @@ private:
      * Section 3.1: Uses interpolated normals from barycentric coordinates.
      */
     glm::vec3 shade(const HitRecord& hit, IScenegraph* scenegraph) {
-        return shadeRecursive(hit, scenegraph, 0);
+        return shadeRecursive(hit, scenegraph, 0, 1.0f);
     }
 
-    glm::vec3 shadeRecursive(const HitRecord& hit, IScenegraph* scenegraph, int bounce) {
-        const int MAX_BOUNCES = 5;
-        if (bounce >= MAX_BOUNCES) {
+    glm::vec3 shadeRecursive(const HitRecord& hit, IScenegraph* scenegraph, int bounce, float currentEta) {
+        if (bounce >= maxBounces) {
             return glm::vec3(0.0f);
         }
 
@@ -401,6 +406,7 @@ private:
         }
 
         // Reflection
+        glm::vec3 reflectColor(0.0f);
         if (material.getReflection() > 0.0f) {
             glm::vec3 reflectDir = glm::reflect(-viewDir, normal);
             reflectDir = glm::normalize(reflectDir);
@@ -410,13 +416,60 @@ private:
             Ray reflectRay(glm::vec4(reflectRayStart, 1.0f), glm::vec4(reflectDir, 0.0f));
             
             HitRecord reflectHit = raycast(reflectRay, scenegraph);
-            glm::vec3 reflectColor(0.0f);
             
             if (reflectHit.hasHit()) {
-                reflectColor = shadeRecursive(reflectHit, scenegraph, bounce + 1);
+                reflectColor = shadeRecursive(reflectHit, scenegraph, bounce + 1, currentEta);
+            }
+        }
+
+        // Refraction
+        glm::vec3 refractColor(0.0f);
+        if (material.getTransparency() > 0.0f) {
+            // Determine if ray is entering or exiting the object
+            bool entering = glm::dot(viewDir, normal) > 0.0f;
+            
+            // Calculate eta ratio (n1/n2)
+            float etaRatio;
+            float nextEta;
+            if (entering) {
+                // Ray entering object: from current medium into object
+                etaRatio = currentEta / material.getRefractiveIndex();
+                nextEta = material.getRefractiveIndex();
+            } else {
+                // Ray exiting object: from object into air
+                etaRatio = currentEta / 1.0f;
+                nextEta = 1.0f;
             }
             
-            color = material.getAbsorption() * color + material.getReflection() * reflectColor;
+            // Use GLM's refract function to compute refraction direction
+            // refract(I, N, eta) where I is incident direction (pointing INTO surface)
+            glm::vec3 refractDir = glm::refract(-viewDir, normal, etaRatio);
+            
+            // Check for total internal reflection
+            if (glm::length(refractDir) > 0.0f) {
+                refractDir = glm::normalize(refractDir);
+                
+                const float REFRACT_EPSILON = 0.001f;
+                glm::vec3 refractRayStart = viewPos + REFRACT_EPSILON * refractDir;
+                Ray refractRay(glm::vec4(refractRayStart, 1.0f), glm::vec4(refractDir, 0.0f));
+                
+                HitRecord refractHit = raycast(refractRay, scenegraph);
+                
+                if (refractHit.hasHit()) {
+                    refractColor = shadeRecursive(refractHit, scenegraph, bounce + 1, nextEta);
+                }
+            } else {
+                // Total internal reflection - treat as reflection
+                refractColor = reflectColor;
+            }
+        }
+
+        // Blend absorption, reflection, and refraction
+        // Final color = absorption * directColor + reflection * reflectColor + transparency * refractColor
+        if (material.getReflection() > 0.0f || material.getTransparency() > 0.0f) {
+            color = material.getAbsorption() * color 
+                  + material.getReflection() * reflectColor 
+                  + material.getTransparency() * refractColor;
         }
 
         return color;

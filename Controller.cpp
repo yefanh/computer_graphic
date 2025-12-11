@@ -71,6 +71,52 @@ void Controller::onkey(int key, int scancode, int action, int mods)
             cout << "Switching to ray tracing mode..." << endl;
             raytraceRequested = true;
         }
+        // '2' key toggles camera control mode
+        else if (key == '2') {
+            cameraControlMode = !cameraControlMode;
+            if (cameraControlMode) {
+                cout << "Camera control mode ON. Use arrow keys to rotate camera." << endl;
+                cout << "  Up/Down: Vertical angle, Left/Right: Horizontal angle" << endl;
+                cout << "  Press '2' again to exit." << endl;
+            } else {
+                cout << "Camera control mode OFF." << endl;
+            }
+        }
+        
+        // F/B keys move camera forward/backward along gaze direction (independent of control mode)
+        if (key == 'F' || key == 'f') {
+            float step = 2.0f;
+            cameraDistance = view.moveCameraAlongGaze(step);
+        }
+        else if (key == 'B' || key == 'b') {
+            float step = -2.0f;
+            cameraDistance = view.moveCameraAlongGaze(step);
+        }
+
+        // Arrow keys control camera when in camera control mode
+        if (cameraControlMode) {
+            bool updated = false;
+            if (key == GLFW_KEY_LEFT) {
+                cameraAngleH -= 5.0f;
+                updated = true;
+            } else if (key == GLFW_KEY_RIGHT) {
+                cameraAngleH += 5.0f;
+                updated = true;
+            } else if (key == GLFW_KEY_UP) {
+                cameraAngleV += 5.0f;
+                if (cameraAngleV > 89.0f) cameraAngleV = 89.0f;
+                updated = true;
+            } else if (key == GLFW_KEY_DOWN) {
+                cameraAngleV -= 5.0f;
+                if (cameraAngleV < 1.0f) cameraAngleV = 1.0f;
+                updated = true;
+            }
+            
+            if (updated) {
+                cout << "Camera: H=" << cameraAngleH << "° V=" << cameraAngleV << "°" << endl;
+                view.setCameraAngles(cameraAngleH, cameraAngleV, cameraDistance);
+            }
+        }
     }
 }
 

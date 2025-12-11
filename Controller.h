@@ -22,6 +22,10 @@ private:
     View view;
     Model model;
     bool raytraceRequested = false;
+    bool cameraControlMode = false;
+    float cameraAngleH = 0.0f;  // Horizontal angle (left/right)
+    float cameraAngleV = 40.0f; // Vertical angle (up/down)
+    float cameraDistance = 56.57f; // Distance from origin
 };
 
 #endif
